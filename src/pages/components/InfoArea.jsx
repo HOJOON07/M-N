@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+const MyDirectArea = styled.div``;
 
 const MyInfoArea = styled.div`
   display: flex;
@@ -73,99 +74,101 @@ export default function InfoArea() {
 
   return (
     <div style={{ padding: '50px' }}>
-      <MyInfoArea>
-        <MyReqArea>
-          <p>아이디 *</p>
-        </MyReqArea>
-        <MyInputArea>
-          <MyInput type="text" placeholder="아이디를 입력해주세요" />
-          <MyInfoBtn backgroundColor="#333333" color="#fff">
-            중복 확인
-          </MyInfoBtn>
-        </MyInputArea>
-      </MyInfoArea>
-      <MyErrArea />
-      <MyInfoArea>
-        <MyReqArea>
-          <p>비밀번호 *</p>
-        </MyReqArea>
-        <MyInputArea>
-          <MyInput type="password" placeholder="비밀번호를 입력해주세요" />
-        </MyInputArea>
-      </MyInfoArea>
-      <MyErrArea />
-      <MyInfoArea>
-        <MyReqArea>
-          <p>비밀번호 확인*</p>
-        </MyReqArea>
-        <MyInputArea>
-          <MyInput type="password" placeholder="비밀번호를 입력해주세요" />
-        </MyInputArea>
-      </MyInfoArea>
-      <MyErrArea />
-      <MyInfoArea>
-        <MyReqArea>
-          <p>이름*</p>
-        </MyReqArea>
-        <MyInputArea>
-          <MyInput type="text" />
-        </MyInputArea>
-      </MyInfoArea>
-      <MyErrArea />
-      <MyInfoArea>
-        <MyReqArea>
-          <p>전화번호*</p>
-        </MyReqArea>
-        <MyInputArea>
-          <MyInput type="text" placeholder="'-' 제외하고 입력" />
-        </MyInputArea>
-      </MyInfoArea>
-      <MyErrArea />
-      <MyInfoArea>
-        <MyReqArea>
-          <p>이메일*</p>
-        </MyReqArea>
-        <MyInputArea>
-          <MyInput type="text" style={{ width: '100px' }} />
-          <p style={{ textAlign: 'center', margin: 'auto 0' }}>@</p>
-          <MyInput
-            type="text"
-            defaultValue={email}
-            style={{ width: '100px' }}
-          />
-          <select onChange={onChnageEmail} value={email}>
-            {emailList.map(el => {
-              return (
-                <option value={el} key={el}>
-                  {el}
-                </option>
-              );
-            })}
-          </select>
-        </MyInputArea>
-      </MyInfoArea>
-      <MyErrArea />
-      <MyInfoArea>
-        <MyReqArea>
-          <p>포지션*</p>
-        </MyReqArea>
-        <MyInputArea>
-          <select
-            onChange={onChangePosition}
-            value={position}
-            style={{ height: '35px', marginLeft: '15px' }}
-          >
-            {positionList.map(el => {
-              return (
-                <option value={el} key={el}>
-                  {el}
-                </option>
-              );
-            })}
-          </select>
-        </MyInputArea>
-      </MyInfoArea>
-      <MyErrArea />
+      <MyDirectArea>
+        <MyInfoArea>
+          <MyReqArea>
+            <p>아이디 *</p>
+          </MyReqArea>
+          <MyInputArea>
+            <MyInput type="text" placeholder="아이디를 입력해주세요" />
+            <MyInfoBtn backgroundColor="#333333" color="#fff">
+              중복 확인
+            </MyInfoBtn>
+          </MyInputArea>
+        </MyInfoArea>
+        <MyErrArea />
+        <MyInfoArea>
+          <MyReqArea>
+            <p>비밀번호 *</p>
+          </MyReqArea>
+          <MyInputArea>
+            <MyInput type="password" placeholder="비밀번호를 입력해주세요" />
+          </MyInputArea>
+        </MyInfoArea>
+        <MyErrArea />
+        <MyInfoArea>
+          <MyReqArea>
+            <p>비밀번호 확인*</p>
+          </MyReqArea>
+          <MyInputArea>
+            <MyInput type="password" placeholder="비밀번호를 입력해주세요" />
+          </MyInputArea>
+        </MyInfoArea>
+        <MyErrArea />
+        <MyInfoArea>
+          <MyReqArea>
+            <p>이름*</p>
+          </MyReqArea>
+          <MyInputArea>
+            <MyInput type="text" />
+          </MyInputArea>
+        </MyInfoArea>
+        <MyErrArea />
+        <MyInfoArea>
+          <MyReqArea>
+            <p>전화번호*</p>
+          </MyReqArea>
+          <MyInputArea>
+            <MyInput type="text" placeholder="'-' 제외하고 입력" />
+          </MyInputArea>
+        </MyInfoArea>
+        <MyErrArea />
+        <MyInfoArea>
+          <MyReqArea>
+            <p>이메일*</p>
+          </MyReqArea>
+          <MyInputArea>
+            <MyInput type="text" style={{ width: '100px' }} />
+            <p style={{ textAlign: 'center', margin: 'auto 0' }}>@</p>
+            <MyInput
+              type="text"
+              defaultValue={email}
+              style={{ width: '100px' }}
+            />
+            <select onChange={onChnageEmail} value={email}>
+              {emailList.map(el => {
+                return (
+                  <option value={el} key={el}>
+                    {el}
+                  </option>
+                );
+              })}
+            </select>
+          </MyInputArea>
+        </MyInfoArea>
+        <MyErrArea />
+        <MyInfoArea>
+          <MyReqArea>
+            <p>포지션*</p>
+          </MyReqArea>
+          <MyInputArea>
+            <select
+              onChange={onChangePosition}
+              value={position}
+              style={{ height: '35px', marginLeft: '15px' }}
+            >
+              {positionList.map(el => {
+                return (
+                  <option value={el} key={el}>
+                    {el}
+                  </option>
+                );
+              })}
+            </select>
+          </MyInputArea>
+        </MyInfoArea>
+        <MyErrArea />
+      </MyDirectArea>
     </div>
   );
 }
