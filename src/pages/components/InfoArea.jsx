@@ -53,6 +53,49 @@ const MyErrArea = styled.div`
   height: 30px;
 `;
 
+const MySocialArea = styled.div`
+  border: 1px solid red;
+  width: 100%;
+  height: 100px;
+
+  & > div > p {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    color: #707070;
+
+    font-size: 12px;
+    margin: 8px 0;
+  }
+  & > div > p::before,
+  & > div > p::after {
+    content: '';
+    flex-grow: 1;
+    background: #707070;
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    margin: 0px 16px;
+  }
+`;
+
+const MyIconArea = styled.div`
+  border: 1px solid red;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+  & > div {
+    border: 1px solid green;
+    width: 50px;
+  }
+
+  & > div:nth-child(2) {
+    margin: 0 30px;
+  }
+`;
+
 export default function InfoArea() {
   const emailList = ['naver.com', 'kakao.com', 'github.com'];
   const positionList = [
@@ -169,6 +212,16 @@ export default function InfoArea() {
         </MyInfoArea>
         <MyErrArea />
       </MyDirectArea>
+      <MySocialArea>
+        <div>
+          <p>간편 로그인</p>
+        </div>
+        <MyIconArea>
+          <div />
+          <div />
+          <div />
+        </MyIconArea>
+      </MySocialArea>
     </div>
   );
 }
