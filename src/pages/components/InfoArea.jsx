@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import kakaoIcon from '../../assets/images/kakao-icon.png';
+import naverIcon from '../../assets/images/naver-icon.png';
+import githubIcon from '../../assets/images/github-icon.png';
+
 const MyDirectArea = styled.div``;
 
 const MyInfoArea = styled.div`
@@ -54,9 +58,9 @@ const MyErrArea = styled.div`
 `;
 
 const MySocialArea = styled.div`
-  border: 1px solid red;
-  width: 100%;
+  width: 50%;
   height: 100px;
+  margin: auto;
 
   & > div > p {
     display: flex;
@@ -80,15 +84,21 @@ const MySocialArea = styled.div`
 `;
 
 const MyIconArea = styled.div`
-  border: 1px solid red;
   height: 70%;
   display: flex;
   justify-content: center;
   text-align: center;
 
   & > div {
-    border: 1px solid green;
     width: 50px;
+    position: relative;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+
+    & > img {
+      width: 100%;
+    }
   }
 
   & > div:nth-child(2) {
@@ -214,12 +224,18 @@ export default function InfoArea() {
       </MyDirectArea>
       <MySocialArea>
         <div>
-          <p>간편 로그인</p>
+          <p>간편 회원가입</p>
         </div>
         <MyIconArea>
-          <div />
-          <div />
-          <div />
+          <div>
+            <img src={kakaoIcon} alt="kakao-icon" />
+          </div>
+          <div>
+            <img src={naverIcon} alt="naver-icon" />
+          </div>
+          <div>
+            <img src={githubIcon} alt="github-icon" />
+          </div>
         </MyIconArea>
       </MySocialArea>
     </div>
