@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import kakaoIcon from '../../assets/images/kakao-icon.png';
-import naverIcon from '../../assets/images/naver-icon.png';
-import githubIcon from '../../assets/images/github-icon.png';
 
 const MyDirectArea = styled.div``;
 
@@ -55,55 +52,6 @@ const MyInfoBtn = styled.div`
 
 const MyErrArea = styled.div`
   height: 30px;
-`;
-
-const MySocialArea = styled.div`
-  width: 50%;
-  height: 100px;
-  margin: auto;
-
-  & > div > p {
-    display: flex;
-    flex-basis: 100%;
-    align-items: center;
-    color: #707070;
-
-    font-size: 12px;
-    margin: 8px 0;
-  }
-  & > div > p::before,
-  & > div > p::after {
-    content: '';
-    flex-grow: 1;
-    background: #707070;
-    height: 1px;
-    font-size: 0px;
-    line-height: 0px;
-    margin: 0px 16px;
-  }
-`;
-
-const MyIconArea = styled.div`
-  height: 70%;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-
-  & > div {
-    width: 50px;
-    position: relative;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-
-    & > img {
-      width: 100%;
-    }
-  }
-
-  & > div:nth-child(2) {
-    margin: 0 30px;
-  }
 `;
 
 export default function InfoArea() {
@@ -222,22 +170,6 @@ export default function InfoArea() {
         </MyInfoArea>
         <MyErrArea />
       </MyDirectArea>
-      <MySocialArea>
-        <div>
-          <p>간편 회원가입</p>
-        </div>
-        <MyIconArea>
-          <div>
-            <img src={kakaoIcon} alt="kakao-icon" />
-          </div>
-          <div>
-            <img src={naverIcon} alt="naver-icon" />
-          </div>
-          <div>
-            <img src={githubIcon} alt="github-icon" />
-          </div>
-        </MyIconArea>
-      </MySocialArea>
     </div>
   );
 }
