@@ -1,5 +1,5 @@
 import React from 'react';
 
-export default function ProjectList() {
+export default function WorkspaceList() {
   return <div>ProjectList</div>;
 }
