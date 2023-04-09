@@ -50,10 +50,27 @@ const MyReqArea = styled.div`
   }
 `;
 
+const MyInput = styled.input`
+  border-radius: 0px;
+  border: 1px solid #707070;
+  padding: 2px 0 0 5px;
+
+  &:focus {
+    outline: 1px solid #333333;
+    border-radius: 0px;
+  }
+`;
+
 const MyInputArea = styled.span`
   margin: auto 30px;
   display: flex;
   width: 80%;
+
+  ${MyInput} {
+    margin: 0 30px 0 15px;
+    width: 250px;
+    height: 35px;
+  }
 `;
 
 const MyErrArea = styled.div`
@@ -105,6 +122,25 @@ export default function DetailInfoArea() {
           </MyInputArea>
         </MyInfoArea>
         <MyErrArea />
+        <MyInfoArea>
+          <MyReqArea>
+            <p>Bio</p>
+          </MyReqArea>
+          <MyInputArea>
+            <MyInput type="text" placeholder="Add a bio..." />
+          </MyInputArea>
+        </MyInfoArea>
+        <MyInfoArea>
+          <MyReqArea>
+            <p>주요 기술</p>
+          </MyReqArea>
+          <MyInputArea>
+            <MyInput
+              type="text"
+              placeholder="프로젝트에서 사용 가능한 기술을 작성해주세요"
+            />
+          </MyInputArea>
+        </MyInfoArea>
       </MyDetailInfo>
     </>
   );
