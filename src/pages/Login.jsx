@@ -18,20 +18,21 @@ const MyExplain = styled.span`
   justify-content: center;
   text-align: center;
   align-items: center;
-
-  margin-right: 50px;
 `;
 
 const MyTitle = styled.p`
-  font-size: 2rem;
-  font-weight: 500;
+  margin-top: 150px;
+  font-size: 30px;
+  font-weight: bold;
   margin-bottom: 10px;
 `;
 
-const MyList = styled.li`
-  font-size: 2rem;
+const MyList = styled.p`
+  font-size: 20px;
   font-weight: 500;
-  margin-bottom: 10px;
+  text-align: left;
+  margin-top: 15px;
+  margin-left: 80px;
 `;
 
 const MyLogin = styled.span`
@@ -40,11 +41,10 @@ const MyLogin = styled.span`
   justify-content: center;
   text-align: center;
   align-items: center;
-
   margin-left: 20px;
   border-style: 2px solid gray;
-  box-shadow: 2px 3px 5px 0px;
-  border-radius: 5px;
+  box-shadow: 10px 10px 10px 0px;
+  border-radius: 30px;
 `;
 
 const MyLogo = styled.img`
@@ -62,7 +62,6 @@ const MyInput = styled.input`
   text-align: center;
   width: 70%;
   margin-top: 15px;
-
   box-sizing: border-box;
   height: 30px;
   border: 1px solid #777;
@@ -127,10 +126,10 @@ export default function Login() {
       <MyExplain>
         <MyTitle>지금 무료로 시작하세요</MyTitle>
         <br />
-        <MyList>워크플로우</MyList>
-        <MyList>회의 기록</MyList>
-        <MyList>보고서</MyList>
-        <MyList>기획서</MyList>
+        <MyList>☑️워크플로우</MyList>
+        <MyList>☑️회의 기록</MyList>
+        <MyList>☑️보고서</MyList>
+        <MyList>☑️기획서</MyList>
       </MyExplain>
       <MyLogin>
         <MyLogo src={myLogo} alt="로고이미지" />
