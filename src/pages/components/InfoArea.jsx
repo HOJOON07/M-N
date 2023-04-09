@@ -56,21 +56,10 @@ const MyErrArea = styled.div`
 
 export default function InfoArea() {
   const emailList = ['naver.com', 'kakao.com', 'github.com'];
-  const positionList = [
-    '프론트엔드 개발자',
-    '백엔드 개발자',
-    '풀 스택 개발자',
-    '앱 개발자',
-    '게임 개발자',
-  ];
   const [email, setEmail] = useState('');
-  const [position, setPosition] = useState('');
 
   const onChnageEmail = e => {
     setEmail(e.target.value);
-  };
-  const onChangePosition = e => {
-    setPosition(e.target.value);
   };
 
   return (
@@ -138,27 +127,6 @@ export default function InfoArea() {
             />
             <select onChange={onChnageEmail} value={email}>
               {emailList.map(el => {
-                return (
-                  <option value={el} key={el}>
-                    {el}
-                  </option>
-                );
-              })}
-            </select>
-          </MyInputArea>
-        </MyInfoArea>
-        <MyErrArea />
-        <MyInfoArea>
-          <MyReqArea>
-            <p>포지션*</p>
-          </MyReqArea>
-          <MyInputArea>
-            <select
-              onChange={onChangePosition}
-              value={position}
-              style={{ height: '35px', marginLeft: '15px' }}
-            >
-              {positionList.map(el => {
                 return (
                   <option value={el} key={el}>
                     {el}
