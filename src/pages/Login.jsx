@@ -101,12 +101,9 @@ export default function Login() {
       </MyExplain>
       <MyLogin>
         <MyLogo src={myLogo} alt="로고이미지" />
-        <MyInput type="text" placeholder="아이디를 입력하세요">
-          아이디
-        </MyInput>
-        <MyInput type="text" placeholder="비밀번호를 입력하세요">
-          비밀번호
-        </MyInput>
+        <MyInput type="text" placeholder="아이디를 입력하세요" />
+        <MyInput type="text" placeholder=" 입력하세요" />
+
         <MyButton>로그인</MyButton>
         <MyLink to="/">아이디 찾기</MyLink>
         <MyLink to="/">비밀번호 찾기</MyLink>
