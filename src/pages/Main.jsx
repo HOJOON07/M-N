@@ -4,7 +4,6 @@ import MainSec from './components/MainSec';
 import MainFir from './components/MainFir';
 
 // Color Variables
-//Test
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
 const subColor = '#d5cee8';
