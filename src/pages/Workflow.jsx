@@ -7,40 +7,48 @@ const MyWorkspaceArea = styled.div`
   display: flex;
   width: 100%;
   height: 400px;
-  border: 1px solid green;
 `;
 
 const MyTitle = styled.p`
+  font-size: 20px;
   font-family: 'LINESeedKR-Bd';
 `;
 
 const MyWorkspaceList = styled.div`
-  border: 1px solid red;
-  background-color: orange;
-  width: 150px;
+  background-color: #d3dae4;
+  width: 180px;
+  padding: 20px 0;
 
   & > p {
-    font-size: 18px;
+    margin: 0 15px 10px;
   }
 `;
 
 const MyList = styled.div`
   margin-top: 20px;
+
+  & > p {
+    margin: 10px 15px;
+    font-weight: 700;
+    color: darkgrey;
+  }
+
   & > div {
+    padding: 10px 15px;
     display: flex;
+    cursor: pointer;
+
+    &:hover {
+      background-color: white;
+    }
   }
   & > div > img {
     width: 15px;
     height: 15px;
-    border: 1px solid red;
-  }
-  & > div > div {
-    border: 1px solid red;
+    margin-right: 10px;
   }
 `;
 const MyKanbanBoard = styled.div`
-  border: 1px solid red;
-  background-color: skyblue;
   width: 100%;
 `;
 
@@ -55,37 +63,37 @@ const MyNoneBookmark = styled.img`
 `;
 
 export default function Workflow() {
-  const workspace = useSelector(state => state.workspace.workspaceList);
-  console.log(workspace);
+  const workspaceList = useSelector(
+    state => state.workspace.workspaceList
+  ).filter(el => el.bookmarked);
+  const bookmarkedList = useSelector(
+    state => state.workspace.workspaceList
+  ).filter(el => !el.bookmarked);
   return (
     <MyWorkspaceArea>
       <MyWorkspaceList>
         <MyTitle>Workspace</MyTitle>
         <MyList>
           <p>Bookmark</p>
-          <div>
-            <MyBookmark alt="test" src={bookmarkIcon} />
-            <div>workspace1</div>
-          </div>
-          <div>
-            <MyBookmark alt="test" src={bookmarkIcon} />
-            <div>workspace1</div>
-          </div>
+          {bookmarkedList.map(el => {
+            return (
+              <div key={el.id}>
+                <MyBookmark alt="북마크 완료 아이콘" src={bookmarkIcon} />
+                <div>{el.name}</div>
+              </div>
+            );
+          })}
         </MyList>
         <MyList>
-          <h2>List</h2>
-          <div>
-            <MyNoneBookmark alt="test" src={bookmarkIcon} />
-            <div>workspace2</div>
-          </div>
-          <div>
-            <MyNoneBookmark alt="test" src={bookmarkIcon} />
-            <div>workspace2</div>
-          </div>
-          <div>
-            <MyNoneBookmark alt="test" src={bookmarkIcon} />
-            <div>workspace2</div>
-          </div>
+          <p>List</p>
+          {workspaceList.map(el => {
+            return (
+              <div key={el.id}>
+                <MyNoneBookmark alt="북마크 미완료 아이콘" src={bookmarkIcon} />
+                <div>{el.name}</div>
+              </div>
+            );
+          })}
         </MyList>
       </MyWorkspaceList>
       <MyKanbanBoard>workflow board</MyKanbanBoard>

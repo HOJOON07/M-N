@@ -28,7 +28,7 @@ const initState = {
           },
         },
       ],
-      bookmark: false,
+      bookmarked: false,
     },
     {
       id: 1,
@@ -58,11 +58,11 @@ const initState = {
           },
         },
       ],
-      bookmark: true,
+      bookmarked: true,
     },
     {
       id: 2,
-      name: 'workspace1',
+      name: 'workspace3',
       member: ['qkrtjdwo5662', 'psjj03'],
       workflow: [
         {
@@ -88,11 +88,11 @@ const initState = {
           },
         },
       ],
-      bookmark: false,
+      bookmarked: false,
     },
     {
       id: 3,
-      name: 'workspace2',
+      name: 'workspace4',
       member: ['0l0jjo', 'qkrtjdwo5662'],
       workflow: [
         {
@@ -118,11 +118,11 @@ const initState = {
           },
         },
       ],
-      bookmark: true,
+      bookmarked: true,
     },
     {
       id: 4,
-      name: 'workspace1',
+      name: 'workspace5',
       member: ['qkrtjdwo5662', 'psjj03'],
       workflow: [
         {
@@ -148,11 +148,11 @@ const initState = {
           },
         },
       ],
-      bookmark: false,
+      bookmarked: false,
     },
     {
       id: 5,
-      name: 'workspace2',
+      name: 'workspace6',
       member: ['0l0jjo', 'qkrtjdwo5662'],
       workflow: [
         {
@@ -178,7 +178,7 @@ const initState = {
           },
         },
       ],
-      bookmark: true,
+      bookmarked: true,
     },
   ],
 };
@@ -223,7 +223,7 @@ export default function workspace(state = initState, action) {
             name: action.payload.name,
             member: [],
             workflow: [],
-            bookmark: false,
+            bookmarked: false,
           },
         ],
       };
@@ -236,7 +236,7 @@ export default function workspace(state = initState, action) {
           if (el.id === action.id) {
             return {
               ...el,
-              bookmark: true,
+              bookmarked: true,
             };
           } else {
             return el;
