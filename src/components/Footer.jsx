@@ -5,6 +5,8 @@ const MyFooter = styled.footer`
   width: 100%;
   height: 170px;
   background-color: #373737;
+  position: relative;
+  bottom: 0;
 `;
 
 const MyUlContainer = styled.ul`
@@ -19,10 +21,13 @@ const MyLiContainer = styled.li`
 `;
 
 const MyLiTitle = styled.li`
+  font-weight: 700;
+  font-size: 1rem;
   margin-bottom: 14px;
 `;
 
 const MyLi = styled.li`
+  font-size: 0.8rem;
   margin: 8px 0;
 `;
 
