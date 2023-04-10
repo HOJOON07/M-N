@@ -10,21 +10,93 @@ const initState = {
           writer: 'qkrtjdwo5662',
           createDate: '2023-04-01:xxxx',
           list: {
-            todo: {
-              content: '내용',
-              writer: 'qkrtjdwo5662',
-              createData: '2023-04-01:xxxx',
-            },
-            inprogress: {
-              content: '내용',
-              writer: 'qkrtjdwo5662',
-              createData: '2023-04-01:xxxx',
-            },
-            done: {
-              content: '내용',
-              writer: 'qkrtjdwo5662',
-              createData: '2023-04-01:xxxx',
-            },
+            todo: [
+              {
+                content: '내용1',
+                writer: 'qkrtjdwo5662',
+                createData: '2023-04-01:xxxx',
+                importance: 'high',
+                profile: '',
+              },
+              {
+                content: '내용2',
+                writer: '0l0jjo',
+                createData: '2023-04-10:xxxx',
+                importance: 'low',
+                profile: '',
+              },
+              {
+                content: '내용3',
+                writer: '0l0jjo',
+                createData: '2023-04-10:xxxx',
+                importance: 'low',
+                profile: '',
+              },
+              {
+                content: '내용4',
+                writer: '0l0jjo',
+                createData: '2023-04-10:xxxx',
+                importance: 'low',
+                profile: '',
+              },
+            ],
+            inprogress: [
+              {
+                content: '내용5',
+                writer: 'qkrtjdwo5662',
+                createData: '2023-04-01:xxxx',
+                importance: 'medium',
+                profile: '',
+              },
+              {
+                content: '내용6',
+                writer: '0l0jjo',
+                createData: '2023-04-10:xxxx',
+                importance: 'high',
+                profile: '',
+              },
+            ],
+            inreview: [
+              {
+                content: '내용7',
+                writer: 'qkrtjdwo5662',
+                createData: '2023-04-01:xxxx',
+                importance: 'high',
+                profile: '',
+              },
+              {
+                content: '내용8',
+                writer: '0l0jjo',
+                createData: '2023-04-10:xxxx',
+                importance: 'low',
+                profile: '',
+              },
+            ],
+            blocked: [
+              {
+                content: '내용9',
+                writer: 'qkrtjdwo5662',
+                createData: '2023-04-01:xxxx',
+                importance: 'low',
+                profile: '',
+              },
+            ],
+            done: [
+              {
+                content: '내용10',
+                writer: 'qkrtjdwo5662',
+                createData: '2023-04-01:xxxx',
+                importance: 'medium',
+                profile: '',
+              },
+              {
+                content: '내용11',
+                writer: '0l0jjo',
+                createData: '2023-04-10:xxxx',
+                importance: 'high',
+                profile: '',
+              },
+            ],
           },
         },
       ],
