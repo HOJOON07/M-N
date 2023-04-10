@@ -1,5 +1,5 @@
 import React from 'react';
-import logoImg from '../../assets/images/github-icon.png';
+import logoImg from '../../assets/images/logo.png';
 import styled from 'styled-components';
 
 const MySignUpFinish = styled.div`
@@ -10,7 +10,7 @@ const MySignUpFinish = styled.div`
 `;
 
 const MyLogo = styled.img`
-  margin-top: 70px;
+  margin: 70px 0 40px;
   width: 200px;
   object-fit: contain;
 `;
