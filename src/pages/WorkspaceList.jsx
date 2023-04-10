@@ -188,7 +188,6 @@ const MyMenuBar = styled.img`
 `;
 
 export default function Workspacelist() {
-  return ();
   return (
     <MyContainer>
       <MySpaceList>
