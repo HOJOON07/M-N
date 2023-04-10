@@ -7,14 +7,17 @@ import mySocialKakao from '../images/pngegg.png';
 
 const MyContainer = styled.section`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  max-width: 1000px;
+
+  margin: auto;
   padding-top: 100px;
   padding-bottom: 100px;
 `;
 
 const MyExplain = styled.span`
-  width: 400px;
-  height: 600px;
+  width: 600px;
+  height: 500px;
   justify-content: center;
   text-align: center;
   align-items: center;
@@ -36,14 +39,14 @@ const MyList = styled.p`
 `;
 
 const MyLogin = styled.span`
-  width: 400px;
-  height: 600px;
+  width: 600px;
+  height: 500px;
   justify-content: center;
   text-align: center;
   align-items: center;
   margin-left: 20px;
-  border-style: 2px solid gray;
-  box-shadow: 10px 10px 10px 0px;
+  border-style: 2px solid black;
+  box-shadow: 10px 10px 10px 0px #70909e;
   border-radius: 30px;
 `;
 
@@ -55,16 +58,16 @@ const MyLogo = styled.img`
 `;
 
 const MyInputPart = styled.div`
-  height: 20%;
-  background-color: #aeaeae;
+  height: 25%;
+  background-color: #a1bccf;
 `;
 const MyInput = styled.input`
   text-align: center;
   width: 70%;
   margin-top: 15px;
   box-sizing: border-box;
-  height: 30px;
-  border: 1px solid #777;
+  height: 40px;
+  border: 1px solid #516974;
   border-radius: 6px;
   margin-right: 4px;
   outline: none;
@@ -74,8 +77,8 @@ const MyInput = styled.input`
 `;
 
 const MyButton = styled.button`
-  width: 50%;
-  height: 30px;
+  width: 60%;
+  height: 40px;
   margin-top: 20px;
   box-sizing: border-box;
   font-size: 1.1rem;
@@ -115,8 +118,8 @@ const MyIcon = styled.span`
 
 const MySocial = styled.img`
   display: flex;
-  width: 40px;
-  height: 40px;
+  width: 55px;
+  height: 55px;
   padding: 10px;
 `;
 
@@ -124,7 +127,7 @@ export default function Login() {
   return (
     <MyContainer>
       <MyExplain>
-        <MyTitle>지금 무료로 시작하세요</MyTitle>
+        <MyTitle>지금 무료로 시작하기</MyTitle>
         <br />
         <MyList>☑️워크플로우</MyList>
         <MyList>☑️회의 기록</MyList>
