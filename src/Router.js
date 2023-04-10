@@ -12,6 +12,7 @@ import WorkspaceList from './pages/WorkspaceList';
 import CreateWorkspace from './pages/CreateWorkspace';
 import Workflow from './pages/Workflow';
 import NotFound from './pages/NotFound';
+import { Provider } from 'react-redux';
 
 const Router = () => {
   return (
