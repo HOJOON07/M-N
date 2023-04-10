@@ -1,78 +1,142 @@
 import React from 'react';
-import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import styled, { keyframes } from 'styled-components';
+
+// Color Variables
+const mainColor = '#623ad6';
+const hoverMainColor = '#7855db';
+const subColor = '#d5cee8';
+const brightSubColor = '#e9e4f5';
 
 // Styled Components
-const MyHeaderContainer = styled.header`
-  display: flex;
-  justify-content: space-between;
-  padding: 12px;
+const MyInnerContainer = styled.header`
   border-bottom: 1px solid #373737;
 `;
+const MyHeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  max-width: 1000px;
+  margin: auto;
+  padding: 12px;
+`;
 const MyLogoImg = styled.img`
-  width: 60px;
-  height: 60px;
-  background-color: #777;
+  width: 50px;
+  height: 50px;
+
+  filter: invert(32%) sepia(77%) saturate(5013%) hue-rotate(247deg)
+    brightness(90%) contrast(88%);
 `;
 const MyLogoTxt = styled.p`
   height: 20px;
-  margin: auto 0 auto 5px;
+  margin: auto 0 auto 7px;
   font-size: 1.3rem;
 `;
 
 const MyDiv = styled.div`
   height: 100%;
-  margin: auto 0;
+  margin: auto 10px;
   display: flex;
 `;
 
 const MyLoginButton = styled.button`
-  width: 80px;
-  height: 40px;
-  border: none;
-  background-color: #0048ac;
-  color: white;
-  font-weight: 700;
+  padding: 10px 10px;
+  width: 90px;
+  box-sizing: border-box;
   font-size: 1rem;
-  border-radius: 7px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  background-color: ${mainColor};
+  color: white;
   cursor: pointer;
   transition: 0.2s;
 
   &:hover {
-    font-size: 1.1rem;
-    background-color: #013b8c;
+    background-color: ${hoverMainColor};
   }
 `;
 
 const MySignUpButton = styled.button`
-  width: 80px;
-  height: 40px;
+  width: 90px;
+  box-sizing: border-box;
   border: none;
-  font-weight: 700;
+  padding: 10px 10px;
   font-size: 1rem;
-  margin-left: 10px;
-  border-radius: 7px;
-  background-color: #d7ddea;
+  font-weight: 700;
+  border-radius: 10px;
   cursor: pointer;
+  margin-left: 10px;
+  background-color: ${brightSubColor};
   transition: 0.2s;
 
   &:hover {
-    font-size: 1.1rem;
-    background-color: #b5bac5;
+    background-color: ${subColor};
   }
 `;
 
-export default function Header() {
-  return (
-    <MyHeaderContainer>
-      <MyDiv>
-        <MyLogoImg />
-        <MyLogoTxt>MeetNotes</MyLogoTxt>
-      </MyDiv>
+const MyAlarmAnim = keyframes`
+  0% {
+    transform: rotateY('3deg');
+  }
+  50% {
+    transform: rotateY('0deg');
+  }
+  100% {
+    transform: rotateY('-3deg');
+  }
+`;
 
-      <MyDiv>
-        <MyLoginButton>로그인</MyLoginButton>
-        <MySignUpButton>회원가입</MySignUpButton>
-      </MyDiv>
-    </MyHeaderContainer>
+const MyAlarmIcon = styled.img`
+  width: 36px;
+  height: 36px;
+  background-size: cover;
+  cursor: pointer;
+
+  &:hover {
+    animation: ${MyAlarmAnim} 0.7s infinite;
+  }
+`;
+
+const MyProfileIcon = styled.img`
+  width: 40px;
+  background-size: cover;
+  cursor: pointer;
+  margin: auto 0 auto 5px;
+`;
+
+const MyGreetingText = styled.p`
+  margin: auto 10px auto;
+  font-size: 0.8rem;
+`;
+
+export default function Header() {
+  const isLogin = useSelector(state => state.user.isLogin);
+  console.log('로그인 여부', isLogin);
+
+  return (
+    <MyInnerContainer>
+      <MyHeaderContainer>
+        <MyDiv>
+          <MyLogoImg src="/images/logo.png" />
+          <MyLogoTxt>MeetNotes</MyLogoTxt>
+        </MyDiv>
+
+        <MyDiv>
+          {!isLogin ? (
+            <>
+              <MyGreetingText>로그인이 필요합니다</MyGreetingText>
+              <MyLoginButton>로그인</MyLoginButton>
+              <MySignUpButton>회원가입</MySignUpButton>
+            </>
+          ) : (
+            <MyDiv>
+              <MyGreetingText>[아이디] 님 안녕하세요!</MyGreetingText>
+              <MyAlarmIcon src="/images/icon/alarm.png" />
+              <MyProfileIcon src="/images/icon/user.png" />
+            </MyDiv>
+          )}
+        </MyDiv>
+      </MyHeaderContainer>
+    </MyInnerContainer>
   );
 }
