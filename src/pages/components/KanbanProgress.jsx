@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
+import NewTask from './NewTask';
 
 // Color Variables
 const contentColor = '#fff';
@@ -89,6 +90,8 @@ const MyCreateData = styled.p`
 `;
 
 export default function KanbanProgress({ workflowList, progress, icon }) {
+  const [status, setStatus] = useState(false);
+
   return (
     <div>
       <MyProgressTitle>
@@ -98,12 +101,18 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
         </div>
         <MyMenuBar src={menu} alt="menu-bar" />
       </MyProgressTitle>
-
       <MyTask>
-        <MyTitle fontSize="13px" onClick={() => {}}>
+        <MyTitle
+          fontSize="13px"
+          onClick={() => {
+            setStatus(el => !el);
+          }}
+          name={progress}
+        >
           ➕ Add New Task
         </MyTitle>
       </MyTask>
+      {status && <NewTask />}
       {workflowList.map(el => {
         const startDate = el.createDate.split(':')[0];
         return (
