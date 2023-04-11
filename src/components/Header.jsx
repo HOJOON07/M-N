@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
 // Color Variables
@@ -26,10 +27,17 @@ const MyLogoImg = styled.img`
   filter: invert(32%) sepia(77%) saturate(5013%) hue-rotate(247deg)
     brightness(90%) contrast(88%);
 `;
+
 const MyLogoTxt = styled.p`
-  height: 20px;
-  margin: auto 0 auto 7px;
+  margin: 3px 0 auto 7px;
   font-size: 1.3rem;
+  font-family: 'LINESeedKR-Bd';
+`;
+
+const MyLogoTxtSec = styled.p`
+  margin: 3px 0 auto 19px;
+  font-size: 1.3rem;
+  font-family: 'LINESeedKR-Bd';
 `;
 
 const MyDiv = styled.div`
@@ -93,7 +101,7 @@ const MyAlarmIcon = styled.img`
   cursor: pointer;
 
   &:hover {
-    animation: ${MyAlarmAnim} 0.7s infinite;
+    animation: ${MyAlarmAnim} 0.7s linear infinite;
   }
 `;
 
@@ -113,20 +121,29 @@ export default function Header() {
   const isLogin = useSelector(state => state.user.isLogin);
   console.log('로그인 여부', isLogin);
 
+  const navigation = useNavigate();
+
   return (
     <MyInnerContainer>
       <MyHeaderContainer>
         <MyDiv>
           <MyLogoImg src="/images/logo.png" />
-          <MyLogoTxt>MeetNotes</MyLogoTxt>
+          <div>
+            <MyLogoTxt>Meet</MyLogoTxt>
+            <MyLogoTxtSec>Notes</MyLogoTxtSec>
+          </div>
         </MyDiv>
 
         <MyDiv>
           {!isLogin ? (
             <>
               <MyGreetingText>로그인이 필요합니다</MyGreetingText>
-              <MyLoginButton>로그인</MyLoginButton>
-              <MySignUpButton>회원가입</MySignUpButton>
+              <MyLoginButton onClick={() => navigation('/login')}>
+                로그인
+              </MyLoginButton>
+              <MySignUpButton onClick={() => navigation('/signup')}>
+                회원가입
+              </MySignUpButton>
             </>
           ) : (
             <MyDiv>
