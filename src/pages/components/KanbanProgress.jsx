@@ -50,6 +50,7 @@ const MyImportanceButton = styled.button`
 
 const MyMenuBar = styled.img`
   width: 15px;
+  height: 15px;
 `;
 
 const MyTask = styled.div`
@@ -99,11 +100,13 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
       </MyProgressTitle>
 
       <MyTask>
-        <MyTitle fontSize="13px">➕ Add New Task</MyTitle>
+        <MyTitle fontSize="13px" onClick={() => {}}>
+          ➕ Add New Task
+        </MyTitle>
       </MyTask>
       {workflowList.map(el => {
         return (
-          <MyTask key={el.id}>
+          <MyTask key={el.createDate}>
             <div>
               <MyContent>{el.content}</MyContent>
               <div>

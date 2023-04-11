@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
 import KanbanProgress from './KanbanProgress';
+import NewTask from './NewTask';
 
 // Color Variables
 const backColor = '#eef1f5';
@@ -46,9 +47,9 @@ const MyProgressArea = styled.div`
 export default function Kanban() {
   /** 임시로 특정 워크스페이스(id가 0) 지정 */
   const workspaceList = useSelector(state => state.workspace.workspaceList)[0];
-  const workflowList = workspaceList.workflow[0].list;
+  const workflowList = workspaceList.workflow;
   const iconList = ['✉️', '🔨', '📌', '🔒', '🎉'];
-  // console.log(workspaceList);
+  // console.log(workspaceList.workflow);
   return (
     <div>
       <MyTitleArea>
@@ -57,31 +58,33 @@ export default function Kanban() {
       </MyTitleArea>
       <MyProgressArea>
         <KanbanProgress
-          workflowList={workflowList.todo}
+          workflowList={workflowList.todoList}
           progress="Request"
           icon={iconList[0]}
         />
         <KanbanProgress
-          workflowList={workflowList.inprogress}
+          workflowList={workflowList.inprogressList}
           progress="In Progress"
           icon={iconList[1]}
         />
         <KanbanProgress
-          workflowList={workflowList.inreview}
+          workflowList={workflowList.inreviewList}
           progress="In Review"
           icon={iconList[2]}
         />
         <KanbanProgress
-          workflowList={workflowList.blocked}
+          workflowList={workflowList.blockedList}
           progress="Blocked"
           icon={iconList[3]}
         />
         <KanbanProgress
-          workflowList={workflowList.done}
+          workflowList={workflowList.doneList}
           progress="Completed"
           icon={iconList[4]}
         />
       </MyProgressArea>
+      {/* test */}
+      <NewTask />
     </div>
   );
 }

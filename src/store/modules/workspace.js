@@ -4,15 +4,15 @@ const initState = {
       id: 0,
       workspace_name: 'workspace1',
       workspace_category: 'web',
-      workspace_startDate: '2023-04-01:xxxx',
-      workspace_endDate: '2023-04-01:xxxx',
+      workspace_startDate: '2023-04-01:0000',
+      workspace_endDate: '2023-04-01:1111',
       githubRepository: 'https://github.com/0uizi0/test1',
       member: ['qkrtjdwo5662', 'psjj03'],
       workflow: {
         todoList: [
           {
             content: '내용1',
-            createDatte: '2023-04-01:xxxx',
+            createDate: '2023-04-01:0001',
             endDate: '2023-04-12',
             importance: 'low',
           },
@@ -20,7 +20,7 @@ const initState = {
         inprogressList: [
           {
             content: '내용1',
-            createDatte: '2023-04-01:xxxx',
+            createDate: '2023-04-01:0002',
             endDate: '2023-04-12',
             importance: 'low',
           },
@@ -28,7 +28,7 @@ const initState = {
         inreviewList: [
           {
             content: '내용1',
-            createDatte: '2023-04-01:xxxx',
+            createDate: '2023-04-01:0003',
             endDate: '2023-04-12',
             importance: 'low',
           },
@@ -36,7 +36,7 @@ const initState = {
         blockedList: [
           {
             content: '내용1',
-            createDatte: '2023-04-01:xxxx',
+            createDate: '2023-04-01:0004',
             endDate: '2023-04-12',
             importance: 'low',
           },
@@ -44,7 +44,7 @@ const initState = {
         doneList: [
           {
             content: '내용1',
-            createDatte: '2023-04-01:xxxx',
+            createDate: '2023-04-01:0005',
             endDate: '2023-04-12',
             importance: 'low',
           },
