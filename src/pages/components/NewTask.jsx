@@ -5,6 +5,7 @@ import styled from 'styled-components';
 // Color Variables
 const contentColor = '#fff';
 const subColor = '#cbcbcb';
+const greyColor = '696969';
 
 // Styled Components
 const MyNewTask = styled.div`
@@ -50,8 +51,9 @@ const MySubmitButton = styled.button`
   font-weight: 700;
   border-radius: 10px;
   border: none;
-  background-color: #3862b1;
-  color: white;
+  border: 1px solid ${greyColor};
+  background-color: white;
+  color: ${greyColor};
   cursor: pointer;
   transition: 0.2s;
 
