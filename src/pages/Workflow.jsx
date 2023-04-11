@@ -7,10 +7,11 @@ import Kanban from './components/Kanban';
 const MyWorkspaceArea = styled.div`
   display: flex;
   width: 100%;
-  height: 75vh;
+  height: 100%;
 
   & > div:nth-child(2) {
     width: 100%;
+    height: 100%;
     margin: 10px;
   }
 `;
