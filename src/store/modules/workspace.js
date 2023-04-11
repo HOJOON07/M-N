@@ -16,6 +16,12 @@ const initState = {
             endDate: '2023-04-12',
             importance: 'low',
           },
+          {
+            content: '222222222',
+            createDate: '2023-04-01:0001',
+            endDate: '2023-04-12',
+            importance: 'high',
+          },
         ],
         inprogressList: [
           {
@@ -43,7 +49,19 @@ const initState = {
         ],
         doneList: [
           {
-            content: '내용1',
+            content: '1',
+            createDate: '2023-04-01:0005',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            content: '2',
+            createDate: '2023-04-01:0005',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            content: '3',
             createDate: '2023-04-01:0005',
             endDate: '2023-04-12',
             importance: 'low',
