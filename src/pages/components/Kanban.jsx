@@ -138,6 +138,9 @@ export default function Kanban() {
             <MyMenuBar src={menu} alt="menu-bar" />
           </MyProgressTitle>
 
+          <MyTask>
+            <MyTitle fontSize="13px">➕ Add New Task</MyTitle>
+          </MyTask>
           {workflowList.todo.map(el => {
             return (
               <MyTask key={el.id}>
@@ -158,9 +161,6 @@ export default function Kanban() {
               </MyTask>
             );
           })}
-          <MyTask>
-            <MyTitle fontSize="13px">➕ Add New Task</MyTitle>
-          </MyTask>
         </div>
         <div>
           <MyProgressTitle>
@@ -170,6 +170,9 @@ export default function Kanban() {
             </div>
             <MyMenuBar src={menu} alt="menu-bar" />
           </MyProgressTitle>
+          <MyTask>
+            <MyTitle fontSize="13px">➕ Add New Task</MyTitle>
+          </MyTask>
           {workflowList.inprogress.map(el => {
             return (
               <MyTask key={el.id}>
@@ -190,9 +193,6 @@ export default function Kanban() {
               </MyTask>
             );
           })}
-          <MyTask>
-            <MyTitle fontSize="13px">➕ Add New Task</MyTitle>
-          </MyTask>
         </div>
         <div>
           <MyProgressTitle>
@@ -202,6 +202,9 @@ export default function Kanban() {
             </div>
             <MyMenuBar src={menu} alt="menu-bar" />
           </MyProgressTitle>
+          <MyTask>
+            <MyTitle fontSize="13px">➕ Add New Task</MyTitle>
+          </MyTask>
           {workflowList.inreview.map(el => {
             return (
               <MyTask key={el.id}>
@@ -222,9 +225,6 @@ export default function Kanban() {
               </MyTask>
             );
           })}
-          <MyTask>
-            <MyTitle fontSize="13px">➕ Add New Task</MyTitle>
-          </MyTask>
         </div>
         <div>
           <MyProgressTitle>
@@ -234,6 +234,9 @@ export default function Kanban() {
             </div>
             <MyMenuBar src={menu} alt="menu-bar" />
           </MyProgressTitle>
+          <MyTask>
+            <MyTitle fontSize="13px">➕ Add New Task</MyTitle>
+          </MyTask>
           {workflowList.blocked.map(el => {
             return (
               <MyTask key={el.id}>
@@ -254,9 +257,6 @@ export default function Kanban() {
               </MyTask>
             );
           })}
-          <MyTask>
-            <MyTitle fontSize="13px">➕ Add New Task</MyTitle>
-          </MyTask>
         </div>
         <div>
           <MyProgressTitle>
@@ -266,6 +266,9 @@ export default function Kanban() {
             </div>
             <MyMenuBar src={menu} alt="menu-bar" />
           </MyProgressTitle>
+          <MyTask>
+            <MyTitle fontSize="13px">➕ Add New Task</MyTitle>
+          </MyTask>
           {workflowList.done.map(el => {
             return (
               <MyTask key={el.id}>
@@ -286,9 +289,6 @@ export default function Kanban() {
               </MyTask>
             );
           })}
-          <MyTask>
-            <MyTitle fontSize="13px">➕ Add New Task</MyTitle>
-          </MyTask>
         </div>
       </MyProgressArea>
     </div>
