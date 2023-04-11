@@ -105,6 +105,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
         </MyTitle>
       </MyTask>
       {workflowList.map(el => {
+        const startDate = el.createDate.split(':')[0];
         return (
           <MyTask key={el.createDate}>
             <div>
@@ -114,7 +115,9 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
                 <span>❌</span>
               </div>
             </div>
-            <MyCreateData>{el.createData}</MyCreateData>
+            <MyCreateData>
+              {startDate} ~ {el.endDate}
+            </MyCreateData>
             <div>
               <MyImportanceButton {...el}>{el.importance}</MyImportanceButton>
               <img src={defaultProfile} alt="기본 프로필 이미지" />
