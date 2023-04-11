@@ -4,6 +4,12 @@ import { useSelector } from 'react-redux';
 import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
 
+// Color Variables
+const backColor = '#eef1f5';
+const contentColor = '#fff';
+const subColor = '#cbcbcb';
+
+// Styled Components
 const MyTitle = styled.p`
   font-size: ${props => props.fontSize};
   font-family: 'LINESeedKR-Bd';
@@ -18,6 +24,28 @@ const MyMenuBar = styled.img`
   width: 15px;
 `;
 
+const MyImportanceButton = styled.button`
+  padding: 5px 10px;
+  box-sizing: border-box;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  background-color: ${props =>
+    props.importance === 'high'
+      ? '#EB5851'
+      : props.importance === 'medium'
+      ? '#F7CF4C'
+      : '#3862B1'};
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: 'black';
+  }
+`;
+
 const MyTitleArea = styled.div`
   height: 10%;
   display: flex;
@@ -29,14 +57,13 @@ const MyTitleArea = styled.div`
 `;
 
 const MyProgressArea = styled.div`
-  background-color: #eef1f5;
+  background-color: ${backColor};
   width: 100%;
   height: 87%;
   display: flex;
   justify-content: space-around;
 
   & > div {
-    border: 1px solid #cccccd;
     border-radius: 5px;
     width: 15%;
     padding: 10px;
@@ -59,9 +86,9 @@ const MyProgressTitle = styled.div`
 const MyTask = styled.div`
   border: 1px solid #bcc2d1;
   border-radius: 5px;
-  background-color: #fff;
-  padding: 10px;
-  margin-bottom: 10px;
+  background-color: ${contentColor};
+  padding: 10px 10px 5px;
+  margin-bottom: 20px;
   cursor: pointer;
 
   & > div {
@@ -71,7 +98,8 @@ const MyTask = styled.div`
   }
 
   & img {
-    width: 20px;
+    width: 18px;
+    height: 18px;
   }
   & > p {
     margin: 7px 0;
@@ -86,8 +114,8 @@ const MyContent = styled.p`
   font-weight: 700;
 `;
 const MyCreateData = styled.p`
-  color: #cbcbcb;
-  font-size: 13px;
+  color: ${subColor};
+  font-size: 10px;
 `;
 
 export default function Kanban() {
@@ -112,7 +140,7 @@ export default function Kanban() {
 
           {workflowList.todo.map(el => {
             return (
-              <MyTask key={el.createData}>
+              <MyTask key={el.id}>
                 <div>
                   <MyContent>{el.content}</MyContent>
                   <div>
@@ -122,7 +150,9 @@ export default function Kanban() {
                 </div>
                 <MyCreateData>{el.createData}</MyCreateData>
                 <div>
-                  <button>{el.importance}</button>
+                  <MyImportanceButton {...el}>
+                    {el.importance}
+                  </MyImportanceButton>
                   <img src={defaultProfile} alt="기본 프로필 이미지" />
                 </div>
               </MyTask>
@@ -142,7 +172,7 @@ export default function Kanban() {
           </MyProgressTitle>
           {workflowList.inprogress.map(el => {
             return (
-              <MyTask key={el.createData}>
+              <MyTask key={el.id}>
                 <div>
                   <MyContent>{el.content}</MyContent>
                   <div>
@@ -152,7 +182,9 @@ export default function Kanban() {
                 </div>
                 <MyCreateData>{el.createData}</MyCreateData>
                 <div>
-                  <button>{el.importance}</button>
+                  <MyImportanceButton {...el}>
+                    {el.importance}
+                  </MyImportanceButton>
                   <img src={defaultProfile} alt="기본 프로필 이미지" />
                 </div>
               </MyTask>
@@ -172,7 +204,7 @@ export default function Kanban() {
           </MyProgressTitle>
           {workflowList.inreview.map(el => {
             return (
-              <MyTask key={el.createData}>
+              <MyTask key={el.id}>
                 <div>
                   <MyContent>{el.content}</MyContent>
                   <div>
@@ -182,7 +214,9 @@ export default function Kanban() {
                 </div>
                 <MyCreateData>{el.createData}</MyCreateData>
                 <div>
-                  <button>{el.importance}</button>
+                  <MyImportanceButton {...el}>
+                    {el.importance}
+                  </MyImportanceButton>
                   <img src={defaultProfile} alt="기본 프로필 이미지" />
                 </div>
               </MyTask>
@@ -202,7 +236,7 @@ export default function Kanban() {
           </MyProgressTitle>
           {workflowList.blocked.map(el => {
             return (
-              <MyTask key={el.createData}>
+              <MyTask key={el.id}>
                 <div>
                   <MyContent>{el.content}</MyContent>
                   <div>
@@ -212,7 +246,9 @@ export default function Kanban() {
                 </div>
                 <MyCreateData>{el.createData}</MyCreateData>
                 <div>
-                  <button>{el.importance}</button>
+                  <MyImportanceButton {...el}>
+                    {el.importance}
+                  </MyImportanceButton>
                   <img src={defaultProfile} alt="기본 프로필 이미지" />
                 </div>
               </MyTask>
@@ -232,7 +268,7 @@ export default function Kanban() {
           </MyProgressTitle>
           {workflowList.done.map(el => {
             return (
-              <MyTask key={el.createData}>
+              <MyTask key={el.id}>
                 <div>
                   <MyContent>{el.content}</MyContent>
                   <div>
@@ -242,7 +278,9 @@ export default function Kanban() {
                 </div>
                 <MyCreateData>{el.createData}</MyCreateData>
                 <div>
-                  <button>{el.importance}</button>
+                  <MyImportanceButton {...el}>
+                    {el.importance}
+                  </MyImportanceButton>
                   <img src={defaultProfile} alt="기본 프로필 이미지" />
                 </div>
               </MyTask>
