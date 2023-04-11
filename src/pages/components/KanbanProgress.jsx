@@ -112,7 +112,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
           ➕ Add New Task
         </MyTitle>
       </MyTask>
-      {status && <NewTask />}
+      {status && <NewTask progress={progress} />}
       {workflowList.map(el => {
         const startDate = el.createDate.split(':')[0];
         return (

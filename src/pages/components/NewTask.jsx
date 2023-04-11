@@ -1,11 +1,19 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import defaultProfile from '../../assets/images/default-profile.png';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import {
+  newTodo,
+  newInProgress,
+  newInReview,
+  newBlocked,
+  newDone,
+} from '../../store/modules/workspace';
 
 // Color Variables
 const contentColor = '#fff';
 const subColor = '#cbcbcb';
-const greyColor = '696969';
+const greyColor = '#696969';
 
 // Styled Components
 const MyNewTask = styled.div`
@@ -62,9 +70,35 @@ const MySubmitButton = styled.button`
   }
 `;
 
-export default function NewTask() {
-  const dateRef = useRef();
+export default function NewTask({ progress }) {
+  const dispatch = useDispatch();
+  const endDateRef = useRef();
   const contentRef = useRef();
+  const [importance, setImportance] = useState('');
+  const handleImportanceChange = e => {
+    setImportance(e.target.value);
+  };
+  const handelClick = () => {
+    const payload = {
+      workspaceId: 0, // 임시로 0번 워크스페이스 지정
+      newtask: {
+        content: contentRef.current.value,
+        createDate: Date(),
+        endDate: endDateRef.current.value,
+        importance: importance,
+      },
+    };
+    if (progress === 'Request') {
+      dispatch(newTodo(payload));
+    } else if (progress === 'In Progress') {
+      dispatch(newInProgress(payload));
+    } else if (progress === 'In Review') {
+      dispatch(newInReview(payload));
+    } else if (progress === 'Blocked') {
+      dispatch(newBlocked(payload));
+    } else dispatch(newDone(payload));
+  };
+
   return (
     <MyNewTask>
       <MyTop>
@@ -73,21 +107,36 @@ export default function NewTask() {
           style={{ width: '20px', height: '20px' }}
           alt="기본 프로필 이미지"
         />
-        <MyCalendar type="date" ref={dateRef} />
+        <MyCalendar type="date" ref={endDateRef} />
       </MyTop>
       <div>
         <MyContent type="textarea" ref={contentRef} placeholder="Contents" />
       </div>
       <MyBottom>
-        <input type="radio" value="high" name="myImportance" />
+        <input
+          type="radio"
+          value="high"
+          name="myImportance"
+          onChange={handleImportanceChange}
+        />
         High
-        <input type="radio" value="medium" name="myImportance" />
+        <input
+          type="radio"
+          value="medium"
+          name="myImportance"
+          onChange={handleImportanceChange}
+        />
         Medium
-        <input type="radio" value="low" name="myImportance" />
+        <input
+          type="radio"
+          value="low"
+          name="myImportance"
+          onChange={handleImportanceChange}
+        />
         Low
       </MyBottom>
       <MySubmit>
-        <MySubmitButton>submit</MySubmitButton>
+        <MySubmitButton onClick={handelClick}>submit</MySubmitButton>
       </MySubmit>
     </MyNewTask>
   );
