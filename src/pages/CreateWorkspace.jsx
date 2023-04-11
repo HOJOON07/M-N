@@ -9,6 +9,8 @@ const hoverResetColor = '#f06464';
 const hoverMainColor = '#7855db';
 const subColor = '#d5cee8';
 const brightSubColor = '#e9e4f5';
+const connectColor = '#76d63a';
+const hoverConnectColor = '#64bc2d';
 
 const MySectionContainer = styled.div`
   max-width: 1000px;
@@ -122,13 +124,53 @@ const MyRightContent = styled.div`
 const MyP = styled.p`
   margin: auto 1% auto 0;
   text-align: left;
+  color: #5f5f5f;
 `;
 
 const MyGithubInput = styled.input`
   display: block;
+  font-size: 1rem;
   width: 90%;
-  height: 35px;
+  height: 45px;
   margin: auto;
+  box-sizing: border-box;
+  padding-left: 55px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  color: #777;
+`;
+
+const MyDivRelative = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const MyGithubLogo = styled.img`
+  width: 40px;
+  position: absolute;
+  top: 3px;
+  left: 45px;
+`;
+const MyConnectBtn = styled.button`
+  position: absolute;
+  right: 45px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  font-size: 1rem;
+  font-weight: 700;
+  width: 95px;
+  padding: 9px 0px;
+  background-color: ${connectColor};
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.4s;
+
+  &:hover {
+    background-color: ${hoverConnectColor};
+  }
 `;
 
 export default function CreateWorkspace() {
@@ -152,13 +194,28 @@ export default function CreateWorkspace() {
         <MyLeftContent>
           <MyDiv>
             <MyLeftName type="text" placeholder="Name" />
-            <input checked type="radio" name="sort" />
-            <MyP>Private</MyP>
-            <input type="radio" name="sort" />
-            <MyP>Company</MyP>
+
+            <MyP>
+              Private
+              <input checked type="radio" name="sort" />
+            </MyP>
+
+            <MyP>
+              Company
+              <input type="radio" name="sort" />
+            </MyP>
           </MyDiv>
+          <MyDivRelative>
+            <MyGithubLogo src="/images/icon/github.png" />
+            <MyGithubInput
+              type="text"
+              placeholder="Github Repository Address"
+            />
+            <MyConnectBtn>Connect</MyConnectBtn>
+          </MyDivRelative>
           <div>
-            <MyGithubInput type="text" placeholder="Github Repository" />
+            <MyP>Category</MyP>
+            <input type="text" />
           </div>
         </MyLeftContent>
         <MyRightContent>
