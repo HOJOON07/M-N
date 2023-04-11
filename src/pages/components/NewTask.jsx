@@ -12,7 +12,7 @@ const MyNewTask = styled.div`
   border-radius: 5px;
   background-color: ${contentColor};
   padding: 10px;
-  width: 150px;
+  margin-bottom: 20px;
   & > div:nth-child(2) {
     margin: 10px 0;
   }
@@ -29,11 +29,35 @@ const MyCalendar = styled.input`
 
 const MyContent = styled.input`
   height: 50px;
+  width: 95%;
 `;
 const MyBottom = styled.div`
   font-size: 11px;
   align-items: center;
   display: flex;
+`;
+
+const MySubmit = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const MySubmitButton = styled.button`
+  padding: 5px 10px;
+  margin: 10px 0 0;
+  box-sizing: border-box;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  background-color: #3862b1;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: 'black';
+  }
 `;
 
 export default function NewTask() {
@@ -60,6 +84,9 @@ export default function NewTask() {
         <input type="radio" value="low" name="myImportance" />
         Low
       </MyBottom>
+      <MySubmit>
+        <MySubmitButton>submit</MySubmitButton>
+      </MySubmit>
     </MyNewTask>
   );
 }
