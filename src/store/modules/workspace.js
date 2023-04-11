@@ -50,6 +50,7 @@ const initState = {
           },
         ],
       },
+      bookmarked: false,
     },
   ],
 };
