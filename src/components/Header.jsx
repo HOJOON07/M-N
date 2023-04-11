@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
 // Color Variables
@@ -100,7 +101,7 @@ const MyAlarmIcon = styled.img`
   cursor: pointer;
 
   &:hover {
-    animation: ${MyAlarmAnim} 0.7s infinite;
+    animation: ${MyAlarmAnim} 0.7s linear infinite;
   }
 `;
 
@@ -120,6 +121,8 @@ export default function Header() {
   const isLogin = useSelector(state => state.user.isLogin);
   console.log('로그인 여부', isLogin);
 
+  const navigation = useNavigate();
+
   return (
     <MyInnerContainer>
       <MyHeaderContainer>
@@ -135,8 +138,12 @@ export default function Header() {
           {!isLogin ? (
             <>
               <MyGreetingText>로그인이 필요합니다</MyGreetingText>
-              <MyLoginButton>로그인</MyLoginButton>
-              <MySignUpButton>회원가입</MySignUpButton>
+              <MyLoginButton onClick={() => navigation('/login')}>
+                로그인
+              </MyLoginButton>
+              <MySignUpButton onClick={() => navigation('/signup')}>
+                회원가입
+              </MySignUpButton>
             </>
           ) : (
             <MyDiv>
