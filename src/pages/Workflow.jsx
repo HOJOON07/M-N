@@ -87,7 +87,7 @@ export default function Workflow() {
             return (
               <div key={el.id}>
                 <MyBookmark alt="북마크 완료 아이콘" src={bookmarkIcon} />
-                <div>{el.name}</div>
+                <div>{el.workspace_name}</div>
               </div>
             );
           })}
@@ -98,7 +98,7 @@ export default function Workflow() {
             return (
               <div key={el.id}>
                 <MyNoneBookmark alt="북마크 미완료 아이콘" src={bookmarkIcon} />
-                <div>{el.name}</div>
+                <div>{el.workspace_name}</div>
               </div>
             );
           })}
