@@ -178,7 +178,7 @@ const MySpaceProgress = styled.div`
   height: 35px;
   background-color: #d5d3db;
   border-radius: 3px;
-  /* 왜보더가 안먹힐까..? */
+  border: 1px solid black;
 `;
 const MyProgressBar = styled.div`
   background-color: #9b80d5;
@@ -188,9 +188,10 @@ const MyProgressBar = styled.div`
   margin-left: 5px;
 `;
 const MySpaceRight = styled.div`
+  position: relative;
   width: 30%;
   background-color: #9781dd;
-  border-style: 3px solid black;
+  border-style: 1px solid black;
 `;
 const MyPrivateBtn = styled.button`
   width: 60%;
@@ -232,6 +233,7 @@ const MyMenuBar = styled.img`
   width: 25px;
   height: 25px;
   margin-left: 50px;
+  top: 10px;
 `;
 
 export default function Workspacelist() {
@@ -257,7 +259,6 @@ export default function Workspacelist() {
               <Myline>------------------</Myline>
               <MySpaceDate>2023/04/04 - 2023/04/19</MySpaceDate>
             </MyInfo>
-            {/* <MyWorkImage> */}
             <MyRepository>
               <MyRepoName src={myrepo} alt="깃이미지" />
               <MyRepoText>Repository Name</MyRepoText>
@@ -265,7 +266,6 @@ export default function Workspacelist() {
             <MySpaceFace src={myface} alt="얼굴이미지" />
             <MySpaceFaceA src={myface_a} alt="얼굴이미지" />
             <MySpaceFaceB src={myface_b} alt="얼굴이미지" />
-            {/* </MyWorkImage> */}
             <MyWorkBar>
               <MySpaceProgress>
                 <MyProgressBar />
