@@ -2,266 +2,54 @@ const initState = {
   workspaceList: [
     {
       id: 0,
-      name: 'workspace1',
+      workspace_name: 'workspace1',
+      workspace_category: 'web',
+      workspace_startDate: '2023-04-01:xxxx',
+      workspace_endDate: '2023-04-01:xxxx',
+      githubRepository: 'https://github.com/0uizi0/test1',
       member: ['qkrtjdwo5662', 'psjj03'],
-      workflow: [
-        {
-          description: '설명',
-          writer: 'qkrtjdwo5662',
-          createDate: '2023-04-01:xxxx',
-          list: {
-            todo: [
-              {
-                id: 0,
-                content: '내용1',
-                writer: 'qkrtjdwo5662',
-                createData: '2023-04-01:xxxx',
-                importance: 'high',
-                profile: '',
-              },
-              {
-                id: 1,
-                content: '내용2',
-                writer: '0l0jjo',
-                createData: '2023-04-10:xxxx',
-                importance: 'low',
-                profile: '',
-              },
-              {
-                id: 2,
-                content: '내용3',
-                writer: '0l0jjo',
-                createData: '2023-04-10:xxxx',
-                importance: 'low',
-                profile: '',
-              },
-              {
-                id: 3,
-                content: '내용4',
-                writer: '0l0jjo',
-                createData: '2023-04-10:xxxx',
-                importance: 'low',
-                profile: '',
-              },
-            ],
-            inprogress: [
-              {
-                id: 0,
-                content: '내용5',
-                writer: 'qkrtjdwo5662',
-                createData: '2023-04-01:xxxx',
-                importance: 'medium',
-                profile: '',
-              },
-              {
-                id: 1,
-                content: '내용6',
-                writer: '0l0jjo',
-                createData: '2023-04-10:xxxx',
-                importance: 'high',
-                profile: '',
-              },
-            ],
-            inreview: [
-              {
-                id: 0,
-                content: '내용7',
-                writer: 'qkrtjdwo5662',
-                createData: '2023-04-01:xxxx',
-                importance: 'high',
-                profile: '',
-              },
-              {
-                id: 1,
-                content: '내용8',
-                writer: '0l0jjo',
-                createData: '2023-04-10:xxxx',
-                importance: 'low',
-                profile: '',
-              },
-            ],
-            blocked: [
-              {
-                id: 0,
-                content: '내용9',
-                writer: 'qkrtjdwo5662',
-                createData: '2023-04-01:xxxx',
-                importance: 'low',
-                profile: '',
-              },
-            ],
-            done: [
-              {
-                id: 0,
-                content: '내용10',
-                writer: 'qkrtjdwo5662',
-                createData: '2023-04-01:xxxx',
-                importance: 'medium',
-                profile: '',
-              },
-              {
-                id: 2,
-                content: '내용11',
-                writer: '0l0jjo',
-                createData: '2023-04-10:xxxx',
-                importance: 'high',
-                profile: '',
-              },
-            ],
+      workflow: {
+        todoList: [
+          {
+            content: '내용1',
+            createDatte: '2023-04-01:xxxx',
+            endDate: '2023-04-12',
+            importance: 'low',
           },
-        },
-      ],
-      bookmarked: false,
-    },
-    {
-      id: 1,
-      name: 'workspace2',
-      member: ['0l0jjo', 'qkrtjdwo5662'],
-      workflow: [
-        {
-          description: '설명',
-          writer: '0l0jjo',
-          createDate: '2023-04-07:xxxx',
-          list: {
-            todo: {
-              content: '내용',
-              writer: '0l0jjo',
-              createData: '2023-04-07:xxxx',
-            },
-            inprogress: {
-              content: '내용',
-              writer: '0l0jjo',
-              createData: '2023-04-07:xxxx',
-            },
-            done: {
-              content: '내용',
-              writer: '0l0jjo',
-              createData: '2023-04-07:xxxx',
-            },
+        ],
+        inprogressList: [
+          {
+            content: '내용1',
+            createDatte: '2023-04-01:xxxx',
+            endDate: '2023-04-12',
+            importance: 'low',
           },
-        },
-      ],
-      bookmarked: true,
-    },
-    {
-      id: 2,
-      name: 'workspace3',
-      member: ['qkrtjdwo5662', 'psjj03'],
-      workflow: [
-        {
-          description: '설명',
-          writer: 'qkrtjdwo5662',
-          createDate: '2023-04-01:xxxx',
-          list: {
-            todo: {
-              content: '내용',
-              writer: 'qkrtjdwo5662',
-              createData: '2023-04-01:xxxx',
-            },
-            inprogress: {
-              content: '내용',
-              writer: 'qkrtjdwo5662',
-              createData: '2023-04-01:xxxx',
-            },
-            done: {
-              content: '내용',
-              writer: 'qkrtjdwo5662',
-              createData: '2023-04-01:xxxx',
-            },
+        ],
+        inreviewList: [
+          {
+            content: '내용1',
+            createDatte: '2023-04-01:xxxx',
+            endDate: '2023-04-12',
+            importance: 'low',
           },
-        },
-      ],
-      bookmarked: false,
-    },
-    {
-      id: 3,
-      name: 'workspace4',
-      member: ['0l0jjo', 'qkrtjdwo5662'],
-      workflow: [
-        {
-          description: '설명',
-          writer: '0l0jjo',
-          createDate: '2023-04-07:xxxx',
-          list: {
-            todo: {
-              content: '내용',
-              writer: '0l0jjo',
-              createData: '2023-04-07:xxxx',
-            },
-            inprogress: {
-              content: '내용',
-              writer: '0l0jjo',
-              createData: '2023-04-07:xxxx',
-            },
-            done: {
-              content: '내용',
-              writer: '0l0jjo',
-              createData: '2023-04-07:xxxx',
-            },
+        ],
+        blockedList: [
+          {
+            content: '내용1',
+            createDatte: '2023-04-01:xxxx',
+            endDate: '2023-04-12',
+            importance: 'low',
           },
-        },
-      ],
-      bookmarked: true,
-    },
-    {
-      id: 4,
-      name: 'workspace5',
-      member: ['qkrtjdwo5662', 'psjj03'],
-      workflow: [
-        {
-          description: '설명',
-          writer: 'qkrtjdwo5662',
-          createDate: '2023-04-01:xxxx',
-          list: {
-            todo: {
-              content: '내용',
-              writer: 'qkrtjdwo5662',
-              createData: '2023-04-01:xxxx',
-            },
-            inprogress: {
-              content: '내용',
-              writer: 'qkrtjdwo5662',
-              createData: '2023-04-01:xxxx',
-            },
-            done: {
-              content: '내용',
-              writer: 'qkrtjdwo5662',
-              createData: '2023-04-01:xxxx',
-            },
+        ],
+        doneList: [
+          {
+            content: '내용1',
+            createDatte: '2023-04-01:xxxx',
+            endDate: '2023-04-12',
+            importance: 'low',
           },
-        },
-      ],
-      bookmarked: false,
-    },
-    {
-      id: 5,
-      name: 'workspace6',
-      member: ['0l0jjo', 'qkrtjdwo5662'],
-      workflow: [
-        {
-          description: '설명',
-          writer: '0l0jjo',
-          createDate: '2023-04-07:xxxx',
-          list: {
-            todo: {
-              content: '내용',
-              writer: '0l0jjo',
-              createData: '2023-04-07:xxxx',
-            },
-            inprogress: {
-              content: '내용',
-              writer: '0l0jjo',
-              createData: '2023-04-07:xxxx',
-            },
-            done: {
-              content: '내용',
-              writer: '0l0jjo',
-              createData: '2023-04-07:xxxx',
-            },
-          },
-        },
-      ],
-      bookmarked: true,
+        ],
+      },
     },
   ],
 };
@@ -270,6 +58,7 @@ const initState = {
 const CREATE = 'workspace/CREATE';
 const DONE = 'workspace/DONE';
 const BOOKMARK = 'workspace/BOOKMARK';
+const NEWTASK_TODO = 'workflow/NEWTASK_TODO';
 
 // 액션 생성 함수 작성
 export function create(payload) {
@@ -293,14 +82,21 @@ export function bookmark(id) {
   };
 }
 
+// export function newtask(payload) {
+//   return {
+//     type: NEWTASK,
+//     payload,
+//   };
+// }
+
 // 리듀서 설정
 export default function workspace(state = initState, action) {
   switch (action.type) {
     case CREATE:
       return {
         ...state,
-        workspace: [
-          ...state.workspace,
+        workspaceList: [
+          ...state.workspaceList,
           {
             id: action.payload.id,
             name: action.payload.name,
@@ -326,6 +122,14 @@ export default function workspace(state = initState, action) {
           }
         }),
       };
+    // case NEWTASK_TODO:
+    //   state.workspaceList[action.payload.workspaceId].workflow.todoList = [
+    //     ...state.workspaceList[action.payload.workspaceId].workflow.todoList,
+    //     action.payload.newtask,
+    //   ];
+    //   return {
+    //     ...state,
+    //   };
     default:
       return state;
   }
