@@ -12,6 +12,7 @@ const initState = {
           list: {
             todo: [
               {
+                id: 0,
                 content: '내용1',
                 writer: 'qkrtjdwo5662',
                 createData: '2023-04-01:xxxx',
@@ -19,6 +20,7 @@ const initState = {
                 profile: '',
               },
               {
+                id: 1,
                 content: '내용2',
                 writer: '0l0jjo',
                 createData: '2023-04-10:xxxx',
@@ -26,6 +28,7 @@ const initState = {
                 profile: '',
               },
               {
+                id: 2,
                 content: '내용3',
                 writer: '0l0jjo',
                 createData: '2023-04-10:xxxx',
@@ -33,6 +36,7 @@ const initState = {
                 profile: '',
               },
               {
+                id: 3,
                 content: '내용4',
                 writer: '0l0jjo',
                 createData: '2023-04-10:xxxx',
@@ -42,6 +46,7 @@ const initState = {
             ],
             inprogress: [
               {
+                id: 0,
                 content: '내용5',
                 writer: 'qkrtjdwo5662',
                 createData: '2023-04-01:xxxx',
@@ -49,6 +54,7 @@ const initState = {
                 profile: '',
               },
               {
+                id: 1,
                 content: '내용6',
                 writer: '0l0jjo',
                 createData: '2023-04-10:xxxx',
@@ -58,6 +64,7 @@ const initState = {
             ],
             inreview: [
               {
+                id: 0,
                 content: '내용7',
                 writer: 'qkrtjdwo5662',
                 createData: '2023-04-01:xxxx',
@@ -65,6 +72,7 @@ const initState = {
                 profile: '',
               },
               {
+                id: 1,
                 content: '내용8',
                 writer: '0l0jjo',
                 createData: '2023-04-10:xxxx',
@@ -74,6 +82,7 @@ const initState = {
             ],
             blocked: [
               {
+                id: 0,
                 content: '내용9',
                 writer: 'qkrtjdwo5662',
                 createData: '2023-04-01:xxxx',
@@ -83,6 +92,7 @@ const initState = {
             ],
             done: [
               {
+                id: 0,
                 content: '내용10',
                 writer: 'qkrtjdwo5662',
                 createData: '2023-04-01:xxxx',
@@ -90,6 +100,7 @@ const initState = {
                 profile: '',
               },
               {
+                id: 2,
                 content: '내용11',
                 writer: '0l0jjo',
                 createData: '2023-04-10:xxxx',
