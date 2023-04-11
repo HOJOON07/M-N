@@ -2,11 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import bookmarkIcon from '../assets/images/bookmark-icon.png';
+import Kanban from './components/Kanban';
 
 const MyWorkspaceArea = styled.div`
   display: flex;
   width: 100%;
-  height: 400px;
+  height: 75vh;
+
+  & > div:nth-child(2) {
+    width: 100%;
+    margin: 10px;
+  }
 `;
 
 const MyTitle = styled.p`
@@ -35,11 +41,15 @@ const MyList = styled.div`
 
   & > div {
     padding: 10px 15px;
-    display: flex;
     cursor: pointer;
+    display: flex;
 
     &:hover {
       background-color: white;
+    }
+
+    & > div > div {
+      display: flex;
     }
   }
   & > div > img {
@@ -47,9 +57,6 @@ const MyList = styled.div`
     height: 15px;
     margin-right: 10px;
   }
-`;
-const MyKanbanBoard = styled.div`
-  width: 100%;
 `;
 
 const MyBookmark = styled.img`
@@ -96,7 +103,7 @@ export default function Workflow() {
           })}
         </MyList>
       </MyWorkspaceList>
-      <MyKanbanBoard>workflow board</MyKanbanBoard>
+      <Kanban />
     </MyWorkspaceArea>
   );
 }
