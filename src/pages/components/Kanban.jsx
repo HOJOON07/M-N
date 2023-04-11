@@ -49,6 +49,9 @@ export default function Kanban() {
   const workflowList = workspaceList.workflow[0].list;
   const iconList = ['✉️', '🔨', '📌', '🔒', '🎉'];
   // console.log(workspaceList);
+
+  // Workflow Drag
+
   return (
     <div>
       <MyTitleArea>

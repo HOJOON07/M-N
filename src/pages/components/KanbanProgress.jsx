@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeOrder } from '../../store/modules/workspace';
 
 // Color Variables
 const contentColor = '#fff';
@@ -88,6 +90,36 @@ const MyCreateData = styled.p`
 `;
 
 export default function KanbanProgress({ workflowList, progress, icon }) {
+  //Workflow Drag
+  const [grab, setGrab] = useState(null);
+  const dispatch = useDispatch();
+
+  const onDragOver = e => {
+    e.preventDefault();
+  };
+
+  const onDragStart = e => {
+    setGrab(e.target);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', e.target);
+  };
+
+  const onDragEnd = e => {
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const onDrop = e => {
+    let grabPosition = Number(grab.dataset.position);
+    let targetPosition = Number(e.target.dataset.position);
+    console.log(grabPosition, targetPosition);
+
+    let list = [...workflowList];
+
+    list[grabPosition] = list.splice(targetPosition, 1, list[grabPosition])[0];
+
+    dispatch(changeOrder(list));
+  };
+
   return (
     <div>
       <MyProgressTitle>
@@ -101,9 +133,17 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
       <MyTask>
         <MyTitle fontSize="13px">➕ Add New Task</MyTitle>
       </MyTask>
-      {workflowList.map(el => {
+      {workflowList.map((el, idx) => {
         return (
-          <MyTask key={el.id}>
+          <MyTask
+            draggable
+            key={idx}
+            data-position={idx}
+            onDragStart={onDragStart}
+            onDragEnd={onDragEnd}
+            onDragOver={onDragOver}
+            onDrop={onDrop}
+          >
             <div>
               <MyContent>{el.content}</MyContent>
               <div>

@@ -268,14 +268,23 @@ const initState = {
 
 // 액션 타입 정의
 const CREATE = 'workspace/CREATE';
+const DELETE = 'workspace/DELETE';
 const DONE = 'workspace/DONE';
 const BOOKMARK = 'workspace/BOOKMARK';
+const CHANGEORDER = 'workspace/CHANGEORDER';
 
 // 액션 생성 함수 작성
 export function create(payload) {
   return {
     type: CREATE,
     payload,
+  };
+}
+
+export function deleteItem(id) {
+  return {
+    type: DELETE,
+    id,
   };
 }
 
@@ -290,6 +299,13 @@ export function bookmark(id) {
   return {
     type: BOOKMARK,
     id,
+  };
+}
+
+export function changeOrder(list) {
+  return {
+    type: CHANGEORDER,
+    list,
   };
 }
 
@@ -310,6 +326,8 @@ export default function workspace(state = initState, action) {
           },
         ],
       };
+    case DELETE:
+      return {};
     // case DONE:
     //   return {};
     case BOOKMARK:
@@ -325,6 +343,15 @@ export default function workspace(state = initState, action) {
             return el;
           }
         }),
+      };
+    case CHANGEORDER:
+      return {
+        ...state,
+        workspace: [
+          {
+            workflow: action.list,
+          },
+        ],
       };
     default:
       return state;
