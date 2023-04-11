@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import myLogo from '../images/logo.jpg';
+import myLogo from '../images/mnlogopp.png';
 import mySocialGit from '../images/git.png';
 import mySocialNaver from '../images/naver.png';
 import mySocialKakao from '../images/pngegg.png';
@@ -46,20 +46,20 @@ const MyLogin = styled.span`
   align-items: center;
   margin-left: 20px;
   border-style: 2px solid black;
-  box-shadow: 10px 10px 10px 0px #70909e;
+  box-shadow: 7px 7px 7px 0px #725884;
   border-radius: 30px;
 `;
 
 const MyLogo = styled.img`
   text-align: center;
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   padding: 20px;
 `;
 
 const MyInputPart = styled.div`
   height: 25%;
-  background-color: #a1bccf;
+  background-color: #e9e4f5;
 `;
 const MyInput = styled.input`
   text-align: center;
@@ -67,12 +67,12 @@ const MyInput = styled.input`
   margin-top: 15px;
   box-sizing: border-box;
   height: 40px;
-  border: 1px solid #516974;
+  border: 1px solid #ddd7ed;
   border-radius: 6px;
   margin-right: 4px;
   outline: none;
   &:focus {
-    border-color: #ffdb29;
+    border-color: #726b87;
   }
 `;
 
@@ -83,7 +83,7 @@ const MyButton = styled.button`
   box-sizing: border-box;
   font-size: 1.1rem;
   border-radius: 6px;
-  background-color: #ffdb29;
+  background-color: #9781dd;
   border-radius: 6px;
   border: none;
   cursor: pointer;
