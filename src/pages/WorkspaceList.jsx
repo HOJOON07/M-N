@@ -8,6 +8,13 @@ import mymagnify from '../images/magnify.png';
 import mystar from '../images/star.png';
 import mybar from '../images/dots.png';
 
+// Color Variables
+const mainColor = '#623ad6';
+const hoverMainColor = '#7855db';
+const subColor = '#d5cee8';
+const brightSubColor = '#e9e4f5';
+const progressColor = '#9781dd';
+
 const MyContainer = styled.div`
   max-width: 1200px;
   height: 70vh;
@@ -42,11 +49,12 @@ const MySpaceContent = styled.span`
 `;
 const MySpaceInput = styled.input`
   text-align: center;
-  width: 300px;
+  font-size: 1.1rem;
+  width: 251px;
+  height: 58px;
   margin-top: 50px;
   margin-left: 150px;
   box-sizing: border-box;
-  height: 40px;
   border: 1px solid #516974;
   border-radius: 6px;
   outline: none;
@@ -65,13 +73,13 @@ const MySpaceMagify = styled.img`
   margin-left: 50px;
 `;
 const MySpaceNewBtn = styled.button`
-  width: 300px;
-  height: 40px;
+  width: 251px;
+  height: 58px;
   margin-left: 10px;
   margin-top: 50px;
   box-sizing: border-box;
   font-size: 1.1rem;
-  background-color: #623ad6;
+  background-color: ${mainColor};
   border-radius: 6px;
   border: none;
   cursor: pointer;
@@ -123,9 +131,7 @@ const MySpaceDate = styled.p`
   font-weight: 300;
   text-align: left;
 `;
-// const MyWorkImage = styled.div`
-//   width: 100px;
-// `;
+
 const MyRepository = styled.div`
   display: flex;
   position: absolute;
@@ -178,10 +184,10 @@ const MySpaceProgress = styled.div`
   height: 35px;
   background-color: #d5d3db;
   border-radius: 3px;
-  border: 1px solid black;
+  border: 1px solid #c0adad;
 `;
 const MyProgressBar = styled.div`
-  background-color: #9b80d5;
+  background-color: ${progressColor};
   width: 400px;
   height: 25px;
   margin-top: 5px;
@@ -190,8 +196,7 @@ const MyProgressBar = styled.div`
 const MySpaceRight = styled.div`
   position: relative;
   width: 30%;
-  background-color: #9781dd;
-  border-style: 1px solid black;
+  background-color: ${progressColor};
 `;
 const MyPrivateBtn = styled.button`
   width: 60%;
