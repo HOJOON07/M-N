@@ -226,6 +226,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
         item => item.createDate === createDate
       );
       console.log(selectedItem);
+      // console.log(workspace.workflow);
     }
   };
 

@@ -11,6 +11,7 @@ const initState = {
       workflow: {
         todoList: [
           {
+            id: 0,
             content: '내용1',
             createDate: '2023-04-01:0001',
             endDate: '2023-04-12',
@@ -19,6 +20,7 @@ const initState = {
         ],
         inprogressList: [
           {
+            id: 1,
             content: '내용1',
             createDate: '2023-04-01:0002',
             endDate: '2023-04-12',
@@ -27,6 +29,7 @@ const initState = {
         ],
         inreviewList: [
           {
+            id: 2,
             content: '내용1',
             createDate: '2023-04-01:0003',
             endDate: '2023-04-12',
@@ -35,6 +38,7 @@ const initState = {
         ],
         blockedList: [
           {
+            id: 3,
             content: '내용1',
             createDate: '2023-04-01:0004',
             endDate: '2023-04-12',
@@ -43,6 +47,7 @@ const initState = {
         ],
         doneList: [
           {
+            id: 4,
             content: '1',
             createDate: '2023-04-01:0005',
             endDate: '2023-04-12',
