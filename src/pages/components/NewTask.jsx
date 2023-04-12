@@ -80,6 +80,7 @@ export default function NewTask({ progress }) {
     const payload = {
       workspaceId: 0, // 임시로 0번 워크스페이스 지정
       newtask: {
+        id: Date(),
         content: contentRef.current.value,
         createDate: Date(),
         endDate: endDateRef.current.value,
