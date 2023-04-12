@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import myLogo from '../images/mnlogopp.png';
 import mySocialGit from '../images/git.png';
 import mySocialNaver from '../images/naver.png';
 import mySocialKakao from '../images/pngegg.png';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import user from '../store/modules/user';
 
 const MyContainer = styled.section`
   display: flex;
@@ -124,6 +128,72 @@ const MySocial = styled.img`
 `;
 
 export default function Login() {
+  const navigate = useNavigate();
+  const [msg, setMsg] = useState('');
+  const submit = () => {
+    const userData = {
+      user_id: inputs.id,
+      user_password: inputs.password,
+    };
+    axios
+      .post('http://192.168.0.222:5500/user/login', userData)
+      .then(res => {
+        if (res.status === 200) {
+          gotoWorkSpaceList();
+
+          setMsg('');
+        }
+      })
+      .catch(err => {
+        // setMsg(err));
+        alert('ID 또는 비밀번호가 일치하지 않습니다');
+        console.log(err.response.data, err);
+      });
+  };
+
+  const gotoWorkSpaceList = () => {
+    navigate('/workspace');
+  };
+  const inutRef = useRef([]);
+
+  const [inputs, setInputs] = useState({
+    id: '',
+    password: '',
+  });
+
+  const { id, password } = inputs;
+  const vaildId = id.length >= 6 && id.length <= 14;
+  const vaildPassword = password.length >= 8 && password.length <= 16;
+
+  const handleChange = e => {
+    setInputs({
+      ...inputs,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // const handleClick = () => {
+  //   if (!vaildId) {
+  //     alert('유효하지 않은 id 입니다.');
+  //     setInputs({
+  //       ...inputs,
+  //       id: '',
+  //     });
+  //     inutRef.current[0].focus();
+  //   } else if (!vaildPassword) {
+  //     alert('유효하지 않은 password 입니다.');
+  //     inutRef.current[1].focus();
+  //     setInputs({
+  //       ...inputs,
+  //       password: '',
+  //     });
+  //   } else {
+  //     submit();
+  //     gotoWorkSpaceList();
+  //     return alert('로그인 성공!');
+  //   }
+  // };
+
   return (
     <MyContainer>
       <MyExplain>
@@ -138,11 +208,32 @@ export default function Login() {
         <MyLogo src={myLogo} alt="로고이미지" />
         <br />
         <MyInputPart>
-          <MyInput type="text" placeholder="아이디를 입력하세요" />
-          <MyInput type="text" placeholder=" 비밀번호를 입력하세요" />
+          <MyInput
+            type="text"
+            name="id"
+            placeholder="아이디를 입력해주세요"
+            value={id}
+            onChange={handleChange}
+            ref={el => (inutRef.current[0] = el)}
+          />
+
+          <MyInput
+            type="password"
+            name="password"
+            placeholder="비밀번호를 입력해주세요"
+            value={password}
+            onChange={handleChange}
+            ref={el => (inutRef.current[1] = el)}
+          />
         </MyInputPart>
 
-        <MyButton>로그인</MyButton>
+        <MyButton
+          type="button"
+          onClick={submit}
+          disabled={id.length < 1 && password.length < 1}
+        >
+          로그인
+        </MyButton>
         <MyLinkList>
           <MyLink to="/">아이디 찾기</MyLink>
           <MyLink to="/">비밀번호 찾기</MyLink>
