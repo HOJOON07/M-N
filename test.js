@@ -28,7 +28,7 @@ const MyTitleWrap = styled.div`
   margin: 0 5px;
 `;
 
-const MyNewWorkspaceTitle = styled.h2`
+const MyH2 = styled.h2`
   font-family: 'LINESeedKR-Bd';
   font-size: 2.5rem;
 `;
@@ -83,11 +83,6 @@ const MyContentCotainer = styled.div`
   display: flex;
   justify-content: center;
 `;
-const MyContentNameWrap = styled.div`
-  display: flex;
-  justify-content: space-around;
-  margin: 0 5px;
-`;
 
 const MyProjectName = styled.input`
   font-size: 1.5rem;
@@ -134,7 +129,6 @@ const MyGithubInput = styled.input`
 const MyDivRelative = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: 40px;
 `;
 
 const MyGithubLogo = styled.img`
@@ -166,12 +160,10 @@ const MyConnectBtn = styled.button`
 
 const MyProjectInfoWrap = styled.div`
   display: flex;
-  justify-content: space-around;
-  width: 100%;
 `;
 
 const MyInfoLeftWrap = styled.div`
-  width: 40%;
+  width: 50%;
 `;
 
 const MyRightContent = styled.div`
