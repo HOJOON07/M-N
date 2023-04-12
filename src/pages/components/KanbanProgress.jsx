@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
+import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeOrder } from '../../store/modules/workspace';
 
@@ -122,6 +123,7 @@ const MyCreateData = styled.p`
 `;
 
 export default function KanbanProgress({ workflowList, progress, icon }) {
+  const [status, setStatus] = useState(false);
   //Workflow Drag
   const [originPos, setOriginPos] = useState({ x: 0, y: 0 });
   const [clientPos, setClientPos] = useState({ x: 0, y: 0 });
@@ -193,13 +195,20 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
         </div>
         <MyMenuBar src={menu} alt="menu-bar" />
       </MyProgressTitle>
-
       <MyTask>
-        <MyTitle fontSize="13px" onClick={() => {}}>
+        <MyTitle
+          fontSize="13px"
+          onClick={() => {
+            setStatus(el => !el);
+          }}
+          name={progress}
+        >
           ➕ Add New Task
         </MyTitle>
       </MyTask>
+      {status && <NewTask progress={progress} />}
       {workflowList.map((el, idx) => {
+        const startDate = el.createDate.split(':')[0];
         return (
           <MyTaskContainer
             draggable
@@ -221,7 +230,9 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
                 <span>❌</span>
               </div>
             </div>
-            <MyCreateData>{el.createData}</MyCreateData>
+            <MyCreateData>
+              {startDate} ~ {el.endDate}
+            </MyCreateData>
             <div>
               <MyImportanceButton {...el}>{el.importance}</MyImportanceButton>
               <img src={defaultProfile} alt="기본 프로필 이미지" />
