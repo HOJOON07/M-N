@@ -194,24 +194,38 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
   };
 
   const buttonClickHandler = (createDate, progress) => {
-    // console.log(progress);
-
-    if (progress === 'Request') {
-      const specificProgress = workspace.workflow.todoList;
-    }
-
-    const workspace = workspaceList.find(workspace =>
-      // blockedList가 고정되어있어서 나머지 진행단계를 누르면 에러 발생. blockedList가 아니라 단계별 접근 필요
-      workspace.workflow.blockedList.some(
-        item => item.createDate === createDate
-      )
-    );
+    const workspace = workspaceList.find(workspace => {
+      let specificProgress;
+      if (progress === 'Request') {
+        specificProgress = workspace.workflow.todoList;
+      } else if (progress === 'In Progress') {
+        specificProgress = workspace.workflow.inprogressList;
+      } else if (progress === 'In Review') {
+        specificProgress = workspace.workflow.inreviewList;
+      } else if (progress === 'Blocked') {
+        specificProgress = workspace.workflow.blockedList;
+      } else {
+        specificProgress = workspace.workflow.doneList;
+      }
+      return specificProgress.some(item => item.createDate === createDate);
+    });
     if (workspace) {
-      // blockedList가 고정되어있어서 나머지 진행단계를 누르면 에러 발생. blockedList가 아니라 단계별 접근 필요
-      const blockedItem = workspace.workflow.blockedList.find(
+      let specificProgress;
+      if (progress === 'Request') {
+        specificProgress = workspace.workflow.todoList;
+      } else if (progress === 'In Progress') {
+        specificProgress = workspace.workflow.inprogressList;
+      } else if (progress === 'In Review') {
+        specificProgress = workspace.workflow.inreviewList;
+      } else if (progress === 'Blocked') {
+        specificProgress = workspace.workflow.blockedList;
+      } else {
+        specificProgress = workspace.workflow.doneList;
+      }
+      const selectedItem = specificProgress.find(
         item => item.createDate === createDate
       );
-      console.log(blockedItem);
+      console.log(selectedItem);
     }
   };
 
@@ -256,7 +270,11 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
               <MyContent>{el.content}</MyContent>
               <div>
                 <span>✏️</span>
-                <span onClick={createDateClickHandler(el.createDate, progress)}>
+                <span
+                  onClick={() => {
+                    createDateClickHandler(el.createDate, progress);
+                  }}
+                >
                   ❌
                 </span>
               </div>
