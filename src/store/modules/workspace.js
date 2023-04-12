@@ -14,20 +14,16 @@ const initState = {
       workflow: {
         todoList: [
           {
+            id: 0,
             content: '내용1',
             createDate: '2023-04-01:0001',
             endDate: '2023-04-12',
             importance: 'low',
           },
-          {
-            content: '222222222',
-            createDate: '2023-04-01:0001',
-            endDate: '2023-04-12',
-            importance: 'high',
-          },
         ],
         inprogressList: [
           {
+            id: 1,
             content: '내용1',
             createDate: '2023-04-01:0002',
             endDate: '2023-04-12',
@@ -36,6 +32,7 @@ const initState = {
         ],
         inreviewList: [
           {
+            id: 2,
             content: '내용1',
             createDate: '2023-04-01:0003',
             endDate: '2023-04-12',
@@ -44,6 +41,7 @@ const initState = {
         ],
         blockedList: [
           {
+            id: 3,
             content: '내용1',
             createDate: '2023-04-01:0004',
             endDate: '2023-04-12',
@@ -52,19 +50,8 @@ const initState = {
         ],
         doneList: [
           {
+            id: 4,
             content: '1',
-            createDate: '2023-04-01:0005',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-          {
-            content: '2',
-            createDate: '2023-04-01:0005',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-          {
-            content: '3',
             createDate: '2023-04-01:0005',
             endDate: '2023-04-12',
             importance: 'low',
@@ -85,7 +72,7 @@ const NEWTASK_TODO = 'workflow/NEWTASK_TODO';
 const NEWTASK_PROGRESS = 'workflow/NEWTASK_PROGRESS';
 const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
 const NEWTASK_BLOCKED = 'workflow/NEWTASK_BLOCKED';
-const NEWTASK_DONE = 'workflow/DONE';
+const NEWTASK_DONE = 'workflow/NEWTASK_DONE';
 
 // 액션 생성 함수 작성
 export function create(payload) {
@@ -205,8 +192,6 @@ export default function workspace(state = initState, action) {
       };
     case DELETE:
       return {};
-    // case DONE:
-    //   return {};
     case BOOKMARK:
       return {
         ...state,

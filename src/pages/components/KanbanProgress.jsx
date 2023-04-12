@@ -132,7 +132,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
   const draggingOverRef = useRef(null);
   const dispatch = useDispatch();
 
-  // 드래그앤드롭 1시안
+  const workspaceList = useSelector(state => state.workspace.workspaceList);
   const onDragOver = e => {
     e.preventDefault();
   };
@@ -251,6 +251,48 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
     );
   };
 
+  /** 버튼 클릭 시 특정 createDate에 해당하는 배열 찾기 함수 */
+  const createDateClickHandler = (createDate, progress) => {
+    buttonClickHandler(createDate, progress);
+  };
+
+  const buttonClickHandler = (createDate, progress) => {
+    const workspace = workspaceList.find(workspace => {
+      let specificProgress;
+      if (progress === 'Request') {
+        specificProgress = workspace.workflow.todoList;
+      } else if (progress === 'In Progress') {
+        specificProgress = workspace.workflow.inprogressList;
+      } else if (progress === 'In Review') {
+        specificProgress = workspace.workflow.inreviewList;
+      } else if (progress === 'Blocked') {
+        specificProgress = workspace.workflow.blockedList;
+      } else {
+        specificProgress = workspace.workflow.doneList;
+      }
+      return specificProgress.some(item => item.createDate === createDate);
+    });
+    if (workspace) {
+      let specificProgress;
+      if (progress === 'Request') {
+        specificProgress = workspace.workflow.todoList;
+      } else if (progress === 'In Progress') {
+        specificProgress = workspace.workflow.inprogressList;
+      } else if (progress === 'In Review') {
+        specificProgress = workspace.workflow.inreviewList;
+      } else if (progress === 'Blocked') {
+        specificProgress = workspace.workflow.blockedList;
+      } else {
+        specificProgress = workspace.workflow.doneList;
+      }
+      const selectedItem = specificProgress.find(
+        item => item.createDate === createDate
+      );
+      console.log(selectedItem);
+      // console.log(workspace.workflow);
+    }
+  };
+
   return (
     <div>
       <MyProgressTitle>
@@ -295,7 +337,13 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
               <MyContent>{el.content}</MyContent>
               <div>
                 <span>✏️</span>
-                <span>❌</span>
+                <span
+                  onClick={() => {
+                    createDateClickHandler(el.createDate, progress);
+                  }}
+                >
+                  ❌
+                </span>
               </div>
             </div>
             <MyCreateData>
