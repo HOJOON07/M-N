@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
