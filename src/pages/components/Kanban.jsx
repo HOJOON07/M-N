@@ -28,16 +28,21 @@ const MyTitleArea = styled.div`
 `;
 
 const MyProgressArea = styled.div`
-  background-color: ${backColor};
   width: 100%;
-  height: 87%;
+
+  background-color: ${backColor};
+
   display: flex;
   justify-content: space-around;
 
   & > div {
+    position: relative;
     border-radius: 5px;
-    width: 15%;
-    padding: 10px;
+    flex-shrink: 0;
+    flex-grow: 1;
+    margin: 5px 10px;
+    height: 500px;
+    overflow-y: auto;
   }
 `;
 

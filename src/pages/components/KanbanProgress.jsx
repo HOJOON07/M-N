@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
 import NewTask from './NewTask';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeOrder } from '../../store/modules/workspace';
 
 // Color Variables
 const contentColor = '#fff';
@@ -15,10 +17,7 @@ const MyTitle = styled.p`
 `;
 
 const MyProgressTitle = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  margin-bottom: 15px;
+  margin: 20px 0;
   & > div {
     display: flex;
     & > p {
@@ -42,6 +41,10 @@ const MyImportanceButton = styled.button`
       : '#3862B1'};
   color: white;
   cursor: pointer;
+
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
   transition: 0.2s;
 
   &:hover {
@@ -50,6 +53,9 @@ const MyImportanceButton = styled.button`
 `;
 
 const MyMenuBar = styled.img`
+  position: absolute;
+  right: 5px;
+  top: 20px;
   width: 15px;
   height: 15px;
 `;
@@ -58,31 +64,58 @@ const MyTask = styled.div`
   border: 1px solid #bcc2d1;
   border-radius: 5px;
   background-color: ${contentColor};
-  padding: 10px 10px 5px;
-  margin-bottom: 20px;
+  width: 95%;
+  height: 30px;
+  margin: 0 0 20px 0;
   cursor: pointer;
 
-  & > div {
-    display: flex;
-    align-content: center;
-    justify-content: space-between;
+  & > p {
+    padding: 8px 5px 0 8px;
   }
+`;
+
+const MyTaskContainer = styled.div`
+  position: absolute;
+  border: 1px solid #bcc2d1;
+  border-radius: 5px;
+  background-color: ${contentColor};
+  width: 95%;
+  height: 70px;
+  display: block;
+  cursor: pointer;
 
   & img {
-    width: 18px;
-    height: 18px;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    width: 20px;
+    height: 20px;
   }
-  & > p {
-    margin: 7px 0;
+
+  & span:first-child {
+    position: absolute;
+    display: block;
+    font-size: 13px;
+    right: 22px;
+    top: 5px;
   }
-  & span {
-    font-size: 12px;
-    margin-left: 5px;
+  & span:last-child {
+    position: absolute;
+    display: block;
+    font-size: 13px;
+    right: 5px;
+    top: 5px;
   }
 `;
 
 const MyContent = styled.p`
   font-weight: 700;
+  position: absolute;
+  display: block;
+  width: 60%;
+
+  left: 8px;
+  top: 8px;
 `;
 const MyCreateData = styled.p`
   color: ${subColor};
@@ -91,6 +124,67 @@ const MyCreateData = styled.p`
 
 export default function KanbanProgress({ workflowList, progress, icon }) {
   const [status, setStatus] = useState(false);
+  //Workflow Drag
+  const [originPos, setOriginPos] = useState({ x: 0, y: 0 });
+  const [clientPos, setClientPos] = useState({ x: 0, y: 0 });
+  const [pos, setPos] = useState({ top: 100, left: 0 });
+
+  const kanbanRef = useRef();
+  const dispatch = useDispatch();
+
+  const onDragOver = e => {
+    e.preventDefault();
+  };
+
+  const onDragStart = e => {
+    e.dataTransfer.effectAllowed = 'move';
+    const originPosTemp = { ...originPos };
+    originPosTemp.x = e.target.offsetLeft; //칸반보드 컨텐츠 부분부터
+    originPosTemp.y = e.target.offsetTop;
+    setOriginPos(originPosTemp);
+    console.log(originPosTemp);
+
+    const clientPosTemp = { ...clientPos };
+    clientPosTemp.x = e.clientX; // 브라우저 왼쪽 상단부터
+    clientPosTemp.y = e.clientY;
+    setClientPos(clientPosTemp);
+    console.log('clientPosTemp', clientPosTemp);
+  };
+
+  const onDrag = e => {
+    const PosTemp = { ...pos };
+    console.log(pos.left, pos.top);
+    // 자신이 위치한 칸반섹션 부터
+    PosTemp.left = e.target.offsetLeft + e.clientX - clientPos.x;
+    PosTemp.top = e.target.offsetTop + e.clientY - clientPos.y;
+    setPos(PosTemp);
+
+    console.log(PosTemp);
+
+    const clientPosTemp = { ...clientPos };
+    clientPosTemp.x = e.clientX;
+    clientPosTemp.y = e.clientY;
+    setClientPos(clientPosTemp);
+  };
+
+  let isClick = false;
+  // 보드판 내용이 쌓이게 만드는 함수...
+  let topPos = idx => {
+    const init = 100;
+    const diff = 90;
+    isClick = true;
+    return idx > 0 ? idx * diff + init : init;
+  };
+
+  const onDragEnd = e => {
+    e.dataTransfer.dropEffect = 'move';
+    // if (!isInsideDragArea(e)) {
+    //   const posTemp = { ...pos };
+    //   posTemp.left = originPos.x;
+    //   posTemp.top = originPos.y;
+    //   setPos(posTemp);
+    // }
+  };
 
   return (
     <div>
@@ -113,10 +207,22 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
         </MyTitle>
       </MyTask>
       {status && <NewTask progress={progress} />}
-      {workflowList.map(el => {
+      {workflowList.map((el, idx) => {
         const startDate = el.createDate.split(':')[0];
         return (
-          <MyTask key={el.createDate}>
+          <MyTaskContainer
+            draggable
+            ref={kanbanRef}
+            key={el.createDate}
+            onDragStart={onDragStart}
+            onDrag={onDrag}
+            onDragEnd={onDragEnd}
+            onDragOver={onDragOver}
+            style={{
+              top: idx > 0 ? topPos(idx) : pos.top,
+              left: pos.left,
+            }}
+          >
             <div>
               <MyContent>{el.content}</MyContent>
               <div>
@@ -131,7 +237,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
               <MyImportanceButton {...el}>{el.importance}</MyImportanceButton>
               <img src={defaultProfile} alt="기본 프로필 이미지" />
             </div>
-          </MyTask>
+          </MyTaskContainer>
         );
       })}
     </div>

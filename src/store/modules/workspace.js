@@ -16,6 +16,12 @@ const initState = {
             endDate: '2023-04-12',
             importance: 'low',
           },
+          {
+            content: '222222222',
+            createDate: '2023-04-01:0001',
+            endDate: '2023-04-12',
+            importance: 'high',
+          },
         ],
         inprogressList: [
           {
@@ -43,7 +49,19 @@ const initState = {
         ],
         doneList: [
           {
-            content: '내용1',
+            content: '1',
+            createDate: '2023-04-01:0005',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            content: '2',
+            createDate: '2023-04-01:0005',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            content: '3',
             createDate: '2023-04-01:0005',
             endDate: '2023-04-12',
             importance: 'low',
@@ -57,8 +75,10 @@ const initState = {
 
 // 액션 타입 정의
 const CREATE = 'workspace/CREATE';
+const DELETE = 'workspace/DELETE';
 const DONE = 'workspace/DONE';
 const BOOKMARK = 'workspace/BOOKMARK';
+const CHANGEORDER = 'workspace/CHANGEORDER';
 const NEWTASK_TODO = 'workflow/NEWTASK_TODO';
 const NEWTASK_PROGRESS = 'workflow/NEWTASK_PROGRESS';
 const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
@@ -70,6 +90,13 @@ export function create(payload) {
   return {
     type: CREATE,
     payload,
+  };
+}
+
+export function deleteItem(id) {
+  return {
+    type: DELETE,
+    id,
   };
 }
 
@@ -141,6 +168,12 @@ export function newDone(payload) {
     },
   };
 }
+export function changeOrder(list) {
+  return {
+    type: CHANGEORDER,
+    list,
+  };
+}
 
 // 리듀서 설정
 export default function workspace(state = initState, action) {
@@ -159,6 +192,8 @@ export default function workspace(state = initState, action) {
           },
         ],
       };
+    case DELETE:
+      return {};
     // case DONE:
     //   return {};
     case BOOKMARK:
@@ -298,6 +333,15 @@ export default function workspace(state = initState, action) {
       return {
         ...state,
         workspaceList: updatedWsList_done,
+      };
+    case CHANGEORDER:
+      return {
+        ...state,
+        workspace: [
+          {
+            workflow: action.list,
+          },
+        ],
       };
     default:
       return state;
