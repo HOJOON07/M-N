@@ -45,7 +45,6 @@ const MyProgressArea = styled.div`
     flex-grow: 1;
     margin: 5px 10px;
     height: 500px;
-    overflow-y: auto;
   }
 `;
 
