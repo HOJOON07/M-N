@@ -6,7 +6,8 @@ import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   changeOrder,
-  deleteTask,
+  deleteItem,
+  // deleteTask,
   newInProgress,
 } from '../../store/modules/workspace';
 
@@ -262,43 +263,35 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
 
   const buttonClickHandler = (createDate, progress) => {
     let payload = {};
-    const workspace = workspaceList.find(workspace => {
+    let selectedItem = null;
+    let workspace = null;
+    for (const ws of workspaceList) {
       let specificProgress;
       if (progress === 'Request') {
-        specificProgress = workspace.workflow.todoList;
+        specificProgress = ws.workflow.todoList;
       } else if (progress === 'In Progress') {
-        specificProgress = workspace.workflow.inprogressList;
+        specificProgress = ws.workflow.inprogressList;
       } else if (progress === 'In Review') {
-        specificProgress = workspace.workflow.inreviewList;
+        specificProgress = ws.workflow.inreviewList;
       } else if (progress === 'Blocked') {
-        specificProgress = workspace.workflow.blockedList;
+        specificProgress = ws.workflow.blockedList;
       } else {
-        specificProgress = workspace.workflow.doneList;
+        specificProgress = ws.workflow.doneList;
       }
-      return specificProgress.some(item => item.createDate === createDate);
-    });
-    if (workspace) {
-      let specificProgress;
-      if (progress === 'Request') {
-        specificProgress = workspace.workflow.todoList;
-      } else if (progress === 'In Progress') {
-        specificProgress = workspace.workflow.inprogressList;
-      } else if (progress === 'In Review') {
-        specificProgress = workspace.workflow.inreviewList;
-      } else if (progress === 'Blocked') {
-        specificProgress = workspace.workflow.blockedList;
-      } else {
-        specificProgress = workspace.workflow.doneList;
-      }
-      const selectedItem = specificProgress.find(
+      selectedItem = specificProgress.find(
         item => item.createDate === createDate
       );
+      if (selectedItem) {
+        workspace = ws;
+        break;
+      }
+    }
+    if (workspace && selectedItem) {
       payload = {
-        workspaceList,
-        selectedItem,
+        workspaceId: workspace.id,
+        selectedId: selectedItem.id,
       };
-      // console.log(payload);
-      dispatch(deleteTask(payload));
+      dispatch(deleteItem(payload));
     }
   };
 

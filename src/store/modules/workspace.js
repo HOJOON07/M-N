@@ -23,7 +23,7 @@ const initState = {
         ],
         inprogressList: [
           {
-            inprogressId: 1,
+            id: 1,
             content: '내용1',
             createDate: '2023-04-01:0002',
             endDate: '2023-04-12',
@@ -74,7 +74,7 @@ const NEWTASK_PROGRESS = 'workflow/NEWTASK_PROGRESS';
 const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
 const NEWTASK_BLOCKED = 'workflow/NEWTASK_BLOCKED';
 const NEWTASK_DONE = 'workflow/NEWTASK_DONE';
-const DELETE_TASK = 'worfkflow/DELETE_TASK';
+// const DELETE_TASK = 'worfkflow/DELETE_TASK';
 
 // 액션 생성 함수 작성
 export function create(payload) {
@@ -84,10 +84,11 @@ export function create(payload) {
   };
 }
 
-export function deleteItem(id) {
+export function deleteItem(payload) {
+  const { workspaceId, selectedId } = payload;
   return {
     type: DELETE,
-    id,
+    payload: { workspaceId, selectedId },
   };
 }
 
@@ -160,17 +161,6 @@ export function newDone(payload) {
   };
 }
 
-export function deleteTask(payload) {
-  const { workspaceList, selectedItem } = payload;
-  return {
-    type: DELETE_TASK,
-    payload: {
-      workspaceList,
-      selectedItem,
-    },
-  };
-}
-
 export function changeOrder(payload) {
   const { newIdx, oldIdx, draggingItem, workspaceId, progress, copyList } =
     payload;
@@ -205,7 +195,7 @@ export default function workspace(state = initState, action) {
         ],
       };
     case DELETE:
-      return {};
+      return { ...state, ...action.payload };
     case BOOKMARK:
       return {
         ...state,
@@ -343,47 +333,6 @@ export default function workspace(state = initState, action) {
       return {
         ...state,
         workspaceList: updatedWsList_done,
-      };
-    // case DELETE_TASK:
-    //   const workspaceList = action.payload.workspaceList;
-    //   const selectedItem = action.payload.selectedItem;
-    //   const selectWS = state.workspaceList.find(workspace => {
-    //     return workspace.id === workspaceList[0].id;
-    //   });
-    //   // console.log('selectWS', selectWS);
-    //   const modifyWS = selectWS.workflow.inprogressList.filter(
-    //     data => data.id !== selectedItem.id
-    //   );
-    //   console.log('selectedItem', selectedItem);
-    //   console.log('selectWS', selectWS.workflow.inprogressList);
-    //   console.log('modifyWS', modifyWS);
-    //   return {
-    //     ...state,
-    //   };
-
-    case DELETE_TASK:
-      const { workspaceId, inprogressId } = action.payload;
-      const selectWS = state.workspaceList.find(
-        workspace => workspace.id === workspaceId
-      );
-      const modifyInprogressList = selectWS.workflow.inprogressList.filter(
-        inprogress => inprogress.id !== inprogressId
-      );
-      const modifyWF = {
-        ...selectWS.workflow,
-        inprogressList: modifyInprogressList,
-      };
-      const modifyWSList = state.workspaceList.map(workspace => {
-        workspace.id === workspaceId
-          ? {
-              ...workspace,
-              workflow: modifyWF,
-            }
-          : workspace;
-      });
-      return {
-        ...state,
-        workspaceList: modifyWSList,
       };
 
     case CHANGEORDER:
