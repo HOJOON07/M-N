@@ -1,3 +1,5 @@
+import Workflow from '../../pages/Workflow';
+
 const initState = {
   workspaceList: [
     {
@@ -8,6 +10,7 @@ const initState = {
       workspace_endDate: '2023-04-01:1111',
       githubRepository: 'https://github.com/0uizi0/test1',
       member: ['qkrtjdwo5662', 'psjj03'],
+      bookmarked: false,
       workflow: {
         todoList: [
           {
@@ -55,7 +58,6 @@ const initState = {
           },
         ],
       },
-      bookmarked: false,
     },
   ],
 };
@@ -65,8 +67,7 @@ const CREATE = 'workspace/CREATE';
 const DELETE = 'workspace/DELETE';
 const DONE = 'workspace/DONE';
 const BOOKMARK = 'workspace/BOOKMARK';
-const CHANGEORDER = 'workspace/CHANGEORDER';
-// NEWTASK 생성 액션 타입
+const CHANGEORDER = 'workflow/CHANGEORDER';
 const NEWTASK_TODO = 'workflow/NEWTASK_TODO';
 const NEWTASK_PROGRESS = 'workflow/NEWTASK_PROGRESS';
 const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
@@ -156,10 +157,19 @@ export function newDone(payload) {
     },
   };
 }
-export function changeOrder(list) {
+export function changeOrder(payload) {
+  const { newIdx, oldIdx, draggingItem, workspaceId, progress, copyList } =
+    payload;
   return {
     type: CHANGEORDER,
-    list,
+    payload: {
+      newIdx,
+      oldIdx,
+      draggingItem,
+      workspaceId,
+      progress,
+      copyList,
+    },
   };
 }
 
@@ -321,15 +331,88 @@ export default function workspace(state = initState, action) {
         workspaceList: updatedWsList_done,
       };
     case CHANGEORDER:
+      const { newIdx, oldIdx, draggingItem, workspaceId, progress, copyList } =
+        action.payload;
+      const workspace = state.workspaceList[workspaceId];
+      const workflow = workspace.workflow;
+      console.log('CHANGEORDER');
+
+      const todoList = [...workflow.todoList];
+      const inprogressList = [...workflow.inprogressList];
+      const inreviewList = [...workflow.inreviewList];
+      const blockedList = [...workflow.blockedList];
+      const doneList = [...workflow.doneList];
+
+      const draggingItemProgress = dragging => {
+        switch (dragging) {
+          case 'Request':
+            return todoList;
+          case 'In Progress':
+            return inprogressList;
+          case 'In Review':
+            return inreviewList;
+          case 'Blocked':
+            return blockedList;
+          case 'Completed':
+            return doneList;
+          default:
+            break;
+        }
+      };
+
+      const deleteList = draggingItemProgress(draggingItem.progress);
+      deleteList.splice(newIdx, 1);
+      console.log('deleteList', deleteList);
+      // 추가하면
+      switch (progress) {
+        case 'Request':
+          console.log('22222', todoList);
+          todoList.splice(oldIdx, 0, draggingItem.item);
+          todoList.splice(newIdx, 1);
+          console.log('33333', todoList);
+          break;
+        case 'In Progress':
+          console.log('22222', progress, state);
+          inprogressList.splice(oldIdx, 0, draggingItem.item);
+          inprogressList.splice(newIdx, 1);
+          break;
+        case 'In Review':
+          console.log('22222', progress, state);
+          inreviewList.splice(newIdx, 0, draggingItem.item);
+          inreviewList.splice(oldIdx, 1);
+          break;
+        case 'Blocked':
+          console.log('22222', progress, state);
+          blockedList.splice(newIdx, 0, draggingItem.item);
+          blockedList.splice(oldIdx, 1);
+          break;
+        case 'Completed':
+          console.log('22222', progress, state);
+          doneList.splice(newIdx, 0, draggingItem.item);
+          doneList.splice(oldIdx, 1);
+          break;
+        default:
+          break;
+      }
       return {
         ...state,
-        workspace: [
-          {
-            workflow: action.list,
+        workspaceList: {
+          ...state.workspaceList,
+          [workspaceId]: {
+            ...workspace,
+            workflow: {
+              ...workflow,
+              todoList: todoList,
+              inprogressList: inprogressList,
+              inreviewList: inreviewList,
+              blockedList: blockedList,
+              doneList: doneList,
+            },
           },
-        ],
+        },
       };
+
     default:
-      return state;
+      return { ...state };
   }
 }

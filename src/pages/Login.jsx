@@ -5,6 +5,9 @@ import mySocialGit from '../images/git.png';
 import mySocialNaver from '../images/naver.png';
 import mySocialKakao from '../images/pngegg.png';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import user from '../store/modules/user';
 
 const MyContainer = styled.section`
   display: flex;
@@ -126,6 +129,28 @@ const MySocial = styled.img`
 
 export default function Login() {
   const navigate = useNavigate();
+  const [msg, setMsg] = useState('');
+  const submit = () => {
+    const userData = {
+      user_id: inputs.id,
+      user_password: inputs.password,
+    };
+    axios
+      .post('http://192.168.0.222:5500/user/login', userData)
+      .then(res => {
+        if (res.status === 200) {
+          gotoWorkSpaceList();
+
+          setMsg('');
+        }
+      })
+      .catch(err => {
+        // setMsg(err));
+        alert('ID 또는 비밀번호가 일치하지 않습니다');
+        console.log(err.response.data, err);
+      });
+  };
+
   const gotoWorkSpaceList = () => {
     navigate('/workspace');
   };
@@ -135,8 +160,8 @@ export default function Login() {
     id: '',
     password: '',
   });
-  const { id, password } = inputs;
 
+  const { id, password } = inputs;
   const vaildId = id.length >= 6 && id.length <= 14;
   const vaildPassword = password.length >= 8 && password.length <= 16;
 
@@ -147,26 +172,27 @@ export default function Login() {
     });
   };
 
-  const handleClick = () => {
-    if (!vaildId) {
-      alert('유효하지 않은 id 입니다.');
-      setInputs({
-        ...inputs,
-        id: '',
-      });
-      inutRef.current[0].focus();
-    } else if (!vaildPassword) {
-      alert('유효하지 않은 password 입니다.');
-      inutRef.current[1].focus();
-      setInputs({
-        ...inputs,
-        password: '',
-      });
-    } else {
-      gotoWorkSpaceList();
-      return alert('로그인 성공!');
-    }
-  };
+  // const handleClick = () => {
+  //   if (!vaildId) {
+  //     alert('유효하지 않은 id 입니다.');
+  //     setInputs({
+  //       ...inputs,
+  //       id: '',
+  //     });
+  //     inutRef.current[0].focus();
+  //   } else if (!vaildPassword) {
+  //     alert('유효하지 않은 password 입니다.');
+  //     inutRef.current[1].focus();
+  //     setInputs({
+  //       ...inputs,
+  //       password: '',
+  //     });
+  //   } else {
+  //     submit();
+  //     gotoWorkSpaceList();
+  //     return alert('로그인 성공!');
+  //   }
+  // };
 
   return (
     <MyContainer>
@@ -203,7 +229,7 @@ export default function Login() {
 
         <MyButton
           type="button"
-          onClick={handleClick}
+          onClick={submit}
           disabled={id.length < 1 && password.length < 1}
         >
           로그인

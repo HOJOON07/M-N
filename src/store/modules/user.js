@@ -1,3 +1,4 @@
+//초기상태
 const initState = [
   {
     id: 0,
@@ -13,10 +14,12 @@ const initState = [
   },
 ];
 
+// 액션타입설정
 const LOGIN = 'user/LOGIN';
 const SINGUP = 'user/SIGNUP';
 const LOGOUT = 'user/LOGOUT';
 
+//액션 생성함수
 export function login(userInfo) {
   return {
     type: LOGIN,
@@ -37,7 +40,7 @@ export function logout(userInfo) {
     payload: userInfo,
   };
 }
-
+// Reducer
 export default function user(state = initState, action) {
   switch (action.type) {
     case LOGIN:

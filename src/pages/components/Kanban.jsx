@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import menu from '../../assets/images/menu.png';
+import defaultProfile from '../../assets/images/default-profile.png';
 import KanbanProgress from './KanbanProgress';
+import NewTask from './NewTask';
 
 // Color Variables
 const backColor = '#eef1f5';
@@ -42,7 +45,6 @@ const MyProgressArea = styled.div`
     flex-grow: 1;
     margin: 5px 10px;
     height: 500px;
-    overflow-y: auto;
   }
 `;
 
@@ -51,6 +53,7 @@ export default function Kanban() {
   const workspaceList = useSelector(state => state.workspace.workspaceList)[0];
   const workflowList = workspaceList.workflow;
   const iconList = ['✉️', '🔨', '📌', '🔒', '🎉'];
+
   return (
     <div>
       <MyTitleArea>
@@ -84,6 +87,8 @@ export default function Kanban() {
           icon={iconList[4]}
         />
       </MyProgressArea>
+      {/* test */}
+      <NewTask />
     </div>
   );
 }

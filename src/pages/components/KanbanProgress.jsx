@@ -4,7 +4,7 @@ import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
 import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeOrder } from '../../store/modules/workspace';
+import { changeOrder, newInProgress } from '../../store/modules/workspace';
 
 // Color Variables
 const contentColor = '#fff';
@@ -75,7 +75,7 @@ const MyTask = styled.div`
 `;
 
 const MyTaskContainer = styled.div`
-  position: absolute;
+  position: relative;
   border: 1px solid #bcc2d1;
   border-radius: 5px;
   background-color: ${contentColor};
@@ -128,64 +128,127 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
   const [originPos, setOriginPos] = useState({ x: 0, y: 0 });
   const [clientPos, setClientPos] = useState({ x: 0, y: 0 });
   const [pos, setPos] = useState({ top: 100, left: 0 });
-
-  const kanbanRef = useRef();
+  const draggingRef = useRef(null);
+  const draggingOverRef = useRef(null);
   const dispatch = useDispatch();
 
   const workspaceList = useSelector(state => state.workspace.workspaceList);
-
   const onDragOver = e => {
     e.preventDefault();
   };
 
-  const onDragStart = e => {
-    e.dataTransfer.effectAllowed = 'move';
-    const originPosTemp = { ...originPos };
-    originPosTemp.x = e.target.offsetLeft; //칸반보드 컨텐츠 부분부터
-    originPosTemp.y = e.target.offsetTop;
-    setOriginPos(originPosTemp);
-    console.log(originPosTemp);
+  // const onDragStart = e => {
+  //   e.dataTransfer.effectAllowed = 'move';
+  //   const originPosTemp = { ...originPos };
+  //   originPosTemp.x = e.target.offsetLeft; //칸반보드 컨텐츠 부분부터
+  //   originPosTemp.y = e.target.offsetTop;
+  //   setOriginPos(originPosTemp);
+  //   console.log(originPosTemp);
 
-    const clientPosTemp = { ...clientPos };
-    clientPosTemp.x = e.clientX; // 브라우저 왼쪽 상단부터
-    clientPosTemp.y = e.clientY;
-    setClientPos(clientPosTemp);
-    console.log('clientPosTemp', clientPosTemp);
+  //   const clientPosTemp = { ...clientPos };
+  //   clientPosTemp.x = e.clientX; // 브라우저 왼쪽 상단부터
+  //   clientPosTemp.y = e.clientY;
+  //   setClientPos(clientPosTemp);
+  //   console.log('clientPosTemp', clientPosTemp);
+  // };
+
+  // const onDrag = e => {
+  //   const PosTemp = { ...pos };
+  //   console.log(pos.left, pos.top);
+  //   // 자신이 위치한 칸반섹션 부터
+  //   PosTemp.left = e.target.offsetLeft + e.clientX - clientPos.x;
+  //   PosTemp.top = e.target.offsetTop + e.clientY - clientPos.y;
+  //   setPos(PosTemp);
+
+  //   console.log(PosTemp);
+
+  //   const clientPosTemp = { ...clientPos };
+  //   clientPosTemp.x = e.clientX;
+  //   clientPosTemp.y = e.clientY;
+  //   setClientPos(clientPosTemp);
+  // };
+
+  // let isClick = false;
+  // // 보드판 내용이 쌓이게 만드는 함수...
+  // let topPos = idx => {
+  //   const init = 100;
+  //   const diff = 90;
+  //   isClick = true;
+  //   return idx > 0 ? idx * diff + init : init;
+  // };
+
+  // const onDragEnd = e => {
+  //   e.dataTransfer.dropEffect = 'move';
+  //   // if (!isInsideDragArea(e)) {
+  //   //   const posTemp = { ...pos };
+  //   //   posTemp.left = originPos.x;
+  //   //   posTemp.top = originPos.y;
+  //   //   setPos(posTemp);
+  //   // }
+  // };
+
+  // 드래그앤드롭 시안2
+  const onDragStart = (e, idx, progress) => {
+    console.log('onDragging');
+    draggingRef.current = idx;
+    // console.log('  draggingRef.current', draggingRef.current);
+    // console.log(' onDragStart progress', progress); //드롭된 놈
   };
 
-  const onDrag = e => {
-    const PosTemp = { ...pos };
-    console.log(pos.left, pos.top);
-    // 자신이 위치한 칸반섹션 부터
-    PosTemp.left = e.target.offsetLeft + e.clientX - clientPos.x;
-    PosTemp.top = e.target.offsetTop + e.clientY - clientPos.y;
-    setPos(PosTemp);
+  const onDragging = (e, idx, progress) => {
+    console.log('onDragging');
+    draggingOverRef.current = idx;
+    // const copyList = [...workflowList];
+    // const draggingItem = copyList[draggingOverRef.current];
+    // console.log('draggingOverRef.current ', draggingOverRef.current);
+    // console.log(' onDragging progress', progress); //드랍위치에 있는 놈
+    // copyList.splice(draggingRef.current, 1);
+    // copyList.splice(draggingOverRef.current, 0, draggingItem);
 
-    console.log(PosTemp);
+    // let newIdx = draggingOverRef.current;
+    // let oldIdx = draggingItem.current;
+    // draggingRef.current = draggingOverRef.current;
+    // draggingOverRef.current = null;
 
-    const clientPosTemp = { ...clientPos };
-    clientPosTemp.x = e.clientX;
-    clientPosTemp.y = e.clientY;
-    setClientPos(clientPosTemp);
+    // dispatch(
+    //   changeOrder({
+    //     newIdx,
+    //     oldIdx,
+    //     draggingItem,
+    //     workspaceId: 0,
+    //     progress,
+    //     copyList,
+    //   })
+    // );
   };
 
-  let isClick = false;
-  // 보드판 내용이 쌓이게 만드는 함수...
-  let topPos = idx => {
-    const init = 100;
-    const diff = 90;
-    isClick = true;
-    return idx > 0 ? idx * diff + init : init;
-  };
+  const onDrop = (e, idx, progress) => {
+    console.log('onDrop');
+    const copyList = [...workflowList];
+    const draggingItem = {
+      progress: progress,
+      item: copyList[draggingOverRef.current],
+    };
+    // console.log('draggingOverRef.current ', draggingOverRef.current);
+    // console.log(' onDragging progress', progress); //드랍위치에 있는 놈
+    // copyList.splice(draggingRef.current, 1);
+    // copyList.splice(draggingOverRef.current, 0, draggingItem);
 
-  const onDragEnd = e => {
-    e.dataTransfer.dropEffect = 'move';
-    // if (!isInsideDragArea(e)) {
-    //   const posTemp = { ...pos };
-    //   posTemp.left = originPos.x;
-    //   posTemp.top = originPos.y;
-    //   setPos(posTemp);
-    // }
+    let newIdx = draggingOverRef.current;
+    let oldIdx = draggingItem.current;
+    draggingRef.current = draggingOverRef.current;
+    draggingOverRef.current = null;
+
+    dispatch(
+      changeOrder({
+        newIdx,
+        oldIdx,
+        draggingItem,
+        workspaceId: 0,
+        progress,
+        copyList,
+      })
+    );
   };
 
   /** 버튼 클릭 시 특정 createDate에 해당하는 배열 찾기 함수 */
@@ -255,17 +318,20 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
         const startDate = el.createDate.split(':')[0];
         return (
           <MyTaskContainer
+            progress={progress}
             draggable
-            ref={kanbanRef}
             key={el.createDate}
-            onDragStart={onDragStart}
-            onDrag={onDrag}
-            onDragEnd={onDragEnd}
+            // onDragStart={onDragStart}
+            // onDrag={onDrag}
+            // onDragEnd={onDragEnd}
             onDragOver={onDragOver}
-            style={{
-              top: idx > 0 ? topPos(idx) : pos.top,
-              left: pos.left,
-            }}
+            // style={{
+            //   top: idx > 0 ? topPos(idx) : pos.top,
+            //   left: pos.left,
+            // }}
+            onDragStart={() => onDragStart(el, idx, progress)}
+            onDragEnter={() => onDragging(el, idx, progress)}
+            onDrop={() => onDrop(el, idx, progress)}
           >
             <div>
               <MyContent>{el.content}</MyContent>
