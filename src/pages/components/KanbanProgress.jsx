@@ -132,6 +132,8 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
   const kanbanRef = useRef();
   const dispatch = useDispatch();
 
+  const workspaceList = useSelector(state => state.workspace.workspaceList);
+
   const onDragOver = e => {
     e.preventDefault();
   };
@@ -186,6 +188,33 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
     // }
   };
 
+  /** 버튼 클릭 시 특정 createDate에 해당하는 배열 찾기 함수 */
+  const createDateClickHandler = (createDate, progress) => {
+    buttonClickHandler(createDate, progress);
+  };
+
+  const buttonClickHandler = (createDate, progress) => {
+    // console.log(progress);
+
+    if (progress === 'Request') {
+      const specificProgress = workspace.workflow.todoList;
+    }
+
+    const workspace = workspaceList.find(workspace =>
+      // blockedList가 고정되어있어서 나머지 진행단계를 누르면 에러 발생. blockedList가 아니라 단계별 접근 필요
+      workspace.workflow.blockedList.some(
+        item => item.createDate === createDate
+      )
+    );
+    if (workspace) {
+      // blockedList가 고정되어있어서 나머지 진행단계를 누르면 에러 발생. blockedList가 아니라 단계별 접근 필요
+      const blockedItem = workspace.workflow.blockedList.find(
+        item => item.createDate === createDate
+      );
+      console.log(blockedItem);
+    }
+  };
+
   return (
     <div>
       <MyProgressTitle>
@@ -227,7 +256,9 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
               <MyContent>{el.content}</MyContent>
               <div>
                 <span>✏️</span>
-                <span>❌</span>
+                <span onClick={createDateClickHandler(el.createDate, progress)}>
+                  ❌
+                </span>
               </div>
             </div>
             <MyCreateData>

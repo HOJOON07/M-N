@@ -61,11 +61,18 @@ const DELETE = 'workspace/DELETE';
 const DONE = 'workspace/DONE';
 const BOOKMARK = 'workspace/BOOKMARK';
 const CHANGEORDER = 'workspace/CHANGEORDER';
+// NEWTASK 생성 액션 타입
 const NEWTASK_TODO = 'workflow/NEWTASK_TODO';
 const NEWTASK_PROGRESS = 'workflow/NEWTASK_PROGRESS';
 const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
 const NEWTASK_BLOCKED = 'workflow/NEWTASK_BLOCKED';
-const NEWTASK_DONE = 'workflow/DONE';
+const NEWTASK_DONE = 'workflow/NEWTASK_DONE';
+// NEWTASK 삭제 액션 타입
+const DELETE_TODO = 'workflow/DELETE_TODO';
+// const MODIFY_PROGRESS = 'workflow/MODIFY_PROGRESS';
+// const MODIFY_REVIEW = 'workflow/MODIFY_REVIEW';
+// const MODIFY_BLOCKED = 'workflow/MODIFY_BLOCKED';
+// const MODIFY_DONE = 'workflow/MODIFY_DONE';
 
 // 액션 생성 함수 작성
 export function create(payload) {
@@ -154,6 +161,12 @@ export function changeOrder(list) {
   return {
     type: CHANGEORDER,
     list,
+  };
+}
+export function deleteTodo(payload) {
+  return {
+    type: DELETE_TODO,
+    payload,
   };
 }
 
@@ -316,6 +329,7 @@ export default function workspace(state = initState, action) {
         ...state,
         workspaceList: updatedWsList_done,
       };
+    case DELETE_TODO:
     case CHANGEORDER:
       return {
         ...state,
