@@ -4,7 +4,11 @@ import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
 import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeOrder, newInProgress } from '../../store/modules/workspace';
+import {
+  changeOrder,
+  deleteTask,
+  newInProgress,
+} from '../../store/modules/workspace';
 
 // Color Variables
 const contentColor = '#fff';
@@ -257,6 +261,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
   };
 
   const buttonClickHandler = (createDate, progress) => {
+    let payload = {};
     const workspace = workspaceList.find(workspace => {
       let specificProgress;
       if (progress === 'Request') {
@@ -288,8 +293,12 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
       const selectedItem = specificProgress.find(
         item => item.createDate === createDate
       );
-      console.log(selectedItem);
-      // console.log(workspace.workflow);
+      payload = {
+        workspaceList,
+        selectedItem,
+      };
+      // console.log(payload);
+      dispatch(deleteTask(payload));
     }
   };
 
