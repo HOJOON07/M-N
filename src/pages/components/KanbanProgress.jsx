@@ -142,89 +142,15 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
     e.preventDefault();
   };
 
-  // const onDragStart = e => {
-  //   e.dataTransfer.effectAllowed = 'move';
-  //   const originPosTemp = { ...originPos };
-  //   originPosTemp.x = e.target.offsetLeft; //칸반보드 컨텐츠 부분부터
-  //   originPosTemp.y = e.target.offsetTop;
-  //   setOriginPos(originPosTemp);
-  //   console.log(originPosTemp);
-
-  //   const clientPosTemp = { ...clientPos };
-  //   clientPosTemp.x = e.clientX; // 브라우저 왼쪽 상단부터
-  //   clientPosTemp.y = e.clientY;
-  //   setClientPos(clientPosTemp);
-  //   console.log('clientPosTemp', clientPosTemp);
-  // };
-
-  // const onDrag = e => {
-  //   const PosTemp = { ...pos };
-  //   console.log(pos.left, pos.top);
-  //   // 자신이 위치한 칸반섹션 부터
-  //   PosTemp.left = e.target.offsetLeft + e.clientX - clientPos.x;
-  //   PosTemp.top = e.target.offsetTop + e.clientY - clientPos.y;
-  //   setPos(PosTemp);
-
-  //   console.log(PosTemp);
-
-  //   const clientPosTemp = { ...clientPos };
-  //   clientPosTemp.x = e.clientX;
-  //   clientPosTemp.y = e.clientY;
-  //   setClientPos(clientPosTemp);
-  // };
-
-  // let isClick = false;
-  // // 보드판 내용이 쌓이게 만드는 함수...
-  // let topPos = idx => {
-  //   const init = 100;
-  //   const diff = 90;
-  //   isClick = true;
-  //   return idx > 0 ? idx * diff + init : init;
-  // };
-
-  // const onDragEnd = e => {
-  //   e.dataTransfer.dropEffect = 'move';
-  //   // if (!isInsideDragArea(e)) {
-  //   //   const posTemp = { ...pos };
-  //   //   posTemp.left = originPos.x;
-  //   //   posTemp.top = originPos.y;
-  //   //   setPos(posTemp);
-  //   // }
-  // };
-
   // 드래그앤드롭 시안2
   const onDragStart = (e, idx, progress) => {
     console.log('onDragging');
     draggingRef.current = idx;
-    // console.log('  draggingRef.current', draggingRef.current);
-    // console.log(' onDragStart progress', progress); //드롭된 놈
   };
 
   const onDragging = (e, idx, progress) => {
     console.log('onDragging');
     draggingOverRef.current = idx;
-    // const copyList = [...workflowList];
-    // const draggingItem = copyList[draggingOverRef.current];
-    // console.log('draggingOverRef.current ', draggingOverRef.current);
-    // console.log(' onDragging progress', progress); //드랍위치에 있는 놈
-    // copyList.splice(draggingRef.current, 1);
-    // copyList.splice(draggingOverRef.current, 0, draggingItem);
-
-    // let newIdx = draggingOverRef.current;
-    // let oldIdx = draggingItem.current;
-    // draggingRef.current = draggingOverRef.current;
-    // draggingOverRef.current = null;
-
-    // dispatch(
-    //   changeOrder({
-    //     newIdx,
-    //     oldIdx,
-    //     draggingItem,
-    //     workspaceId: 0,
-    //     progress,
-    //     copyList,
-    //   })
-    // );
   };
 
   const onDrop = (e, idx, progress) => {
@@ -234,10 +160,6 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
       progress: progress,
       item: copyList[draggingOverRef.current],
     };
-    // console.log('draggingOverRef.current ', draggingOverRef.current);
-    // console.log(' onDragging progress', progress); //드랍위치에 있는 놈
-    // copyList.splice(draggingRef.current, 1);
-    // copyList.splice(draggingOverRef.current, 0, draggingItem);
 
     let newIdx = draggingOverRef.current;
     let oldIdx = draggingItem.current;
