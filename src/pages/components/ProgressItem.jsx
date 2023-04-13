@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import defaultProfile from '../../assets/images/default-profile.png';
 import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { addList, subtractList } from '../../store/modules/workspace';
-import { deleteItem } from '../../store/modules/workspace';
+import { deleteItem, modifyItem } from '../../store/modules/workspace';
 import styled from 'styled-components';
 import { useRef } from 'react';
 
@@ -93,9 +93,18 @@ const MyImportanceButton = styled.button`
 `;
 
 export default function ProgressItem({ workflowList, item, id, progress }) {
-  const [status, setStatus] = useState(false);
+  const [modify, setModify] = useState(false);
   const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
+  const contentRef = useRef();
+  const endDateRef = useRef();
+  let contentInput, endDateInput, checkedImportance;
+  const selectList = ['high', 'medium', 'low'];
+  const [selected, setSelected] = useState(item.importance);
+
+  const selectHandler = e => {
+    setSelected(e.target.value);
+  };
   const selectedDragItem = useRef(null);
   const droppedItem = useRef(null);
 
@@ -176,7 +185,8 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       }
     }
   };
-  /** 버튼 클릭 시 특정 createDate에 해당하는 배열 찾기 함수 */
+  
+/** 버튼 클릭 시 특정 id에 해당하는 배열 찾기 함수 */
   const createDateClickHandler = (id, progress) => {
     buttonClickHandler(id, progress);
   };
@@ -212,7 +222,85 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       dispatch(deleteItem(payload));
     }
   };
+
+  const updateContentClickHandler = (id, progress) => {
+    updateHandler(id, progress);
+  };
+
+  const updateHandler = (id, progress) => {
+    let payload = {};
+    let selectedItem = null;
+    let workspace = null;
+    for (const ws of workspaceList) {
+      let specificProgress;
+      if (progress === 'Request') {
+        specificProgress = ws.workflow.todoList;
+      } else if (progress === 'In Progress') {
+        specificProgress = ws.workflow.inprogressList;
+      } else if (progress === 'In Review') {
+        specificProgress = ws.workflow.inreviewList;
+      } else if (progress === 'Blocked') {
+        specificProgress = ws.workflow.blockedList;
+      } else {
+        specificProgress = ws.workflow.doneList;
+      }
+      selectedItem = specificProgress.find(item => item.id === id);
+      if (selectedItem) {
+        workspace = ws;
+        break;
+      }
+    }
+
+    if (workspace && selectedItem) {
+      if (modify) {
+        // useRef 값 받아오기
+        contentInput = contentRef.current.value;
+        endDateInput = endDateRef.current.value;
+        checkedImportance = selected;
+      }
+      payload = {
+        workspaceId: workspace.id,
+        selectedItem: selectedItem,
+        content: contentInput,
+        endDate: endDateInput,
+        importance: checkedImportance,
+        progress,
+      };
+      if (modify) dispatch(modifyItem(payload));
+    }
+  };
   const startDate = item.createDate.split(':')[0];
+
+  let contentSpace, dateSpace, importantSpace;
+  if (modify === false) {
+    contentSpace = <MyContent>{item.content}</MyContent>;
+    dateSpace = (
+      <MyCreateData>
+        {startDate} ~ {item.endDate}
+      </MyCreateData>
+    );
+    importantSpace = (
+      <MyImportanceButton {...item}>{item.importance}</MyImportanceButton>
+    );
+  } else {
+    contentSpace = <input defaultValue={item.content} ref={contentRef} />;
+    dateSpace = (
+      <input type="date" defaultValue={item.endDate} ref={endDateRef} />
+    );
+
+    importantSpace = (
+      <div>
+        <select onChange={selectHandler} value={selected}>
+          {selectList.map(item => (
+            <option value={item} key={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+
   return (
     <MyTaskContainer
       id={id}
@@ -224,9 +312,16 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       onDragEnter={findDropItem}
     >
       <div key={id}>
-        <MyContent>{item.content}</MyContent>
+        {contentSpace}
         <div>
-          <span>✏️</span>
+          <span
+            onClick={() => {
+              updateContentClickHandler(id, progress);
+              setModify(state => !state);
+            }}
+          >
+            ✏️
+          </span>
           <span
             onClick={() => {
               createDateClickHandler(id, progress);
@@ -235,11 +330,9 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
             ❌
           </span>
         </div>
-        <MyCreateData>
-          {startDate} ~ {item.endDate}
-        </MyCreateData>
+        {dateSpace}
         <div>
-          <MyImportanceButton {...item}>{item.importance}</MyImportanceButton>
+          {importantSpace}
           <img src={defaultProfile} alt="기본 프로필 이미지" />
         </div>
       </div>

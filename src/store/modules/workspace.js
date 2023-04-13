@@ -23,7 +23,7 @@ const initState = {
             content: '내용2',
             createDate: '2023-04-01:0001',
             endDate: '2023-04-12',
-            importance: 'low',
+            importance: 'high',
           },
           {
             id: '003',
@@ -39,7 +39,7 @@ const initState = {
             content: '내용2',
             createDate: '2023-04-01:0002',
             endDate: '2023-04-12',
-            importance: 'low',
+            importance: 'medium',
           },
           {
             id: '012',
@@ -93,6 +93,7 @@ const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
 const NEWTASK_BLOCKED = 'workflow/NEWTASK_BLOCKED';
 const NEWTASK_DONE = 'workflow/NEWTASK_DONE';
 // const DELETE_TASK = 'worfkflow/DELETE_TASK';
+const MODIFY_TASK = 'workflow/MODIFY_TASK';
 
 const ADD_LIST = 'workflow/ADD_LIST';
 const SUBTRACT_LIST = 'workflow/SUBTRACT_LIST';
@@ -121,6 +122,13 @@ export function deleteItem(payload) {
   return {
     type: DELETE,
     payload: { workspaceId, selectedId },
+  };
+}
+
+export function modifyItem(payload) {
+  return {
+    type: MODIFY_TASK,
+    payload,
   };
 }
 
@@ -213,6 +221,60 @@ export default function workspace(state = initState, action) {
     case DELETE:
       console.log(action.payload);
       return { ...state, ...action.payload };
+    case MODIFY_TASK:
+      let {
+        workspaceId,
+        selectedItem,
+        content,
+        endDate,
+        importance,
+        progress,
+      } = action.payload;
+
+      switch (progress) {
+        case 'Request':
+          progress = 'todoList';
+          break;
+        case 'In Progress':
+          progress = 'inprogressList';
+          break;
+        case 'In Review':
+          progress = 'inreviewList';
+          break;
+        case 'Blocked':
+          progress = 'blockedList';
+          break;
+        case 'Completed':
+          progress = 'doneList';
+          break;
+        default:
+          break;
+      }
+
+      const copyList = [...state.workspaceList[workspaceId].workflow[progress]];
+      const findIndex = copyList.findIndex(el => el.id === selectedItem.id);
+      const newTask = {
+        content,
+        endDate,
+        importance,
+        id: copyList[findIndex].id,
+        createDate: copyList[findIndex].createDate,
+      };
+
+      copyList.splice(findIndex, 1, newTask);
+
+      return {
+        ...state,
+        workspaceList: [
+          {
+            ...state.workspaceList[workspaceId],
+            workflow: {
+              ...state.workspaceList[workspaceId].workflow,
+              [progress]: copyList,
+            },
+          },
+        ],
+      };
     case BOOKMARK:
       return {
         ...state,
