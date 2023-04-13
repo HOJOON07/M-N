@@ -104,8 +104,8 @@ export function subtractList(subListType, selectedDragItem, subList) {
   };
 }
 
-export function addList(addListType, item, addList) {
-  return { type: ADD_LIST, payload: { addListType, item, addList } };
+export function addList(addListType, item, addList, dropItem) {
+  return { type: ADD_LIST, payload: { addListType, item, addList, dropItem } };
 }
 
 // 액션 생성 함수 작성
@@ -392,7 +392,7 @@ export default function workspace(state = initState, action) {
 
     case ADD_LIST:
       console.log('ADDLIST');
-      let { addListType, item, addList } = action.payload;
+      let { addListType, item, addList, dropItem } = action.payload;
 
       switch (addListType) {
         case 'Request':
@@ -412,6 +412,8 @@ export default function workspace(state = initState, action) {
           break;
         default:
       }
+
+      console.log('dsdasfafsfasfasfsa', dropItem);
       const updateAddList = [
         ...state.workspaceList[0].workflow[addListType].filter(
           i => i.id !== item.id

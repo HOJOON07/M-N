@@ -21,8 +21,8 @@ const MyNewTask = styled.div`
   border: 1px solid ${subColor};
   border-radius: 5px;
   background-color: ${contentColor};
-  padding: 10px 13px 42px;
-  width: 84%;
+  padding: 10px 10px 42px;
+  /* width: 84%; */
 
   margin-bottom: 15px;
 
@@ -35,13 +35,22 @@ const MyTop = styled.div`
   justify-content: space-between;
   display: flex;
 `;
+
+const MyCalendarContainer = styled.div`
+  /* display: flex;
+  justify-content: center;
+  flex-direction: column; */
+`;
+const MyCalenderSpan = styled.span``;
+
 const MyCalendar = styled.input`
   width: 100px;
-  font-size: 10px;
+  font-size: 12px;
+  margin-bottom: 5px;
 `;
 
 const MyContent = styled.input`
-  width: 90%;
+  width: 80%;
   height: 60px;
 `;
 const MyBottom = styled.div`
@@ -83,6 +92,7 @@ const MySubmitButton = styled.button`
 export default function NewTask({ progress }) {
   const contentRef = useRef();
   const dispatch = useDispatch();
+  const startDateRef = useRef();
   const endDateRef = useRef();
   const [importance, setImportance] = useState('');
   const handleImportanceChange = e => {
@@ -95,6 +105,7 @@ export default function NewTask({ progress }) {
         id: Date(),
         content: contentRef.current.value,
         createDate: Date(),
+        startDate: startDateRef.current.value, // 시작날짜 추가
         endDate: endDateRef.current.value,
         importance: importance,
       },
@@ -114,14 +125,25 @@ export default function NewTask({ progress }) {
       <MyTop>
         <img
           src={defaultProfile}
-          style={{ width: '20px', height: '20px' }}
+          style={{ width: '40px', height: '40px' }}
           alt="기본 프로필 이미지"
         />
-        <MyCalendar type="date" ref={endDateRef} />
+        <MyCalendarContainer>
+          <MyCalenderSpan>시작일 : </MyCalenderSpan>
+          <MyCalendar required type="date" ref={startDateRef} />
+          <br />
+          <MyCalenderSpan>종료일 : </MyCalenderSpan>
+          <MyCalendar required type="date" ref={endDateRef} />
+        </MyCalendarContainer>
       </MyTop>
-      <div>
-        <MyContent type="textarea" ref={contentRef} placeholder="Contents" />
-      </div>
+
+      <MyContent
+        required
+        type="textarea"
+        ref={contentRef}
+        placeholder="Contents"
+      />
+
       <MyBottom>
         <input
           type="radio"

@@ -97,6 +97,8 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
   const selectedDragItem = useRef(null);
+  const droppedItem = useRef(null);
+
   //react dnd
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: '1',
@@ -115,7 +117,12 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
             subtractList(item.progress, selectedDragItem.current, subtractLists)
           );
           dispatch(
-            addList(dropResult.name, selectedDragItem.current, addLists)
+            addList(
+              dropResult.name,
+              selectedDragItem.current,
+              addLists,
+              droppedItem.current
+            )
           );
         }
       }
@@ -144,6 +151,31 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     }
   };
 
+  const findDropItem = e => {
+    let dropItem = null;
+    for (const ws of workspaceList) {
+      let specificProgress;
+      if (progress === 'Request') {
+        specificProgress = ws.workflow.todoList;
+      } else if (progress === 'In Progress') {
+        specificProgress = ws.workflow.inprogressList;
+      } else if (progress === 'In Review') {
+        specificProgress = ws.workflow.inreviewList;
+      } else if (progress === 'Blocked') {
+        specificProgress = ws.workflow.blockedList;
+      } else {
+        specificProgress = ws.workflow.doneList;
+      }
+      // console.log(e.target.id);
+
+      dropItem = specificProgress.find(item => item.id !== e.target.id);
+
+      if (dropItem) {
+        droppedItem.current = dropItem;
+        console.log(droppedItem.current, 'dsds');
+      }
+    }
+  };
   /** 버튼 클릭 시 특정 createDate에 해당하는 배열 찾기 함수 */
   const createDateClickHandler = (id, progress) => {
     buttonClickHandler(id, progress);
@@ -183,11 +215,13 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   const startDate = item.createDate.split(':')[0];
   return (
     <MyTaskContainer
+      id={id}
       ref={dragRef}
       progress={progress}
       draggable
       key={id}
       onDragStart={() => findClickItem(id, progress)}
+      onDragEnter={findDropItem}
     >
       <div key={id}>
         <MyContent>{item.content}</MyContent>
