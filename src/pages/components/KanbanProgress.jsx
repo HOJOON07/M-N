@@ -1,15 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
 import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  changeOrder,
-  deleteItem,
-  // deleteTask,
-  newInProgress,
-} from '../../store/modules/workspace';
+import { useDrag, useDrop } from 'react-dnd';
+import { addList, subtractList } from '../../store/modules/workspace';
+import { deleteItem } from '../../store/modules/workspace';
 
 // Color Variables
 const contentColor = '#fff';
@@ -129,53 +126,104 @@ const MyCreateData = styled.p`
 
 export default function KanbanProgress({ workflowList, progress, icon }) {
   const [status, setStatus] = useState(false);
-  //Workflow Drag
-  const [originPos, setOriginPos] = useState({ x: 0, y: 0 });
-  const [clientPos, setClientPos] = useState({ x: 0, y: 0 });
-  const [pos, setPos] = useState({ top: 100, left: 0 });
-  const draggingRef = useRef(null);
-  const draggingOverRef = useRef(null);
+  const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
 
-  const workspaceList = useSelector(state => state.workspace.workspaceList);
-  const onDragOver = e => {
-    e.preventDefault();
-  };
-
-  // 드래그앤드롭 시안2
-  const onDragStart = (e, idx, progress) => {
-    console.log('onDragging');
-    draggingRef.current = idx;
-  };
-
-  const onDragging = (e, idx, progress) => {
-    console.log('onDragging');
-    draggingOverRef.current = idx;
-  };
-
-  const onDrop = (e, idx, progress) => {
-    console.log('onDrop');
-    const copyList = [...workflowList];
-    const draggingItem = {
+  // react dnd
+  const [{ isDragging }, dragRef] = useDrag(() => ({
+    type: '1',
+    item: {
+      workflowList: workflowList,
       progress: progress,
-      item: copyList[draggingOverRef.current],
-    };
+    },
+    collect: monitor => ({ isDragging: monitor.isDragging() }),
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult();
+      console.log('선택된 프로그레스', item); // 선택 프로그레스
+      if (dropResult) {
+        console.log('드롭된 프로그레스', dropResult.name); // 드롭 프로그레스
 
-    let newIdx = draggingOverRef.current;
-    let oldIdx = draggingItem.current;
-    draggingRef.current = draggingOverRef.current;
-    draggingOverRef.current = null;
+        const subtractLists = item.workflowList; // 빼줄 리스트
+        const addLists = dropResult.list; // 더해줄 리스트
 
-    dispatch(
-      changeOrder({
-        newIdx,
-        oldIdx,
-        draggingItem,
-        workspaceId: 0,
-        progress,
-        copyList,
-      })
-    );
+        // 에러
+        dispatch(subtractList(item.progress, subtractLists));
+        if (selectedDragItem)
+          dispatch(addList(dropResult.name, selectedDragItem, addLists));
+
+        switch (dropResult.item.progress) {
+          case 'Request':
+            return;
+          case 'In Progress':
+            break;
+          case 'In Review':
+            break;
+          case 'Blocked':
+            break;
+          case 'Completed':
+            break;
+          default:
+            break;
+        }
+      }
+    },
+  }));
+
+  const [{ canDrop, isOver }, drop] = useDrop({
+    accept: '1',
+    drop: item => {
+      let list = [];
+      switch (progress) {
+        case 'Request':
+          list = workspaceList[0].workflow.todoList;
+          break;
+        case 'In Progress':
+          list = workspaceList[0].workflow.inprogressList;
+          break;
+        case 'In Review':
+          list = workspaceList[0].workflow.inreviewList;
+          break;
+        case 'Blocked':
+          list = workspaceList[0].workflow.blockedList;
+          break;
+        case 'Completed':
+          list = workspaceList[0].workflow.doneList;
+          break;
+        default:
+          break;
+      }
+      return { item, name: progress, list: list };
+    },
+    collect: monitor => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
+  let selectedDragItem = null;
+  const findClickItem = (createDate, progress) => {
+    let selectedItem = null;
+    for (const ws of workspaceList) {
+      let specificProgress;
+      if (progress === 'Request') {
+        specificProgress = ws.workflow.todoList;
+      } else if (progress === 'In Progress') {
+        specificProgress = ws.workflow.inprogressList;
+      } else if (progress === 'In Review') {
+        specificProgress = ws.workflow.inreviewList;
+      } else if (progress === 'Blocked') {
+        specificProgress = ws.workflow.blockedList;
+      } else {
+        specificProgress = ws.workflow.doneList;
+      }
+      selectedItem = specificProgress.find(
+        item => item.createDate === createDate
+      );
+      if (selectedItem) {
+        console.log(selectedItem, 'selectedItem');
+        // 선택된 아이템 을 가지고..?
+        selectedDragItem = selectedItem;
+      }
+    }
   };
 
   /** 버튼 클릭 시 특정 createDate에 해당하는 배열 찾기 함수 */
@@ -216,7 +264,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
   };
 
   return (
-    <div>
+    <div ref={drop}>
       <MyProgressTitle>
         <div>
           <p>{icon}</p>
@@ -240,20 +288,13 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
         const startDate = el.createDate.split(':')[0];
         return (
           <MyTaskContainer
+            id={el.createDate}
             progress={progress}
             draggable
+            ref={dragRef}
+            style={{ opacity: isDragging ? '.5' : '1' }}
+            onDragStart={() => findClickItem(el.createDate, progress)}
             key={el.id}
-            // onDragStart={onDragStart}
-            // onDrag={onDrag}
-            // onDragEnd={onDragEnd}
-            onDragOver={onDragOver}
-            // style={{
-            //   top: idx > 0 ? topPos(idx) : pos.top,
-            //   left: pos.left,
-            // }}
-            onDragStart={() => onDragStart(el, idx, progress)}
-            onDragEnter={() => onDragging(el, idx, progress)}
-            onDrop={() => onDrop(el, idx, progress)}
           >
             <div>
               <MyContent>{el.content}</MyContent>
