@@ -28,9 +28,9 @@ const initState = {
         ],
         inprogressList: [
           {
-            id: 1,
+            id: 6,
             content: '1',
-            createDate: '2023-04-01:0002',
+            createDate: '2023-04-01:0007',
             endDate: '2023-04-12',
             importance: 'low',
           },

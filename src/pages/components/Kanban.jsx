@@ -78,9 +78,14 @@ export default function Kanban() {
       </MyTitleArea>
       <MyProgressArea>
         {workflowProgressArr.map((e, idx) => {
+          for (let i = 0; i < workflowList[e].length; i++) {
+            console.log('id', workflowList[e][i].createDate);
+          }
+
           return (
             <KanbanProgress
               key={idx}
+              id={1}
               workflowList={workflowList[e]}
               progress={workflowProgress[idx]}
               icon={iconList[idx]}

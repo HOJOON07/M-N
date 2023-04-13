@@ -123,7 +123,7 @@ const MyCreateData = styled.p`
   font-size: 10px;
 `;
 
-export default function KanbanProgress({ workflowList, progress, icon }) {
+export default function KanbanProgress({ id, workflowList, progress, icon }) {
   const [status, setStatus] = useState(false);
   const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
@@ -256,7 +256,11 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
   // react dnd
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: '1',
-    item: { workflowList: workflowList, progress: progress },
+    item: {
+      id: id,
+      workflowList: workflowList,
+      progress: progress,
+    },
     collect: monitor => ({ isDragging: monitor.isDragging() }),
     end: (item, monitor) => {
       console.log('monitor', monitor.getItem());
@@ -296,7 +300,6 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
     accept: '1',
     drop: item => {
       let list = [];
-      console.log();
       // console.log('드롭 위치', progress);
       switch (progress) {
         case 'Request':
@@ -391,6 +394,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
         const startDate = el.createDate.split(':')[0];
         return (
           <MyTaskContainer
+            id={idx}
             progress={progress}
             draggable
             key={el.createDate}
