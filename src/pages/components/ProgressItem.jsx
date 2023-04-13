@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import defaultProfile from '../../assets/images/default-profile.png';
-import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { addList, subtractList } from '../../store/modules/workspace';
@@ -91,13 +90,46 @@ const MyImportanceButton = styled.button`
   }
 `;
 
+// 콘텐츠 수정 시, 적용되는 Styled
+const MyContentMA = styled.div`
+  padding: 10px;
+  & > p {
+    margin-bottom: 10px;
+  }
+`;
+const MyContentModify = styled.input`
+  width: 80%;
+  height: 60px;
+`;
+const MyDateMA = styled.div`
+  padding: 10px;
+  & > div {
+    display: flex;
+    align-items: center;
+
+    & > p {
+      margin: 0 10px 10px 0;
+    }
+  }
+`;
+const MyImportantMA = styled.div`
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+
+  & > p {
+    margin-right: 10px;
+  }
+`;
+
 export default function ProgressItem({ workflowList, item, id, progress }) {
   const [modify, setModify] = useState(false);
   const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
   const contentRef = useRef();
+  const startDateRef = useRef();
   const endDateRef = useRef();
-  let contentInput, endDateInput, checkedImportance;
+  let contentInput, startDateInput, endDateInput, checkedImportance;
   const selectList = ['high', 'medium', 'low'];
   const [selected, setSelected] = useState(item.importance);
 
@@ -254,6 +286,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       if (modify) {
         // useRef 값 받아오기
         contentInput = contentRef.current.value;
+        startDateInput = startDateRef.current.value;
         endDateInput = endDateRef.current.value;
         checkedImportance = selected;
       }
@@ -261,6 +294,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
         workspaceId: workspace.id,
         selectedItem: selectedItem,
         content: contentInput,
+        startDate: startDateInput,
         endDate: endDateInput,
         importance: checkedImportance,
         progress,
@@ -268,27 +302,42 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       if (modify) dispatch(modifyItem(payload));
     }
   };
-  const startDate = item.createDate.split(':')[0];
 
   let contentSpace, dateSpace, importantSpace;
   if (modify === false) {
     contentSpace = <MyContent>{item.content}</MyContent>;
     dateSpace = (
       <MyCreateData>
-        {startDate} ~ {item.endDate}
+        {item.startDate} ~ {item.endDate}
       </MyCreateData>
     );
     importantSpace = (
       <MyImportanceButton {...item}>{item.importance}</MyImportanceButton>
     );
   } else {
-    contentSpace = <input defaultValue={item.content} ref={contentRef} />;
+    contentSpace = (
+      <MyContentMA>
+        <p>내용: </p>
+        <MyContentModify defaultValue={item.content} ref={contentRef} />
+      </MyContentMA>
+    );
     dateSpace = (
-      <input type="date" defaultValue={item.endDate} ref={endDateRef} />
+      <MyDateMA>
+        <div>
+          <p>시작일 : </p>
+          <input type="date" defaultValue={item.startDate} ref={startDateRef} />
+        </div>
+        <br />
+        <div>
+          <p>종료일 : </p>
+          <input type="date" defaultValue={item.endDate} ref={endDateRef} />
+        </div>
+      </MyDateMA>
     );
 
     importantSpace = (
-      <div>
+      <MyImportantMA>
+        <p>중요도 : </p>
         <select onChange={selectHandler} value={selected}>
           {selectList.map(item => (
             <option value={item} key={item}>
@@ -296,7 +345,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
             </option>
           ))}
         </select>
-      </div>
+      </MyImportantMA>
     );
   }
 
@@ -309,6 +358,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       key={id}
       onDragStart={() => findClickItem(id, progress)}
       onDragEnter={findDropItem}
+      style={modify ? { height: '230px' } : { height: '70px' }}
     >
       <div key={id}>
         {contentSpace}
