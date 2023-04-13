@@ -44,10 +44,24 @@ const StartText = styled.p`
 `;
 const EndText = styled.p``;
 
-export default function Calendar() {
+export default function Calendar(props) {
+  const { startDateOnChange, endDateOnChange } = props;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
+  // const formatStart = () => {
+  //   const year = startDate.getFullYear();
+  //   const month = startDate.getMonth() + 1;
+  //   const date = startDate.getDate();
+  //   return `${year}년 ${month}월 ${date}일`;
+  // };
+  // const formatEnd = () => {
+  //   const year = endDate.getFullYear();
+  //   const month = endDate.getMonth() + 1;
+  //   const date = endDate.getDate();
+  //   return `${year}년 ${month}월 ${date}일`;
+  // };
+  // console.log(startDate, endDate);
+  // console.log(formatStart(startDate), formatEnd(endDate));
   return (
     <>
       <MyDateTitle>Period of Development</MyDateTitle>
@@ -57,7 +71,13 @@ export default function Calendar() {
           <StyledDatePicker
             locale={ko}
             selected={startDate}
-            onChange={date => setStartDate(date)}
+            onChange={(date, startDate) => {
+              setStartDate(date);
+              startDateOnChange(startDate);
+            }}
+            // onChange={startDate => {
+            //   startDateOnChange(startDate);
+            // }}
             selectsStart
             startDate={startDate}
             endDate={endDate}
@@ -70,7 +90,10 @@ export default function Calendar() {
           <StyledDatePicker
             locale={ko}
             selected={endDate}
-            onChange={date => setEndDate(date)}
+            onChange={(date, endDate) => {
+              setEndDate(date);
+              endDateOnChange(endDate);
+            }}
             selectsEnd
             startDate={startDate}
             endDate={endDate}
