@@ -1,5 +1,3 @@
-import Workflow from '../../pages/Workflow';
-
 const initState = {
   workspaceList: [
     {
@@ -20,11 +18,18 @@ const initState = {
             endDate: '2023-04-12',
             importance: 'low',
           },
+          {
+            id: 1,
+            content: '내용33',
+            createDate: '2023-04-01:0002',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
         ],
         inprogressList: [
           {
             id: 1,
-            content: '내용1',
+            content: '1',
             createDate: '2023-04-01:0002',
             endDate: '2023-04-12',
             importance: 'low',
@@ -33,7 +38,7 @@ const initState = {
         inreviewList: [
           {
             id: 2,
-            content: '내용1',
+            content: '3',
             createDate: '2023-04-01:0003',
             endDate: '2023-04-12',
             importance: 'low',
@@ -42,7 +47,7 @@ const initState = {
         blockedList: [
           {
             id: 3,
-            content: '내용1',
+            content: '666',
             createDate: '2023-04-01:0004',
             endDate: '2023-04-12',
             importance: 'low',
@@ -73,6 +78,17 @@ const NEWTASK_PROGRESS = 'workflow/NEWTASK_PROGRESS';
 const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
 const NEWTASK_BLOCKED = 'workflow/NEWTASK_BLOCKED';
 const NEWTASK_DONE = 'workflow/NEWTASK_DONE';
+
+const ADD_LIST = 'workflow/ADD_LIST';
+const SUBTRACT_LIST = 'workflow/SUBTRACT_LIST';
+
+export function subtractList(listType, itemId, workflowList) {
+  return { type: SUBTRACT_LIST, payload: { listType, itemId, workflowList } };
+}
+
+export function addList(listType, item, workflowList) {
+  return { type: ADD_LIST, payload: { listType, item, workflowList } };
+}
 
 // 액션 생성 함수 작성
 export function create(payload) {
@@ -410,6 +426,99 @@ export default function workspace(state = initState, action) {
             },
           },
         },
+      };
+
+    case 'MOVE_ITEM': {
+      const { source, destination, item } = action.payload;
+      const newState = { ...state };
+      newState.workspaceList.forEach(workspace => {
+        if (workspace.id === source.droppableId) {
+          workspace.workflow[`${source.droppableId}List`] = workspace.workflow[
+            `${source.droppableId}List`
+          ].filter(i => i.id !== item.id);
+        }
+        if (workspace.id === destination.droppableId) {
+          workspace.workflow[`${destination.droppableId}List`].splice(
+            destination.index,
+            0,
+            item
+          );
+        }
+      });
+      return newState;
+    }
+    case SUBTRACT_LIST:
+      console.log('SUBTRACT_LIST');
+      let { listType, itemId } = action.payload;
+      console.log(listType, itemId);
+      switch (listType) {
+        case 'Request':
+          listType = 'todoList';
+          return;
+        case 'In Progress':
+          listType = 'inprogressList';
+          break;
+        case 'In Review':
+          listType = 'inreviewList';
+          break;
+        case 'Blocked':
+          listType = 'blockedList';
+          break;
+        case 'Completed':
+          listType = 'doneList';
+          break;
+        default:
+          break;
+      }
+      const updatedList = state.workspaceList[0].workflow[listType].filter(
+        item => item.id !== itemId
+      );
+      return {
+        ...state,
+        workspaceList: [
+          {
+            ...state.workspaceList[0],
+            workflow: {
+              ...state.workspaceList[0].workflow,
+              [listType]: updatedList,
+            },
+          },
+        ],
+      };
+
+    case ADD_LIST:
+      console.log('ADDLIST');
+      let { listtype, item, workflowList } = action.payload;
+
+      switch (listtype) {
+        case 'Request':
+          listtype = 'todoList';
+          return;
+        case 'In Progress':
+          listtype = 'inprogressList';
+          break;
+        case 'In Review':
+          listtype = 'inreviewList';
+          break;
+        case 'Blocked':
+          listtype = 'blockedList';
+          break;
+        case 'Completed':
+          listtype = 'doneList';
+          break;
+        default:
+      }
+      return {
+        ...state,
+        workspaceList: [
+          {
+            ...state.workspaceList[0],
+            workflow: {
+              ...state.workspaceList[0].workflow,
+              [listtype]: [...workflowList],
+            },
+          },
+        ],
       };
 
     default:
