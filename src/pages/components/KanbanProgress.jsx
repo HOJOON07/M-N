@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { addList, subtractList } from '../../store/modules/workspace';
 import { deleteItem } from '../../store/modules/workspace';
+import ProgressItem from './ProgressItem';
 
 // Color Variables
 const contentColor = '#fff';
@@ -200,7 +201,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
     }),
   });
   let selectedDragItem = null;
-  const findClickItem = (createDate, progress) => {
+  const findClickItem = (id, progress) => {
     let selectedItem = null;
     for (const ws of workspaceList) {
       let specificProgress;
@@ -215,9 +216,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
       } else {
         specificProgress = ws.workflow.doneList;
       }
-      selectedItem = specificProgress.find(
-        item => item.createDate === createDate
-      );
+      selectedItem = specificProgress.find(item => item.id === id);
       if (selectedItem) {
         console.log(selectedItem, 'selectedItem');
         // 선택된 아이템 을 가지고..?
@@ -285,38 +284,14 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
       </MyTask>
       {status && <NewTask progress={progress} />}
       {workflowList.map((el, idx) => {
-        const startDate = el.createDate.split(':')[0];
+        console.log(el);
         return (
-          <MyTaskContainer
-            id={el.createDate}
-            progress={progress}
-            draggable
-            ref={dragRef}
-            style={{ opacity: isDragging ? '.5' : '1' }}
-            onDragStart={() => findClickItem(el.createDate, progress)}
+          <ProgressItem
             key={el.id}
-          >
-            <div>
-              <MyContent>{el.content}</MyContent>
-              <div>
-                <span>✏️</span>
-                <span
-                  onClick={() => {
-                    createDateClickHandler(el.id, progress);
-                  }}
-                >
-                  ❌
-                </span>
-              </div>
-            </div>
-            <MyCreateData>
-              {startDate} ~ {el.endDate}
-            </MyCreateData>
-            <div>
-              <MyImportanceButton {...el}>{el.importance}</MyImportanceButton>
-              <img src={defaultProfile} alt="기본 프로필 이미지" />
-            </div>
-          </MyTaskContainer>
+            id={el.id}
+            workflowList={workflowList}
+            progress={progress}
+          />
         );
       })}
     </div>
