@@ -353,12 +353,11 @@ export default function workspace(state = initState, action) {
       };
 
     case SUBTRACT_LIST:
-      console.log('SUBTRACT_LIST');
       let { subListType, selectedDragItem, subList } = action.payload;
       switch (subListType) {
         case 'Request':
           subListType = 'todoList';
-          return;
+          break;
         case 'In Progress':
           subListType = 'inprogressList';
           break;
@@ -375,11 +374,9 @@ export default function workspace(state = initState, action) {
           break;
       }
 
-      console.log('selected', selectedDragItem);
       const updatedList = state.workspaceList[0].workflow[subListType].filter(
         item => item.id !== selectedDragItem.id
       );
-
       return {
         ...state,
         workspaceList: [
@@ -400,7 +397,7 @@ export default function workspace(state = initState, action) {
       switch (addListType) {
         case 'Request':
           addListType = 'todoList';
-          return;
+          break;
         case 'In Progress':
           addListType = 'inprogressList';
           break;
@@ -415,7 +412,12 @@ export default function workspace(state = initState, action) {
           break;
         default:
       }
-      console.log('item', item);
+      const updateAddList = [
+        ...state.workspaceList[0].workflow[addListType].filter(
+          i => i.id !== item.id
+        ),
+        item,
+      ];
 
       return {
         ...state,
@@ -424,7 +426,7 @@ export default function workspace(state = initState, action) {
             ...state.workspaceList[0],
             workflow: {
               ...state.workspaceList[0].workflow,
-              [addListType]: [...addList, item],
+              [addListType]: [...updateAddList],
             },
           },
         ],

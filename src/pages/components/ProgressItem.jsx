@@ -110,9 +110,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       if (dropResult) {
         const subtractLists = item.workflowList; // 빼줄 리스트
         const addLists = dropResult.list; // 더해줄 리스트
-        console.log('333333', selectedDragItem.current);
         if (selectedDragItem.current) {
-          console.log('111111', selectedDragItem.current);
           dispatch(
             subtractList(item.progress, selectedDragItem.current, subtractLists)
           );
@@ -142,7 +140,6 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       selectedItem = specificProgress.find(item => item.id === id);
       if (selectedItem) {
         selectedDragItem.current = selectedItem;
-        console.log('222222', selectedDragItem.current);
       }
     }
   };
