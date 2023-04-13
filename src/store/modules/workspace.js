@@ -234,6 +234,7 @@ export default function workspace(state = initState, action) {
         workspaceId,
         selectedItem,
         content,
+        startDate,
         endDate,
         importance,
         progress,
@@ -263,6 +264,7 @@ export default function workspace(state = initState, action) {
       const findIndex = copyList.findIndex(el => el.id === selectedItem.id);
       const newTask = {
         content,
+        startDate,
         endDate,
         importance,
         id: copyList[findIndex].id,

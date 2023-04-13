@@ -95,8 +95,9 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
   const contentRef = useRef();
+  const startDateRef = useRef();
   const endDateRef = useRef();
-  let contentInput, endDateInput, checkedImportance;
+  let contentInput, startDateInput, endDateInput, checkedImportance;
   const selectList = ['high', 'medium', 'low'];
   const [selected, setSelected] = useState(item.importance);
 
@@ -253,6 +254,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       if (modify) {
         // useRef 값 받아오기
         contentInput = contentRef.current.value;
+        startDateInput = startDateRef.current.value;
         endDateInput = endDateRef.current.value;
         checkedImportance = selected;
       }
@@ -260,6 +262,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
         workspaceId: workspace.id,
         selectedItem: selectedItem,
         content: contentInput,
+        startDate: startDateInput,
         endDate: endDateInput,
         importance: checkedImportance,
         progress,
@@ -282,7 +285,10 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   } else {
     contentSpace = <input defaultValue={item.content} ref={contentRef} />;
     dateSpace = (
-      <input type="date" defaultValue={item.endDate} ref={endDateRef} />
+      <>
+        <input type="date" defaultValue={item.startDate} ref={startDateRef} />
+        <input type="date" defaultValue={item.endDate} ref={endDateRef} />
+      </>
     );
 
     importantSpace = (
