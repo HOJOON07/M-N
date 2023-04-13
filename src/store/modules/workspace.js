@@ -23,7 +23,7 @@ const initState = {
             content: '내용2',
             createDate: '2023-04-01:0001',
             endDate: '2023-04-12',
-            importance: 'low',
+            importance: 'high',
           },
           {
             id: '003',
@@ -46,7 +46,7 @@ const initState = {
             content: '내용2',
             createDate: '2023-04-01:0002',
             endDate: '2023-04-12',
-            importance: 'low',
+            importance: 'medium',
           },
           {
             id: '012',
@@ -101,6 +101,7 @@ const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
 const NEWTASK_BLOCKED = 'workflow/NEWTASK_BLOCKED';
 const NEWTASK_DONE = 'workflow/NEWTASK_DONE';
 // const DELETE_TASK = 'worfkflow/DELETE_TASK';
+const MODIFY_TASK = 'workflow/MODIFY_TASK';
 
 const ADD_LIST = 'workflow/ADD_LIST';
 const SUBTRACT_LIST = 'workflow/SUBTRACT_LIST';
@@ -129,6 +130,14 @@ export function deleteItem(payload) {
   return {
     type: DELETE,
     payload: { workspaceId, selectedId },
+  };
+}
+
+export function modifyItem(payload) {
+  const { workspaceId, selectedItem } = payload;
+  return {
+    type: MODIFY_TASK,
+    payload: { workspaceId, selectedItem },
   };
 }
 
@@ -235,6 +244,9 @@ export default function workspace(state = initState, action) {
         ],
       };
     case DELETE:
+      console.log(action.payload);
+      return { ...state, ...action.payload };
+    case MODIFY_TASK:
       console.log(action.payload);
       return { ...state, ...action.payload };
     case BOOKMARK:

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import defaultProfile from '../../assets/images/default-profile.png';
 import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { addList, subtractList } from '../../store/modules/workspace';
-import { deleteItem } from '../../store/modules/workspace';
+import { deleteItem, modifyItem } from '../../store/modules/workspace';
 import styled from 'styled-components';
 
 // Color Variables
@@ -92,9 +92,22 @@ const MyImportanceButton = styled.button`
 `;
 
 export default function ProgressItem({ workflowList, item, id, progress }) {
-  const [status, setStatus] = useState(false);
+  const [modify, setModify] = useState(false);
   const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
+  const contentRef = useRef();
+  const endDateRef = useRef();
+  let contentInput, endDateInput, checkedImportance;
+  // const [importance, setImportance] = useState('');
+  // const handleImportanceChange = e => {
+  //   setImportance(e.target.value);
+  // };
+  const selectList = ['high', 'medium', 'low'];
+  const [selected, setSelected] = useState(item.importance);
+
+  const selectHandler = e => {
+    setSelected(e.target.value);
+  };
 
   /** 버튼 클릭 시 특정 id에 해당하는 배열 찾기 함수 */
   const createDateClickHandler = (id, progress) => {
@@ -160,26 +173,68 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
         break;
       }
     }
+
     if (workspace && selectedItem) {
+      if (modify) {
+        // useRef 값 받아오기
+        contentInput = contentRef.current.value;
+        endDateInput = endDateRef.current.value;
+        checkedImportance = selected;
+
+        // 값 바꿔치기
+        item.content = contentInput;
+        item.endDate = endDateInput;
+        item.importance = checkedImportance;
+      }
       payload = {
         workspaceId: workspace.id,
         selectedItem: selectedItem,
       };
       console.log(payload);
-      // console.log(selectedItem.content);
+      // dispatch(modifyItem(payload));
     }
   };
   const startDate = item.createDate.split(':')[0];
+
+  let contentSpace, dateSpace, importantSpace;
+  if (modify === false) {
+    contentSpace = <MyContent>{item.content}</MyContent>;
+    dateSpace = (
+      <MyCreateData>
+        {startDate} ~ {item.endDate}
+      </MyCreateData>
+    );
+    importantSpace = (
+      <MyImportanceButton {...item}>{item.importance}</MyImportanceButton>
+    );
+  } else {
+    contentSpace = <input defaultValue={item.content} ref={contentRef} />;
+    dateSpace = (
+      <input type="date" defaultValue={item.endDate} ref={endDateRef} />
+    );
+
+    importantSpace = (
+      <div>
+        <select onChange={selectHandler} value={selected}>
+          {selectList.map(item => (
+            <option value={item} key={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+
   return (
     <MyTaskContainer progress={progress} draggable key={id}>
       <div key={id}>
-        <MyContent>{item.content}</MyContent>
+        {contentSpace}
         <div>
           <span
             onClick={() => {
               updateContentClickHandler(id, progress);
-              setStatus(status => !status);
-              console.log('status', status);
+              setModify(state => !state);
             }}
           >
             ✏️
@@ -192,11 +247,9 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
             ❌
           </span>
         </div>
-        <MyCreateData>
-          {startDate} ~ {item.endDate}
-        </MyCreateData>
+        {dateSpace}
         <div>
-          <MyImportanceButton {...item}>{item.importance}</MyImportanceButton>
+          {importantSpace}
           <img src={defaultProfile} alt="기본 프로필 이미지" />
         </div>
       </div>
