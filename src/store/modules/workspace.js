@@ -14,37 +14,44 @@ const initState = {
           {
             id: '001',
             content: '내용1',
-            createDate: '2023-04-01:00010',
+            createDate: '2023-04-01:0001',
             endDate: '2023-04-12',
             importance: 'low',
           },
           {
             id: '002',
-            content: '내용1',
-            createDate: '2023-04-01:00011',
+            content: '내용2',
+            createDate: '2023-04-01:0001',
             endDate: '2023-04-12',
             importance: 'low',
           },
           {
             id: '003',
-            content: '내용1',
-            createDate: '2023-04-01:00012',
+            content: '내용3',
+            createDate: '2023-04-01:0001',
             endDate: '2023-04-12',
             importance: 'low',
           },
           {
             id: '010',
             content: '내용1',
-            createDate: '2023-04-01:00020',
+            createDate: '2023-04-01:0002',
             endDate: '2023-04-12',
             importance: 'low',
           },
         ],
         inprogressList: [
           {
-            id: 6,
-            content: '1',
-            createDate: '2023-04-01:0007',
+            id: '011',
+            content: '내용2',
+            createDate: '2023-04-01:0002',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            id: '012',
+            content: '내용3',
+            createDate: '2023-04-01:0002',
             endDate: '2023-04-12',
             importance: 'low',
           },
@@ -228,6 +235,7 @@ export default function workspace(state = initState, action) {
         ],
       };
     case DELETE:
+      console.log(action.payload);
       return { ...state, ...action.payload };
     case BOOKMARK:
       return {

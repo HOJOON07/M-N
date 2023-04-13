@@ -232,11 +232,11 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
   };
 
   /** 버튼 클릭 시 특정 createDate에 해당하는 배열 찾기 함수 */
-  const createDateClickHandler = (createDate, progress) => {
-    buttonClickHandler(createDate, progress);
+  const createDateClickHandler = (id, progress) => {
+    buttonClickHandler(id, progress);
   };
 
-  const buttonClickHandler = (createDate, progress) => {
+  const buttonClickHandler = (id, progress) => {
     let payload = {};
     let selectedItem = null;
     let workspace = null;
@@ -253,9 +253,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
       } else {
         specificProgress = ws.workflow.doneList;
       }
-      selectedItem = specificProgress.find(
-        item => item.createDate === createDate
-      );
+      selectedItem = specificProgress.find(item => item.id === id);
       if (selectedItem) {
         workspace = ws;
         break;
@@ -298,10 +296,10 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
             id={el.createDate}
             progress={progress}
             draggable
-            key={el.createDate}
             ref={dragRef}
             style={{ opacity: isDragging ? '.5' : '1' }}
             onDragStart={() => findClickItem(el.createDate, progress)}
+            key={el.id}
           >
             <div>
               <MyContent>{el.content}</MyContent>
@@ -309,7 +307,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
                 <span>✏️</span>
                 <span
                   onClick={() => {
-                    createDateClickHandler(el.createDate, progress);
+                    createDateClickHandler(el.id, progress);
                   }}
                 >
                   ❌
