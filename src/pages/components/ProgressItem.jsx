@@ -90,6 +90,38 @@ const MyImportanceButton = styled.button`
   }
 `;
 
+// 콘텐츠 수정 시, 적용되는 Styled
+const MyContentMA = styled.div`
+  padding: 10px;
+  & > p {
+    margin-bottom: 10px;
+  }
+`;
+const MyContentModify = styled.input`
+  width: 80%;
+  height: 60px;
+`;
+const MyDateMA = styled.div`
+  padding: 10px;
+  & > div {
+    display: flex;
+    align-items: center;
+
+    & > p {
+      margin: 0 10px 10px 0;
+    }
+  }
+`;
+const MyImportantMA = styled.div`
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+
+  & > p {
+    margin-right: 10px;
+  }
+`;
+
 export default function ProgressItem({ workflowList, item, id, progress }) {
   const [modify, setModify] = useState(false);
   const workspaceList = useSelector(state => state.workspace.workspaceList);
@@ -283,16 +315,29 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       <MyImportanceButton {...item}>{item.importance}</MyImportanceButton>
     );
   } else {
-    contentSpace = <input defaultValue={item.content} ref={contentRef} />;
+    contentSpace = (
+      <MyContentMA>
+        <p>내용: </p>
+        <MyContentModify defaultValue={item.content} ref={contentRef} />
+      </MyContentMA>
+    );
     dateSpace = (
-      <>
-        <input type="date" defaultValue={item.startDate} ref={startDateRef} />
-        <input type="date" defaultValue={item.endDate} ref={endDateRef} />
-      </>
+      <MyDateMA>
+        <div>
+          <p>시작일 : </p>
+          <input type="date" defaultValue={item.startDate} ref={startDateRef} />
+        </div>
+        <br />
+        <div>
+          <p>종료일 : </p>
+          <input type="date" defaultValue={item.endDate} ref={endDateRef} />
+        </div>
+      </MyDateMA>
     );
 
     importantSpace = (
-      <div>
+      <MyImportantMA>
+        <p>중요도 : </p>
         <select onChange={selectHandler} value={selected}>
           {selectList.map(item => (
             <option value={item} key={item}>
@@ -300,7 +345,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
             </option>
           ))}
         </select>
-      </div>
+      </MyImportantMA>
     );
   }
 
@@ -313,6 +358,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       key={id}
       onDragStart={() => findClickItem(id, progress)}
       onDragEnter={findDropItem}
+      style={modify ? { height: '230px' } : { height: '70px' }}
     >
       <div key={id}>
         {contentSpace}
