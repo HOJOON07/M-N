@@ -77,7 +77,7 @@ export default function Kanban() {
         <MySubTitle fontSize="14px">{workspaceList.name}</MySubTitle>
       </MyTitleArea>
       <MyProgressArea>
-        {workflowProgressArr.map((e, idx) => {
+        {/* {workflowProgressArr.map((e, idx) => {
           for (let i = 0; i < workflowList[e].length; i++) {
             console.log('id', workflowList[e][i].createDate);
           }
@@ -91,9 +91,9 @@ export default function Kanban() {
               icon={iconList[idx]}
             />
           );
-        })}
+        })} */}
 
-        {/* <KanbanProgress
+        <KanbanProgress
           workflowList={workflowList.todoList}
           progress="Request"
           icon={iconList[0]}
@@ -117,7 +117,7 @@ export default function Kanban() {
           workflowList={workflowList.doneList}
           progress="Completed"
           icon={iconList[4]}
-        /> */}
+        />
       </MyProgressArea>
     </div>
   );
