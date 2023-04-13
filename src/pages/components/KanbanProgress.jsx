@@ -1,15 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
 import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  changeOrder,
-  deleteItem,
-  // deleteTask,
-  newInProgress,
-} from '../../store/modules/workspace';
+import { useDrag, useDrop } from 'react-dnd';
+import { addList, subtractList } from '../../store/modules/workspace';
+import { deleteItem } from '../../store/modules/workspace';
+import ProgressItem from './ProgressItem';
 
 // Color Variables
 const contentColor = '#fff';
@@ -129,139 +127,110 @@ const MyCreateData = styled.p`
 
 export default function KanbanProgress({ workflowList, progress, icon }) {
   const [status, setStatus] = useState(false);
-  //Workflow Drag
-  const [originPos, setOriginPos] = useState({ x: 0, y: 0 });
-  const [clientPos, setClientPos] = useState({ x: 0, y: 0 });
-  const [pos, setPos] = useState({ top: 100, left: 0 });
-  const draggingRef = useRef(null);
-  const draggingOverRef = useRef(null);
+  const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
 
-  const workspaceList = useSelector(state => state.workspace.workspaceList);
-  const onDragOver = e => {
-    e.preventDefault();
-  };
-
-  // const onDragStart = e => {
-  //   e.dataTransfer.effectAllowed = 'move';
-  //   const originPosTemp = { ...originPos };
-  //   originPosTemp.x = e.target.offsetLeft; //칸반보드 컨텐츠 부분부터
-  //   originPosTemp.y = e.target.offsetTop;
-  //   setOriginPos(originPosTemp);
-  //   console.log(originPosTemp);
-
-  //   const clientPosTemp = { ...clientPos };
-  //   clientPosTemp.x = e.clientX; // 브라우저 왼쪽 상단부터
-  //   clientPosTemp.y = e.clientY;
-  //   setClientPos(clientPosTemp);
-  //   console.log('clientPosTemp', clientPosTemp);
-  // };
-
-  // const onDrag = e => {
-  //   const PosTemp = { ...pos };
-  //   console.log(pos.left, pos.top);
-  //   // 자신이 위치한 칸반섹션 부터
-  //   PosTemp.left = e.target.offsetLeft + e.clientX - clientPos.x;
-  //   PosTemp.top = e.target.offsetTop + e.clientY - clientPos.y;
-  //   setPos(PosTemp);
-
-  //   console.log(PosTemp);
-
-  //   const clientPosTemp = { ...clientPos };
-  //   clientPosTemp.x = e.clientX;
-  //   clientPosTemp.y = e.clientY;
-  //   setClientPos(clientPosTemp);
-  // };
-
-  // let isClick = false;
-  // // 보드판 내용이 쌓이게 만드는 함수...
-  // let topPos = idx => {
-  //   const init = 100;
-  //   const diff = 90;
-  //   isClick = true;
-  //   return idx > 0 ? idx * diff + init : init;
-  // };
-
-  // const onDragEnd = e => {
-  //   e.dataTransfer.dropEffect = 'move';
-  //   // if (!isInsideDragArea(e)) {
-  //   //   const posTemp = { ...pos };
-  //   //   posTemp.left = originPos.x;
-  //   //   posTemp.top = originPos.y;
-  //   //   setPos(posTemp);
-  //   // }
-  // };
-
-  // 드래그앤드롭 시안2
-  const onDragStart = (e, idx, progress) => {
-    console.log('onDragging');
-    draggingRef.current = idx;
-    // console.log('  draggingRef.current', draggingRef.current);
-    // console.log(' onDragStart progress', progress); //드롭된 놈
-  };
-
-  const onDragging = (e, idx, progress) => {
-    console.log('onDragging');
-    draggingOverRef.current = idx;
-    // const copyList = [...workflowList];
-    // const draggingItem = copyList[draggingOverRef.current];
-    // console.log('draggingOverRef.current ', draggingOverRef.current);
-    // console.log(' onDragging progress', progress); //드랍위치에 있는 놈
-    // copyList.splice(draggingRef.current, 1);
-    // copyList.splice(draggingOverRef.current, 0, draggingItem);
-
-    // let newIdx = draggingOverRef.current;
-    // let oldIdx = draggingItem.current;
-    // draggingRef.current = draggingOverRef.current;
-    // draggingOverRef.current = null;
-
-    // dispatch(
-    //   changeOrder({
-    //     newIdx,
-    //     oldIdx,
-    //     draggingItem,
-    //     workspaceId: 0,
-    //     progress,
-    //     copyList,
-    //   })
-    // );
-  };
-
-  const onDrop = (e, idx, progress) => {
-    console.log('onDrop');
-    const copyList = [...workflowList];
-    const draggingItem = {
+  // react dnd
+  const [{ isDragging }, dragRef] = useDrag(() => ({
+    type: '1',
+    item: {
+      workflowList: workflowList,
       progress: progress,
-      item: copyList[draggingOverRef.current],
-    };
-    // console.log('draggingOverRef.current ', draggingOverRef.current);
-    // console.log(' onDragging progress', progress); //드랍위치에 있는 놈
-    // copyList.splice(draggingRef.current, 1);
-    // copyList.splice(draggingOverRef.current, 0, draggingItem);
+    },
+    collect: monitor => ({ isDragging: monitor.isDragging() }),
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult();
+      console.log('선택된 프로그레스', item); // 선택 프로그레스
+      if (dropResult) {
+        console.log('드롭된 프로그레스', dropResult.name); // 드롭 프로그레스
 
-    let newIdx = draggingOverRef.current;
-    let oldIdx = draggingItem.current;
-    draggingRef.current = draggingOverRef.current;
-    draggingOverRef.current = null;
+        const subtractLists = item.workflowList; // 빼줄 리스트
+        const addLists = dropResult.list; // 더해줄 리스트
 
-    dispatch(
-      changeOrder({
-        newIdx,
-        oldIdx,
-        draggingItem,
-        workspaceId: 0,
-        progress,
-        copyList,
-      })
-    );
+        // 에러
+        dispatch(subtractList(item.progress, subtractLists));
+        if (selectedDragItem)
+          dispatch(addList(dropResult.name, selectedDragItem, addLists));
+
+        switch (dropResult.item.progress) {
+          case 'Request':
+            return;
+          case 'In Progress':
+            break;
+          case 'In Review':
+            break;
+          case 'Blocked':
+            break;
+          case 'Completed':
+            break;
+          default:
+            break;
+        }
+      }
+    },
+  }));
+
+  const [{ canDrop, isOver }, drop] = useDrop({
+    accept: '1',
+    drop: item => {
+      let list = [];
+      switch (progress) {
+        case 'Request':
+          list = workspaceList[0].workflow.todoList;
+          break;
+        case 'In Progress':
+          list = workspaceList[0].workflow.inprogressList;
+          break;
+        case 'In Review':
+          list = workspaceList[0].workflow.inreviewList;
+          break;
+        case 'Blocked':
+          list = workspaceList[0].workflow.blockedList;
+          break;
+        case 'Completed':
+          list = workspaceList[0].workflow.doneList;
+          break;
+        default:
+          break;
+      }
+      return { item, name: progress, list: list };
+    },
+    collect: monitor => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
+  let selectedDragItem = null;
+  const findClickItem = (id, progress) => {
+    let selectedItem = null;
+    for (const ws of workspaceList) {
+      let specificProgress;
+      if (progress === 'Request') {
+        specificProgress = ws.workflow.todoList;
+      } else if (progress === 'In Progress') {
+        specificProgress = ws.workflow.inprogressList;
+      } else if (progress === 'In Review') {
+        specificProgress = ws.workflow.inreviewList;
+      } else if (progress === 'Blocked') {
+        specificProgress = ws.workflow.blockedList;
+      } else {
+        specificProgress = ws.workflow.doneList;
+      }
+      selectedItem = specificProgress.find(item => item.id === id);
+      if (selectedItem) {
+        console.log(selectedItem, 'selectedItem');
+        // 선택된 아이템 을 가지고..?
+        selectedDragItem = selectedItem;
+      }
+    }
   };
 
   /** 버튼 클릭 시 특정 createDate에 해당하는 배열 찾기 함수 */
-  const createDateClickHandler = (createDate, progress) => {
-    buttonClickHandler(createDate, progress);
+  const createDateClickHandler = (id, progress) => {
+    buttonClickHandler(id, progress);
   };
 
-  const buttonClickHandler = (createDate, progress) => {
+  const buttonClickHandler = (id, progress) => {
     let payload = {};
     let selectedItem = null;
     let workspace = null;
@@ -278,9 +247,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
       } else {
         specificProgress = ws.workflow.doneList;
       }
-      selectedItem = specificProgress.find(
-        item => item.createDate === createDate
-      );
+      selectedItem = specificProgress.find(item => item.id === id);
       if (selectedItem) {
         workspace = ws;
         break;
@@ -296,7 +263,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
   };
 
   return (
-    <div>
+    <div ref={drop}>
       <MyProgressTitle>
         <div>
           <p>{icon}</p>
@@ -317,45 +284,14 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
       </MyTask>
       {status && <NewTask progress={progress} />}
       {workflowList.map((el, idx) => {
-        const startDate = el.createDate.split(':')[0];
         return (
-          <MyTaskContainer
+          <ProgressItem
+            key={el.id}
+            id={el.id}
+            item={el} //각각의 아이템 정보를 객체로 전달
+            workflowList={workflowList}
             progress={progress}
-            draggable
-            key={el.createDate}
-            // onDragStart={onDragStart}
-            // onDrag={onDrag}
-            // onDragEnd={onDragEnd}
-            onDragOver={onDragOver}
-            // style={{
-            //   top: idx > 0 ? topPos(idx) : pos.top,
-            //   left: pos.left,
-            // }}
-            onDragStart={() => onDragStart(el, idx, progress)}
-            onDragEnter={() => onDragging(el, idx, progress)}
-            onDrop={() => onDrop(el, idx, progress)}
-          >
-            <div>
-              <MyContent>{el.content}</MyContent>
-              <div>
-                <span>✏️</span>
-                <span
-                  onClick={() => {
-                    createDateClickHandler(el.createDate, progress);
-                  }}
-                >
-                  ❌
-                </span>
-              </div>
-            </div>
-            <MyCreateData>
-              {startDate} ~ {el.endDate}
-            </MyCreateData>
-            <div>
-              <MyImportanceButton {...el}>{el.importance}</MyImportanceButton>
-              <img src={defaultProfile} alt="기본 프로필 이미지" />
-            </div>
-          </MyTaskContainer>
+          />
         );
       })}
     </div>
