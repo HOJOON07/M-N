@@ -21,6 +21,7 @@ const MyTaskContainer = styled.div`
   height: 70px;
   display: block;
   cursor: pointer;
+  margin-bottom: 15px;
 
   & img {
     position: absolute;
@@ -57,6 +58,9 @@ const MyContent = styled.p`
 `;
 
 const MyCreateData = styled.p`
+  position: absolute;
+  right: 2vw;
+  bottom: 9px;
   color: ${subColor};
   font-size: 10px;
 `;
@@ -87,7 +91,7 @@ const MyImportanceButton = styled.button`
   }
 `;
 
-export default function ProgressItem({ workflowList, id, progress }) {
+export default function ProgressItem({ workflowList, item, id, progress }) {
   const [status, setStatus] = useState(false);
   const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
@@ -128,36 +132,29 @@ export default function ProgressItem({ workflowList, id, progress }) {
       dispatch(deleteItem(payload));
     }
   };
-  // const startDate = createDate.split(':')[0];
+  const startDate = item.createDate.split(':')[0];
   return (
-    <div>
-      <MyTaskContainer progress={progress} draggable key={id}>
-        {workflowList.map(el => {
-          return (
-            <div key={el.id}>
-              <MyContent>{el.content}</MyContent>
-              <div>
-                <span>✏️</span>
-                <span
-                  onClick={() => {
-                    createDateClickHandler(id, progress);
-                  }}
-                >
-                  ❌
-                </span>
-              </div>
-
-              <MyCreateData>
-                {el.startDate} ~ {el.endDate}
-              </MyCreateData>
-              <div>
-                <MyImportanceButton {...el}>{el.importance}</MyImportanceButton>
-                <img src={defaultProfile} alt="기본 프로필 이미지" />
-              </div>
-            </div>
-          );
-        })}
-      </MyTaskContainer>
-    </div>
+    <MyTaskContainer progress={progress} draggable key={id}>
+      <div key={id}>
+        <MyContent>{item.content}</MyContent>
+        <div>
+          <span>✏️</span>
+          <span
+            onClick={() => {
+              createDateClickHandler(id, progress);
+            }}
+          >
+            ❌
+          </span>
+        </div>
+        <MyCreateData>
+          {startDate} ~ {item.endDate}
+        </MyCreateData>
+        <div>
+          <MyImportanceButton {...item}>{item.importance}</MyImportanceButton>
+          <img src={defaultProfile} alt="기본 프로필 이미지" />
+        </div>
+      </div>
+    </MyTaskContainer>
   );
 }
