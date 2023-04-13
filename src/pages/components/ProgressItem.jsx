@@ -6,6 +6,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { addList, subtractList } from '../../store/modules/workspace';
 import { deleteItem } from '../../store/modules/workspace';
 import styled from 'styled-components';
+import { useRef } from 'react';
 
 // Color Variables
 const contentColor = '#fff';
@@ -95,7 +96,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   const [status, setStatus] = useState(false);
   const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
-
+  const selectedDragItem = useRef(null);
   //react dnd
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: '1',
@@ -106,37 +107,23 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     collect: monitor => ({ isDragging: monitor.isDragging() }),
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
-      console.log('선택된 프로그레스', item); // 선택 프로그레스
       if (dropResult) {
-        console.log('드롭된 프로그레스', dropResult.name); // 드롭 프로그레스
-
         const subtractLists = item.workflowList; // 빼줄 리스트
         const addLists = dropResult.list; // 더해줄 리스트
-
-        // 에러
-        dispatch(subtractList(item.progress, subtractLists));
-        if (selectedDragItem)
-          dispatch(addList(dropResult.name, selectedDragItem, addLists));
-
-        switch (dropResult.item.progress) {
-          case 'Request':
-            return;
-          case 'In Progress':
-            break;
-          case 'In Review':
-            break;
-          case 'Blocked':
-            break;
-          case 'Completed':
-            break;
-          default:
-            break;
+        console.log('333333', selectedDragItem.current);
+        if (selectedDragItem.current) {
+          console.log('111111', selectedDragItem.current);
+          dispatch(
+            subtractList(item.progress, selectedDragItem.current, subtractLists)
+          );
+          dispatch(
+            addList(dropResult.name, selectedDragItem.current, addLists)
+          );
         }
       }
     },
   }));
 
-  let selectedDragItem = null;
   const findClickItem = (id, progress) => {
     let selectedItem = null;
     for (const ws of workspaceList) {
@@ -154,9 +141,8 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       }
       selectedItem = specificProgress.find(item => item.id === id);
       if (selectedItem) {
-        console.log(selectedItem, 'selectedItem');
-        // 선택된 아이템 을 가지고..?
-        selectedDragItem = selectedItem;
+        selectedDragItem.current = selectedItem;
+        console.log('222222', selectedDragItem.current);
       }
     }
   };

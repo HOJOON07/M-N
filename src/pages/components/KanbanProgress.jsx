@@ -126,7 +126,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
   };
 
   return (
-    <div ref={drop}>
+    <div ref={drop} style={{ overflowY: 'auto' }}>
       <MyProgressTitle>
         <div>
           <p>{icon}</p>
