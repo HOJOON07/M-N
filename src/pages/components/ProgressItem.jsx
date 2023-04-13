@@ -180,18 +180,16 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
         contentInput = contentRef.current.value;
         endDateInput = endDateRef.current.value;
         checkedImportance = selected;
-
-        // 값 바꿔치기
-        item.content = contentInput;
-        item.endDate = endDateInput;
-        item.importance = checkedImportance;
       }
       payload = {
         workspaceId: workspace.id,
         selectedItem: selectedItem,
+        content: contentInput,
+        endDate: endDateInput,
+        importance: checkedImportance,
+        progress,
       };
-      console.log(payload);
-      // dispatch(modifyItem(payload));
+      if (modify) dispatch(modifyItem(payload));
     }
   };
   const startDate = item.createDate.split(':')[0];

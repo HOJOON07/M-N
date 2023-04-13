@@ -134,10 +134,9 @@ export function deleteItem(payload) {
 }
 
 export function modifyItem(payload) {
-  const { workspaceId, selectedItem } = payload;
   return {
     type: MODIFY_TASK,
-    payload: { workspaceId, selectedItem },
+    payload,
   };
 }
 
@@ -247,8 +246,59 @@ export default function workspace(state = initState, action) {
       console.log(action.payload);
       return { ...state, ...action.payload };
     case MODIFY_TASK:
-      console.log(action.payload);
-      return { ...state, ...action.payload };
+      let {
+        workspaceId,
+        selectedItem,
+        content,
+        endDate,
+        importance,
+        progress,
+      } = action.payload;
+
+      switch (progress) {
+        case 'Request':
+          progress = 'todoList';
+          break;
+        case 'In Progress':
+          progress = 'inprogressList';
+          break;
+        case 'In Review':
+          progress = 'inreviewList';
+          break;
+        case 'Blocked':
+          progress = 'blockedList';
+          break;
+        case 'Completed':
+          progress = 'doneList';
+          break;
+        default:
+          break;
+      }
+
+      const copyList = [...state.workspaceList[workspaceId].workflow[progress]];
+      const findIndex = copyList.findIndex(el => el.id === selectedItem.id);
+      const newTask = {
+        content,
+        endDate,
+        importance,
+        id: copyList[findIndex].id,
+        createDate: copyList[findIndex].createDate,
+      };
+
+      copyList.splice(findIndex, 1, newTask);
+
+      return {
+        ...state,
+        workspaceList: [
+          {
+            ...state.workspaceList[workspaceId],
+            workflow: {
+              ...state.workspaceList[workspaceId].workflow,
+              [progress]: copyList,
+            },
+          },
+        ],
+      };
     case BOOKMARK:
       return {
         ...state,
