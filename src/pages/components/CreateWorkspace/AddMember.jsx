@@ -33,19 +33,23 @@ const MyAddMemberInputWrap = styled.div`
   align-items: center;
   text-align: center;
   border-radius: 5px;
-  border: 2px solid #777;
+  border: 1px solid #777;
   margin-bottom: 40px;
+  position: relative;
 `;
 
 const MyaddMemberInput = styled.input`
   border: none;
   outline: none;
-  font-size: 20px;
+  font-size: 18px;
   color: #777;
   padding-left: 15px;
 `;
 
-const MyAddSearchIconWrap = styled.div``;
+const MyAddSearchIconWrap = styled.div`
+  position: absolute;
+  right: 10px;
+`;
 const MyMemberWrap = styled.div`
   display: flex;
   justify-content: space-around;
@@ -85,7 +89,7 @@ export default function AddMember() {
     <MyInfoRightWrap>
       <MyAddMember>Add Member</MyAddMember>
       <MyAddMemberInputWrap>
-        <MyaddMemberInput placeholder="Search by Name" />
+        <MyaddMemberInput placeholder="Search by name, email" />
         <MyAddSearchIconWrap>
           <FontAwesomeIcon icon={faSearch} style={{ fontSize: '22px' }} />
         </MyAddSearchIconWrap>
@@ -95,7 +99,7 @@ export default function AddMember() {
           <MyMemberProfileImg src="/images/icon/user.png" alt="멤버 이미지" />
         </MyProfileImgWrap>
         <MyMemberName>김호준</MyMemberName>
-        <MyMemberCheckBox type="checkbox" />
+        <MyMemberCheckBox type="checkbox" defaultChecked readOnly />
       </MyMemberWrap>
     </MyInfoRightWrap>
   );

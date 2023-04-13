@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Select from './components/CreateWorkspace/Select';
 import Calendar from './components/CreateWorkspace/Calendar';
 import AddMember from './components/CreateWorkspace/AddMember';
+import InvitedMember from './components/CreateWorkspace/InvitedMember';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -173,35 +174,6 @@ const MyProjectInfoWrap = styled.div`
 const MyInfoLeftWrap = styled.div`
   width: 40%;
 `;
-
-const MyRightContent = styled.div`
-  width: 16%;
-  height: 100%;
-  background-color: ${subColor};
-  border: 1px solid #777;
-  border-radius: 10px;
-
-  margin-left: 25px;
-`;
-
-const MyRightName = styled.h4`
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-align: center;
-
-  margin: 25px 0 30px 0;
-`;
-
-const MyAddMeberWrap = styled.div`
-  width: 100%;
-  display: flex;
-  text-align: center;
-`;
-
-const MyAddMeberImgWrap = styled.div``;
-const MyAddMeberImg = styled.img``;
-const MyAddMemberName = styled.p``;
-
 export default function CreateWorkspace() {
   const navigation = useNavigate();
   return (
@@ -249,15 +221,7 @@ export default function CreateWorkspace() {
           </MyProjectInfoWrap>
         </MyLeftContent>
         {/* 여기는 오른쪽 초대 멤버 */}
-        <MyRightContent>
-          <MyRightName>Invited Member</MyRightName>
-          <MyAddMeberWrap>
-            <MyAddMeberImgWrap>
-              <MyAddMeberImg />
-            </MyAddMeberImgWrap>
-            <MyAddMemberName>김호준</MyAddMemberName>
-          </MyAddMeberWrap>
-        </MyRightContent>
+        <InvitedMember />
       </MyContentCotainer>
     </MySectionContainer>
   );
