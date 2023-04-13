@@ -26,6 +26,7 @@ const Router = () => {
         <Route path="/create" element={<CreateWorkspace />} />
         <Route path="/workflow" element={<Workflow />} />
         <Route path="*" element={<NotFound />} />
+        <Route path=""></Route>
       </Routes>
       <Footer />
     </BrowserRouter>

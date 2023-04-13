@@ -5,6 +5,7 @@ import defaultProfile from '../../assets/images/default-profile.png';
 import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeOrder } from '../../store/modules/workspace';
+import { useRef } from 'react';
 
 // Color Variables
 const contentColor = '#fff';
