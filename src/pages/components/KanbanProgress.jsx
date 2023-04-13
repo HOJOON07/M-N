@@ -13,7 +13,6 @@ import { addList, subtractList } from '../../store/modules/workspace';
 import { deleteItem } from '../../store/modules/workspace';
 import ProgressItem from './ProgressItem';
 
-
 // Color Variables
 const contentColor = '#fff';
 const subColor = '#cbcbcb';
