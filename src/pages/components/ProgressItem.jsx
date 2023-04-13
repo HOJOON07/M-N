@@ -6,6 +6,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { addList, subtractList } from '../../store/modules/workspace';
 import { deleteItem, modifyItem } from '../../store/modules/workspace';
 import styled from 'styled-components';
+import { useRef } from 'react';
 
 // Color Variables
 const contentColor = '#fff';
@@ -25,8 +26,8 @@ const MyTaskContainer = styled.div`
 
   & img {
     position: absolute;
-    right: 5px;
-    bottom: 5px;
+    right: 8px;
+    bottom: 8px;
     width: 20px;
     height: 20px;
   }
@@ -35,15 +36,15 @@ const MyTaskContainer = styled.div`
     position: absolute;
     display: block;
     font-size: 13px;
-    right: 22px;
-    top: 5px;
+    right: 26px;
+    top: 8px;
   }
   & span:last-child {
     position: absolute;
     display: block;
     font-size: 13px;
-    right: 5px;
-    top: 5px;
+    right: 8px;
+    top: 8px;
   }
 `;
 
@@ -59,7 +60,7 @@ const MyContent = styled.p`
 
 const MyCreateData = styled.p`
   position: absolute;
-  right: 2vw;
+  right: 35px;
   bottom: 9px;
   color: ${subColor};
   font-size: 10px;
@@ -82,8 +83,8 @@ const MyImportanceButton = styled.button`
   cursor: pointer;
 
   position: absolute;
-  bottom: 5px;
-  left: 5px;
+  bottom: 8px;
+  left: 8px;
   transition: 0.2s;
 
   &:hover {
@@ -98,18 +99,94 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   const contentRef = useRef();
   const endDateRef = useRef();
   let contentInput, endDateInput, checkedImportance;
-  // const [importance, setImportance] = useState('');
-  // const handleImportanceChange = e => {
-  //   setImportance(e.target.value);
-  // };
   const selectList = ['high', 'medium', 'low'];
   const [selected, setSelected] = useState(item.importance);
 
   const selectHandler = e => {
     setSelected(e.target.value);
   };
+  const selectedDragItem = useRef(null);
+  const droppedItem = useRef(null);
 
-  /** 버튼 클릭 시 특정 id에 해당하는 배열 찾기 함수 */
+  //react dnd
+  const [{ isDragging }, dragRef] = useDrag(() => ({
+    type: '1',
+    item: {
+      workflowList: workflowList,
+      progress: progress,
+    },
+    collect: monitor => ({ isDragging: monitor.isDragging() }),
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult();
+      if (dropResult) {
+        const subtractLists = item.workflowList; // 빼줄 리스트
+        const addLists = dropResult.list; // 더해줄 리스트
+        if (selectedDragItem.current) {
+          dispatch(
+            subtractList(item.progress, selectedDragItem.current, subtractLists)
+          );
+          dispatch(
+            addList(
+              dropResult.name,
+              selectedDragItem.current,
+              addLists,
+              droppedItem.current
+            )
+          );
+        }
+      }
+    },
+  }));
+
+  const findClickItem = (id, progress) => {
+    let selectedItem = null;
+    for (const ws of workspaceList) {
+      let specificProgress;
+      if (progress === 'Request') {
+        specificProgress = ws.workflow.todoList;
+      } else if (progress === 'In Progress') {
+        specificProgress = ws.workflow.inprogressList;
+      } else if (progress === 'In Review') {
+        specificProgress = ws.workflow.inreviewList;
+      } else if (progress === 'Blocked') {
+        specificProgress = ws.workflow.blockedList;
+      } else {
+        specificProgress = ws.workflow.doneList;
+      }
+      selectedItem = specificProgress.find(item => item.id === id);
+      if (selectedItem) {
+        selectedDragItem.current = selectedItem;
+      }
+    }
+  };
+
+  const findDropItem = e => {
+    let dropItem = null;
+    for (const ws of workspaceList) {
+      let specificProgress;
+      if (progress === 'Request') {
+        specificProgress = ws.workflow.todoList;
+      } else if (progress === 'In Progress') {
+        specificProgress = ws.workflow.inprogressList;
+      } else if (progress === 'In Review') {
+        specificProgress = ws.workflow.inreviewList;
+      } else if (progress === 'Blocked') {
+        specificProgress = ws.workflow.blockedList;
+      } else {
+        specificProgress = ws.workflow.doneList;
+      }
+      // console.log(e.target.id);
+
+      dropItem = specificProgress.find(item => item.id !== e.target.id);
+
+      if (dropItem) {
+        droppedItem.current = dropItem;
+        console.log(droppedItem.current, 'dsds');
+      }
+    }
+  };
+  
+/** 버튼 클릭 시 특정 id에 해당하는 배열 찾기 함수 */
   const createDateClickHandler = (id, progress) => {
     buttonClickHandler(id, progress);
   };
@@ -225,7 +302,15 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   }
 
   return (
-    <MyTaskContainer progress={progress} draggable key={id}>
+    <MyTaskContainer
+      id={id}
+      ref={dragRef}
+      progress={progress}
+      draggable
+      key={id}
+      onDragStart={() => findClickItem(id, progress)}
+      onDragEnter={findDropItem}
+    >
       <div key={id}>
         {contentSpace}
         <div>

@@ -32,13 +32,6 @@ const initState = {
             endDate: '2023-04-12',
             importance: 'low',
           },
-          {
-            id: '010',
-            content: '내용1',
-            createDate: '2023-04-01:0002',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
         ],
         inprogressList: [
           {
@@ -58,7 +51,7 @@ const initState = {
         ],
         inreviewList: [
           {
-            id: 2,
+            id: '200',
             content: '3',
             createDate: '2023-04-01:0003',
             endDate: '2023-04-12',
@@ -67,7 +60,7 @@ const initState = {
         ],
         blockedList: [
           {
-            id: 3,
+            id: '300',
             content: '666',
             createDate: '2023-04-01:0004',
             endDate: '2023-04-12',
@@ -76,7 +69,7 @@ const initState = {
         ],
         doneList: [
           {
-            id: 4,
+            id: '040',
             content: '1',
             createDate: '2023-04-01:0005',
             endDate: '2023-04-12',
@@ -93,7 +86,6 @@ const CREATE = 'workspace/CREATE';
 const DELETE = 'workspace/DELETE';
 const DONE = 'workspace/DONE';
 const BOOKMARK = 'workspace/BOOKMARK';
-const CHANGEORDER = 'workflow/CHANGEORDER';
 // NEW TASK 액션 타입 정의
 const NEWTASK_TODO = 'workflow/NEWTASK_TODO';
 const NEWTASK_PROGRESS = 'workflow/NEWTASK_PROGRESS';
@@ -106,15 +98,15 @@ const MODIFY_TASK = 'workflow/MODIFY_TASK';
 const ADD_LIST = 'workflow/ADD_LIST';
 const SUBTRACT_LIST = 'workflow/SUBTRACT_LIST';
 
-export function subtractList(subListType, itemId, workflowList) {
+export function subtractList(subListType, selectedDragItem, subList) {
   return {
     type: SUBTRACT_LIST,
-    payload: { subListType, itemId, workflowList },
+    payload: { subListType, selectedDragItem, subList },
   };
 }
 
-export function addList(addListType, item, workflowList) {
-  return { type: ADD_LIST, payload: { addListType, item, workflowList } };
+export function addList(addListType, item, addList, dropItem) {
+  return { type: ADD_LIST, payload: { addListType, item, addList, dropItem } };
 }
 
 // 액션 생성 함수 작성
@@ -205,22 +197,6 @@ export function newDone(payload) {
     payload: {
       workspaceId,
       newtask,
-    },
-  };
-}
-
-export function changeOrder(payload) {
-  const { newIdx, oldIdx, draggingItem, workspaceId, progress, copyList } =
-    payload;
-  return {
-    type: CHANGEORDER,
-    payload: {
-      newIdx,
-      oldIdx,
-      draggingItem,
-      workspaceId,
-      progress,
-      copyList,
     },
   };
 }
@@ -439,11 +415,11 @@ export default function workspace(state = initState, action) {
       };
 
     case SUBTRACT_LIST:
-      let { subListType, itemId } = action.payload;
+      let { subListType, selectedDragItem, subList } = action.payload;
       switch (subListType) {
         case 'Request':
           subListType = 'todoList';
-          return;
+          break;
         case 'In Progress':
           subListType = 'inprogressList';
           break;
@@ -459,8 +435,9 @@ export default function workspace(state = initState, action) {
         default:
           break;
       }
+
       const updatedList = state.workspaceList[0].workflow[subListType].filter(
-        item => item.id !== itemId[0].id
+        item => item.id !== selectedDragItem.id
       );
       return {
         ...state,
@@ -469,7 +446,7 @@ export default function workspace(state = initState, action) {
             ...state.workspaceList[0],
             workflow: {
               ...state.workspaceList[0].workflow,
-              [subListType]: updatedList,
+              [subListType]: updatedList ? updatedList : null,
             },
           },
         ],
@@ -477,12 +454,12 @@ export default function workspace(state = initState, action) {
 
     case ADD_LIST:
       console.log('ADDLIST');
-      let { addListType, item, workflowList } = action.payload;
+      let { addListType, item, addList, dropItem } = action.payload;
 
       switch (addListType) {
         case 'Request':
           addListType = 'todoList';
-          return;
+          break;
         case 'In Progress':
           addListType = 'inprogressList';
           break;
@@ -497,19 +474,14 @@ export default function workspace(state = initState, action) {
           break;
         default:
       }
-      // return {
-      //   ...state,
-      //   workspaceList: [
-      //     {
-      //       ...state.workspaceList[0],
-      //       workflow: {
-      //         ...state.workspaceList[0].workflow,
-      //         [addListType]: [...workflowList, item.workflowList[0]],
-      //       },
-      //     },
-      //   ],
-      // };
-      console.log(item);
+
+      console.log('dsdasfafsfasfasfsa', dropItem);
+      const updateAddList = [
+        ...state.workspaceList[0].workflow[addListType].filter(
+          i => i.id !== item.id
+        ),
+        item,
+      ];
 
       return {
         ...state,
@@ -518,7 +490,7 @@ export default function workspace(state = initState, action) {
             ...state.workspaceList[0],
             workflow: {
               ...state.workspaceList[0].workflow,
-              [addListType]: [...workflowList, item],
+              [addListType]: [...updateAddList],
             },
           },
         ],
