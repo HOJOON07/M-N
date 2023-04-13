@@ -14,18 +14,46 @@ const initState = {
       workflow: {
         todoList: [
           {
-            id: 0,
+            id: '001',
             content: '내용1',
-            createDate: '2023-04-01:0001',
+            createDate: '2023-04-01:00010',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            id: '002',
+            content: '내용1',
+            createDate: '2023-04-01:00011',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            id: '003',
+            content: '내용1',
+            createDate: '2023-04-01:00012',
             endDate: '2023-04-12',
             importance: 'low',
           },
         ],
         inprogressList: [
           {
-            id: 1,
+            id: '010',
             content: '내용1',
-            createDate: '2023-04-01:0002',
+            createDate: '2023-04-01:00020',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            id: '011',
+            content: '내용1',
+            createDate: '2023-04-01:00021',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            id: '012',
+            content: '내용1',
+            createDate: '2023-04-01:00022',
             endDate: '2023-04-12',
             importance: 'low',
           },
@@ -68,11 +96,13 @@ const DELETE = 'workspace/DELETE';
 const DONE = 'workspace/DONE';
 const BOOKMARK = 'workspace/BOOKMARK';
 const CHANGEORDER = 'workflow/CHANGEORDER';
+// NEW TASK 액션 타입 정의
 const NEWTASK_TODO = 'workflow/NEWTASK_TODO';
 const NEWTASK_PROGRESS = 'workflow/NEWTASK_PROGRESS';
 const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
 const NEWTASK_BLOCKED = 'workflow/NEWTASK_BLOCKED';
 const NEWTASK_DONE = 'workflow/NEWTASK_DONE';
+// const DELETE_TASK = 'worfkflow/DELETE_TASK';
 
 // 액션 생성 함수 작성
 export function create(payload) {
@@ -82,10 +112,11 @@ export function create(payload) {
   };
 }
 
-export function deleteItem(id) {
+export function deleteItem(payload) {
+  const { workspaceId, selectedId } = payload;
   return {
     type: DELETE,
-    id,
+    payload: { workspaceId, selectedId },
   };
 }
 
@@ -157,6 +188,7 @@ export function newDone(payload) {
     },
   };
 }
+
 export function changeOrder(payload) {
   const { newIdx, oldIdx, draggingItem, workspaceId, progress, copyList } =
     payload;
@@ -191,7 +223,7 @@ export default function workspace(state = initState, action) {
         ],
       };
     case DELETE:
-      return {};
+      return { ...state, ...action.payload };
     case BOOKMARK:
       return {
         ...state,
@@ -330,6 +362,7 @@ export default function workspace(state = initState, action) {
         ...state,
         workspaceList: updatedWsList_done,
       };
+
     case CHANGEORDER:
       const { newIdx, oldIdx, draggingItem, workspaceId, progress, copyList } =
         action.payload;

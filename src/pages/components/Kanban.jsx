@@ -87,8 +87,6 @@ export default function Kanban() {
           icon={iconList[4]}
         />
       </MyProgressArea>
-      {/* test */}
-      <NewTask />
     </div>
   );
 }
