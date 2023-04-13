@@ -14,18 +14,46 @@ const initState = {
       workflow: {
         todoList: [
           {
-            id: 0,
+            id: '001',
             content: '내용1',
-            createDate: '2023-04-01:0001',
+            createDate: '2023-04-01:00010',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            id: '002',
+            content: '내용1',
+            createDate: '2023-04-01:00011',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            id: '003',
+            content: '내용1',
+            createDate: '2023-04-01:00012',
             endDate: '2023-04-12',
             importance: 'low',
           },
         ],
         inprogressList: [
           {
-            id: 1,
+            id: '010',
             content: '내용1',
-            createDate: '2023-04-01:0002',
+            createDate: '2023-04-01:00020',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            id: '011',
+            content: '내용1',
+            createDate: '2023-04-01:00021',
+            endDate: '2023-04-12',
+            importance: 'low',
+          },
+          {
+            id: '012',
+            content: '내용1',
+            createDate: '2023-04-01:00022',
             endDate: '2023-04-12',
             importance: 'low',
           },
