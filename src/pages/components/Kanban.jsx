@@ -5,6 +5,8 @@ import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
 import KanbanProgress from './KanbanProgress';
 import NewTask from './NewTask';
+import { useDrop } from 'react-dnd';
+import { DropTarget } from 'react-dnd';
 
 // Color Variables
 const backColor = '#eef1f5';
@@ -52,6 +54,20 @@ export default function Kanban() {
   /** 임시로 특정 워크스페이스(id가 0) 지정 */
   const workspaceList = useSelector(state => state.workspace.workspaceList)[0];
   const workflowList = workspaceList.workflow;
+  const workflowProgressArr = [
+    'todoList',
+    'inprogressList',
+    'inreviewList',
+    'blockedList',
+    'doneList',
+  ];
+  const workflowProgress = [
+    'Request',
+    'In Progress',
+    'In Review',
+    'Blocked',
+    'Completed',
+  ];
   const iconList = ['✉️', '🔨', '📌', '🔒', '🎉'];
 
   return (
@@ -61,6 +77,22 @@ export default function Kanban() {
         <MySubTitle fontSize="14px">{workspaceList.name}</MySubTitle>
       </MyTitleArea>
       <MyProgressArea>
+        {/* {workflowProgressArr.map((e, idx) => {
+          for (let i = 0; i < workflowList[e].length; i++) {
+            console.log('id', workflowList[e][i].createDate);
+          }
+
+          return (
+            <KanbanProgress
+              key={idx}
+              id={1}
+              workflowList={workflowList[e]}
+              progress={workflowProgress[idx]}
+              icon={iconList[idx]}
+            />
+          );
+        })} */}
+
         <KanbanProgress
           workflowList={workflowList.todoList}
           progress="Request"
