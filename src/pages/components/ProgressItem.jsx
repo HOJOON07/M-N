@@ -96,7 +96,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
 
-  /** 버튼 클릭 시 특정 createDate에 해당하는 배열 찾기 함수 */
+  /** 버튼 클릭 시 특정 id에 해당하는 배열 찾기 함수 */
   const createDateClickHandler = (id, progress) => {
     buttonClickHandler(id, progress);
   };
@@ -132,13 +132,58 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       dispatch(deleteItem(payload));
     }
   };
+
+  const updateContentClickHandler = (id, progress) => {
+    updateHandler(id, progress);
+  };
+
+  const updateHandler = (id, progress) => {
+    let payload = {};
+    let selectedItem = null;
+    let workspace = null;
+    for (const ws of workspaceList) {
+      let specificProgress;
+      if (progress === 'Request') {
+        specificProgress = ws.workflow.todoList;
+      } else if (progress === 'In Progress') {
+        specificProgress = ws.workflow.inprogressList;
+      } else if (progress === 'In Review') {
+        specificProgress = ws.workflow.inreviewList;
+      } else if (progress === 'Blocked') {
+        specificProgress = ws.workflow.blockedList;
+      } else {
+        specificProgress = ws.workflow.doneList;
+      }
+      selectedItem = specificProgress.find(item => item.id === id);
+      if (selectedItem) {
+        workspace = ws;
+        break;
+      }
+    }
+    if (workspace && selectedItem) {
+      payload = {
+        workspaceId: workspace.id,
+        selectedItem: selectedItem,
+      };
+      console.log(payload);
+      // console.log(selectedItem.content);
+    }
+  };
   const startDate = item.createDate.split(':')[0];
   return (
     <MyTaskContainer progress={progress} draggable key={id}>
       <div key={id}>
         <MyContent>{item.content}</MyContent>
         <div>
-          <span>✏️</span>
+          <span
+            onClick={() => {
+              updateContentClickHandler(id, progress);
+              setStatus(status => !status);
+              console.log('status', status);
+            }}
+          >
+            ✏️
+          </span>
           <span
             onClick={() => {
               createDateClickHandler(id, progress);
