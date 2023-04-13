@@ -17,11 +17,15 @@ const greyColor = '#696969';
 
 // Styled Components
 const MyNewTask = styled.div`
+  position: relative;
   border: 1px solid ${subColor};
   border-radius: 5px;
   background-color: ${contentColor};
-  padding: 10px;
-  width: 150px;
+  padding: 10px 13px 42px;
+  width: 84%;
+
+  margin-bottom: 15px;
+
   & > div:nth-child(2) {
     margin: 10px 0;
   }
@@ -37,17 +41,25 @@ const MyCalendar = styled.input`
 `;
 
 const MyContent = styled.input`
-  height: 50px;
+  width: 90%;
+  height: 60px;
 `;
 const MyBottom = styled.div`
+  width: 80%;
+  height: 15px;
   font-size: 11px;
-  align-items: center;
+
   display: flex;
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
 `;
 
 const MySubmit = styled.div`
   display: flex;
-  justify-content: flex-end;
+  position: absolute;
+  bottom: 15px;
+  right: 10px;
 `;
 
 const MySubmitButton = styled.button`
