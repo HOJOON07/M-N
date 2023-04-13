@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 
 const MyInfoRightWrap = styled.div`
   display: flex;
@@ -10,7 +11,8 @@ const MyInfoRightWrap = styled.div`
   text-align: center;
   width: 40%;
   background-color: #d5cee8;
-
+  height: 400px;
+  overflow: scroll;
   border-bottom: 2px solid #725884;
   border-right: 2px solid #725884;
   /* box-shadow: 7px 7px 7px 0px #725884; */
@@ -57,6 +59,7 @@ const MyMemberWrap = styled.div`
   align-items: center;
   width: 100%;
   height: 50px;
+  margin-bottom: 10px;
 `;
 const MyProfileImgWrap = styled.div`
   width: 50px;
@@ -85,6 +88,19 @@ const MyMemberCheckBox = styled.input`
 `;
 
 export default function AddMember() {
+  const [searchUserData, setSearchUserData] = useState([]);
+  const [checked, setChecked] = useState([]);
+  const searchResult = () => {
+    axios
+      .post('url')
+      .then(res => {
+        setSearchUserData(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   return (
     <MyInfoRightWrap>
       <MyAddMember>Add Member</MyAddMember>
@@ -94,6 +110,20 @@ export default function AddMember() {
           <FontAwesomeIcon icon={faSearch} style={{ fontSize: '22px' }} />
         </MyAddSearchIconWrap>
       </MyAddMemberInputWrap>
+      {searchUserData.map(data => {
+        return (
+          <MyMemberWrap key={data.user_id}>
+            <MyProfileImgWrap>
+              <MyMemberProfileImg
+                src="/images/icon/user.png"
+                alt="멤버 이미지"
+              />
+            </MyProfileImgWrap>
+            <MyMemberName>{data.name}</MyMemberName>
+            <MyMemberCheckBox type="checkbox" defaultChecked readOnly />
+          </MyMemberWrap>
+        );
+      })}
       <MyMemberWrap>
         <MyProfileImgWrap>
           <MyMemberProfileImg src="/images/icon/user.png" alt="멤버 이미지" />

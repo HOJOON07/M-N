@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Select from './components/CreateWorkspace/Select';
 import Calendar from './components/CreateWorkspace/Calendar';
 import AddMember from './components/CreateWorkspace/AddMember';
 import InvitedMember from './components/CreateWorkspace/InvitedMember';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 // Color Variables
 const mainColor = '#623ad6';
 const resetColor = '#dc4e4e';
 const hoverResetColor = '#f06464';
 const hoverMainColor = '#7855db';
-const subColor = '#d5cee8';
 const brightSubColor = '#e9e4f5';
 const connectColor = '#76d63a';
 const hoverConnectColor = '#64bc2d';
@@ -176,6 +177,53 @@ const MyInfoLeftWrap = styled.div`
 `;
 export default function CreateWorkspace() {
   const navigation = useNavigate();
+
+  const [userlist, setUserList] = useState([]); // 유저리스트
+  // 생성하는 프로젝트에 대한 데이터
+  const [createData, setCreateData] = useState({
+    workspace_leader: 'ghwns1007',
+    workspace_name: '',
+    workspace_category: '',
+    github_email: '',
+    workspace_start: '',
+    workspace_end: '',
+    workspace_member: [],
+    userlist,
+  });
+  //유저리스트 불러오기
+  const getUserList = () => {
+    axios.get('/data/userList.json').then(res => {
+      setUserList(res.data);
+    });
+  };
+  //프로젝트 초기 데이터 불러오기
+  const getCreateData = () => {
+    axios.get('/data/createData.json').then(res => {
+      setCreateData(res.data);
+    });
+  };
+  useEffect(() => {
+    getUserList();
+    getCreateData();
+  }, []);
+  const WorkSpaceNameOnChange = e => {
+    setCreateData({ ...createData, workspace_name: e.target.value });
+  };
+
+  const gitOnChage = e => {
+    setCreateData({ ...createData, github_email: e.target.value });
+  };
+  const categoryOnChange = e => {
+    setCreateData({ ...createData, workspace_category: e.target.value });
+  };
+  const startDateOnChange = startDate => {
+    setCreateData({ ...createData, workspace_start: startDate });
+  };
+  const endDateOnChange = endDate => {
+    setCreateData({ ...createData, workspace_end: endDate });
+  };
+  // const searchUser =
+  // console.log(createData);
   return (
     <MySectionContainer>
       <MyTitleWrap>
@@ -193,10 +241,16 @@ export default function CreateWorkspace() {
       <MyContentCotainer>
         <MyLeftContent>
           <MyContentNameWrap>
-            <MyProjectName type="text" placeholder="Name" />
+            <MyProjectName
+              type="text"
+              placeholder="Name"
+              onChange={e => {
+                WorkSpaceNameOnChange(e);
+              }}
+            />
             <MyP>
               Private
-              <input checked type="radio" name="sort" />
+              <input type="radio" name="sort" />
             </MyP>
             <MyP>
               Company
@@ -208,16 +262,25 @@ export default function CreateWorkspace() {
             <MyGithubInput
               type="text"
               placeholder="Github Repository Address"
+              onChange={e => {
+                gitOnChage(e);
+              }}
             />
             <MyConnectBtn>Connect</MyConnectBtn>
           </MyDivRelative>
           {/* 깃허브 주소 밑에 부분시작 */}
           <MyProjectInfoWrap>
             <MyInfoLeftWrap>
-              <Select />
-              <Calendar />
+              <Select
+                categoryOnChange={categoryOnChange}
+                createData={createData}
+              />
+              <Calendar
+                startDateOnChange={startDateOnChange}
+                endDateOnChange={endDateOnChange}
+              />
             </MyInfoLeftWrap>
-            <AddMember />
+            <AddMember userlist={userlist} />
           </MyProjectInfoWrap>
         </MyLeftContent>
         {/* 여기는 오른쪽 초대 멤버 */}
