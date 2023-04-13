@@ -1,13 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import myLogo from '../images/mnlogopp.png';
 import mySocialGit from '../images/git.png';
 import mySocialNaver from '../images/naver.png';
 import mySocialKakao from '../images/pngegg.png';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import user from '../store/modules/user';
+import Kakao from './components/Kakao';
 
 const MyContainer = styled.section`
   display: flex;
@@ -128,8 +127,15 @@ const MySocial = styled.img`
 `;
 
 export default function Login() {
+  const gotoWorkSpaceList = () => {
+    navigate('/workspace');
+  };
   const navigate = useNavigate();
   const [msg, setMsg] = useState('');
+  const [inputs, setInputs] = useState({
+    id: '',
+    password: '',
+  });
   const submit = () => {
     const userData = {
       user_id: inputs.id,
@@ -140,7 +146,6 @@ export default function Login() {
       .then(res => {
         if (res.status === 200) {
           gotoWorkSpaceList();
-
           setMsg('');
         }
       })
@@ -150,16 +155,7 @@ export default function Login() {
         console.log(err.response.data, err);
       });
   };
-
-  const gotoWorkSpaceList = () => {
-    navigate('/workspace');
-  };
   const inutRef = useRef([]);
-
-  const [inputs, setInputs] = useState({
-    id: '',
-    password: '',
-  });
 
   const { id, password } = inputs;
   const vaildId = id.length >= 6 && id.length <= 14;
@@ -172,27 +168,34 @@ export default function Login() {
     });
   };
 
-  // const handleClick = () => {
-  //   if (!vaildId) {
-  //     alert('유효하지 않은 id 입니다.');
-  //     setInputs({
-  //       ...inputs,
-  //       id: '',
-  //     });
-  //     inutRef.current[0].focus();
-  //   } else if (!vaildPassword) {
-  //     alert('유효하지 않은 password 입니다.');
-  //     inutRef.current[1].focus();
-  //     setInputs({
-  //       ...inputs,
-  //       password: '',
-  //     });
-  //   } else {
-  //     submit();
-  //     gotoWorkSpaceList();
-  //     return alert('로그인 성공!');
-  //   }
-  // };
+  const handleClick = () => {
+    if (!vaildId) {
+      alert('유효하지 않은 id 입니다.');
+      setInputs({
+        ...inputs,
+        id: '',
+      });
+      inutRef.current[0].focus();
+    } else if (!vaildPassword) {
+      alert('유효하지 않은 password 입니다.');
+      inutRef.current[1].focus();
+      setInputs({
+        ...inputs,
+        password: '',
+      });
+    } else {
+      submit();
+      gotoWorkSpaceList();
+      return alert('로그인 성공!');
+    }
+  };
+
+  // 카카오
+  const KAKAO_CLIENT_ID = 'c37163557aa622477d21aee2d6f6dbdc';
+  const KAKAO_REDIRECT_URI = 'http://localhost:3000/login';
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
+  const KAKAO_LOGOUT_URI = 'http://localhost:3000';
+  const KAKAO_LOGOUT_URL = `https://kauth.kakao.com/oauth/logout?client_id=${KAKAO_CLIENT_ID}&logout_redirect_uri=${KAKAO_LOGOUT_URI}`;
 
   return (
     <MyContainer>
@@ -242,9 +245,15 @@ export default function Login() {
 
         <MyShortCut>---- 간편 로그인 ----</MyShortCut>
         <MyIcon>
-          <MySocial src={mySocialKakao} alt="카카오톡이미지" />
-          <MySocial src={mySocialNaver} alt="네이버이미지" />
-          <MySocial src={mySocialGit} alt="깃헙이미지" />
+          <Link to={KAKAO_AUTH_URL}>
+            <MySocial src={mySocialKakao} alt="카카오톡이미지" />
+          </Link>
+          <Link to="/">
+            <MySocial src={mySocialNaver} alt="네이버이미지" />
+          </Link>
+          <Link to="/">
+            <MySocial src={mySocialGit} alt="깃헙이미지" />
+          </Link>
         </MyIcon>
       </MyLogin>
     </MyContainer>

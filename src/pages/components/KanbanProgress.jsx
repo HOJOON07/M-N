@@ -4,10 +4,15 @@ import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
 import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { changeOrder } from '../../store/modules/workspace';
+import { useRef } from 'react';
+
 import { useDrag, useDrop } from 'react-dnd';
 import { addList, subtractList } from '../../store/modules/workspace';
 import { deleteItem } from '../../store/modules/workspace';
 import ProgressItem from './ProgressItem';
+
 
 // Color Variables
 const contentColor = '#fff';
