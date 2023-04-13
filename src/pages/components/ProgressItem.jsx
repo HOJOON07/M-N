@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import defaultProfile from '../../assets/images/default-profile.png';
-import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { addList, subtractList } from '../../store/modules/workspace';
@@ -268,14 +267,13 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       if (modify) dispatch(modifyItem(payload));
     }
   };
-  const startDate = item.createDate.split(':')[0];
 
   let contentSpace, dateSpace, importantSpace;
   if (modify === false) {
     contentSpace = <MyContent>{item.content}</MyContent>;
     dateSpace = (
       <MyCreateData>
-        {startDate} ~ {item.endDate}
+        {item.startDate} ~ {item.endDate}
       </MyCreateData>
     );
     importantSpace = (
