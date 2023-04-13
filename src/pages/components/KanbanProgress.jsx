@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import menu from '../../assets/images/menu.png';
 import defaultProfile from '../../assets/images/default-profile.png';
@@ -6,12 +6,7 @@ import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { addList, subtractList } from '../../store/modules/workspace';
-import {
-  changeOrder,
-  deleteItem,
-  // deleteTask,
-  newInProgress,
-} from '../../store/modules/workspace';
+import { deleteItem } from '../../store/modules/workspace';
 
 // Color Variables
 const contentColor = '#fff';
@@ -178,10 +173,10 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
     accept: '1',
     drop: item => {
       let list = [];
-      // console.log('드롭 위치', progress);
       switch (progress) {
         case 'Request':
           list = workspaceList[0].workflow.todoList;
+          break;
         case 'In Progress':
           list = workspaceList[0].workflow.inprogressList;
           break;
