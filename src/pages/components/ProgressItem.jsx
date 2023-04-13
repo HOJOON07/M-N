@@ -6,7 +6,6 @@ import { useDrag, useDrop } from 'react-dnd';
 import { addList, subtractList } from '../../store/modules/workspace';
 import { deleteItem, modifyItem } from '../../store/modules/workspace';
 import styled from 'styled-components';
-import { useRef } from 'react';
 
 // Color Variables
 const contentColor = '#fff';
@@ -185,8 +184,8 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       }
     }
   };
-  
-/** 버튼 클릭 시 특정 id에 해당하는 배열 찾기 함수 */
+
+  /** 버튼 클릭 시 특정 id에 해당하는 배열 찾기 함수 */
   const createDateClickHandler = (id, progress) => {
     buttonClickHandler(id, progress);
   };
