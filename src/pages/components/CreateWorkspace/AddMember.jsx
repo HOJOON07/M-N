@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,6 +38,7 @@ const MyAddMemberInputWrap = styled.div`
   border: 1px solid #777;
   margin-bottom: 40px;
   position: relative;
+  padding: 5px;
 `;
 
 const MyaddMemberInput = styled.input`
@@ -87,19 +88,34 @@ const MyMemberCheckBox = styled.input`
   border: none;
 `;
 
-export default function AddMember() {
-  const [searchUserData, setSearchUserData] = useState([]);
-  const [checked, setChecked] = useState([]);
-  const searchResult = () => {
-    axios
-      .post('url')
-      .then(res => {
-        setSearchUserData(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+export default function AddMember(props) {
+  const { userlist, checkOnChange, checkedUserList } = props;
+
+  // const searchResult = () => {
+  //   axios
+  //     .post('url')
+  //     .then(res => {
+  //       setSearchUserData(res.data);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   searchResult();
+  // }, []);
+  // 1.체크된 것들을 담은usestate로 빈 배열을 만든다.
+  // 2. onchange에 체크된 유저 아이디만 담아주는 함수를 만든다.
+  // 3. 그 아이디만 담긴것들을 인바이티드 멤버에 필터를 돌려주는 배열을 다시 만든다.
+  // 4.그걸 인바이티드 멤버에 넣어준다.
+
+  // const handleAddMembers = () => {
+  //   const selectedMembers = searchUserData.filter(data =>
+  //     checked.includes(data.user_id)
+  //   );
+  //   console.log(selectedMembers);
+  // };
 
   return (
     <MyInfoRightWrap>
@@ -110,7 +126,7 @@ export default function AddMember() {
           <FontAwesomeIcon icon={faSearch} style={{ fontSize: '22px' }} />
         </MyAddSearchIconWrap>
       </MyAddMemberInputWrap>
-      {searchUserData.map(data => {
+      {userlist.map(data => {
         return (
           <MyMemberWrap key={data.user_id}>
             <MyProfileImgWrap>
@@ -119,18 +135,23 @@ export default function AddMember() {
                 alt="멤버 이미지"
               />
             </MyProfileImgWrap>
-            <MyMemberName>{data.name}</MyMemberName>
-            <MyMemberCheckBox type="checkbox" defaultChecked readOnly />
+            <MyMemberName>{data.user_name}</MyMemberName>
+            <MyMemberCheckBox
+              type="checkbox"
+              onChange={e => {
+                checkOnChange(e.target.checked, data.user_id);
+              }}
+            />
           </MyMemberWrap>
         );
       })}
-      <MyMemberWrap>
+      {/* <MyMemberWrap>
         <MyProfileImgWrap>
           <MyMemberProfileImg src="/images/icon/user.png" alt="멤버 이미지" />
         </MyProfileImgWrap>
         <MyMemberName>김호준</MyMemberName>
         <MyMemberCheckBox type="checkbox" defaultChecked readOnly />
-      </MyMemberWrap>
+      </MyMemberWrap> */}
     </MyInfoRightWrap>
   );
 }

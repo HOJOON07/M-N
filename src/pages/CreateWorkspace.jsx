@@ -5,7 +5,6 @@ import Select from './components/CreateWorkspace/Select';
 import Calendar from './components/CreateWorkspace/Calendar';
 import AddMember from './components/CreateWorkspace/AddMember';
 import InvitedMember from './components/CreateWorkspace/InvitedMember';
-import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 // Color Variables
@@ -179,7 +178,27 @@ export default function CreateWorkspace() {
   const navigation = useNavigate();
 
   const [userlist, setUserList] = useState([]); // 유저리스트
+  const [checkedUserList, setCheckedUserList] = useState([]);
+
+  const checkOnChange = (checked, user_id) => {
+    // const idArr = checkedUserList.map(el => {
+    //   return setCheckedUserList(prev => [...prev, el.user_id]);
+    // });
+    // console.log(idArr);
+    // console.log(user_id);
+    if (checked) {
+      // checkedUserList.map(el => {
+      //   console.log('el', el);
+      //   setCheckedUserList(prev => [...prev, el.user_id]);
+      // });
+      setCheckedUserList(prev => [...prev, user_id]);
+    } else {
+      setCheckedUserList(checkedUserList.filter(el => el !== user_id));
+    }
+  };
   // 생성하는 프로젝트에 대한 데이터
+  // console.log(userlist);
+  // console.log(checkedUserList);
   const [createData, setCreateData] = useState({
     workspace_leader: 'ghwns1007',
     workspace_name: '',
@@ -190,6 +209,11 @@ export default function CreateWorkspace() {
     workspace_member: [],
     userlist,
   });
+  //   const createWorkSpace = () =>{
+  //     axios.post("http://192.168.0.7:8001/addws",{
+  // setCreateData({...createData,})
+  //     }).
+  //   }
   //유저리스트 불러오기
   const getUserList = () => {
     axios.get('/data/userList.json').then(res => {
@@ -206,10 +230,10 @@ export default function CreateWorkspace() {
     getUserList();
     getCreateData();
   }, []);
+
   const WorkSpaceNameOnChange = e => {
     setCreateData({ ...createData, workspace_name: e.target.value });
   };
-
   const gitOnChage = e => {
     setCreateData({ ...createData, github_email: e.target.value });
   };
@@ -222,8 +246,20 @@ export default function CreateWorkspace() {
   const endDateOnChange = endDate => {
     setCreateData({ ...createData, workspace_end: endDate });
   };
-  // const searchUser =
-  // console.log(createData);
+
+  const result = () => {
+    let arr = [];
+    for (let i = 0; i < userlist.length; i++) {
+      for (let j = 0; j < checkedUserList.length; j++) {
+        if (userlist[i].user_id == checkedUserList[j]) {
+          arr.push(userlist[i]);
+        }
+      }
+    }
+    return arr;
+  };
+  const searchUserList = result();
+
   return (
     <MySectionContainer>
       <MyTitleWrap>
@@ -280,11 +316,19 @@ export default function CreateWorkspace() {
                 endDateOnChange={endDateOnChange}
               />
             </MyInfoLeftWrap>
-            <AddMember userlist={userlist} />
+            <AddMember
+              userlist={userlist}
+              checkOnChange={checkOnChange}
+              checkedUserList={checkedUserList}
+            />
           </MyProjectInfoWrap>
         </MyLeftContent>
         {/* 여기는 오른쪽 초대 멤버 */}
-        <InvitedMember />
+        <InvitedMember
+          checkedUserList={checkedUserList}
+          userlist={userlist}
+          searchUserList={searchUserList}
+        />
       </MyContentCotainer>
     </MySectionContainer>
   );
