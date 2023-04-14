@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 
 const MyInfoRightWrap = styled.div`
   display: flex;
@@ -10,7 +11,8 @@ const MyInfoRightWrap = styled.div`
   text-align: center;
   width: 40%;
   background-color: #d5cee8;
-
+  height: 400px;
+  overflow: scroll;
   border-bottom: 2px solid #725884;
   border-right: 2px solid #725884;
   /* box-shadow: 7px 7px 7px 0px #725884; */
@@ -36,6 +38,7 @@ const MyAddMemberInputWrap = styled.div`
   border: 1px solid #777;
   margin-bottom: 40px;
   position: relative;
+  padding: 5px;
 `;
 
 const MyaddMemberInput = styled.input`
@@ -57,6 +60,7 @@ const MyMemberWrap = styled.div`
   align-items: center;
   width: 100%;
   height: 50px;
+  margin-bottom: 10px;
 `;
 const MyProfileImgWrap = styled.div`
   width: 50px;
@@ -84,7 +88,35 @@ const MyMemberCheckBox = styled.input`
   border: none;
 `;
 
-export default function AddMember() {
+export default function AddMember(props) {
+  const { userlist, checkOnChange, checkedUserList } = props;
+
+  // const searchResult = () => {
+  //   axios
+  //     .post('url')
+  //     .then(res => {
+  //       setSearchUserData(res.data);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   searchResult();
+  // }, []);
+  // 1.체크된 것들을 담은usestate로 빈 배열을 만든다.
+  // 2. onchange에 체크된 유저 아이디만 담아주는 함수를 만든다.
+  // 3. 그 아이디만 담긴것들을 인바이티드 멤버에 필터를 돌려주는 배열을 다시 만든다.
+  // 4.그걸 인바이티드 멤버에 넣어준다.
+
+  // const handleAddMembers = () => {
+  //   const selectedMembers = searchUserData.filter(data =>
+  //     checked.includes(data.user_id)
+  //   );
+  //   console.log(selectedMembers);
+  // };
+
   return (
     <MyInfoRightWrap>
       <MyAddMember>Add Member</MyAddMember>
@@ -94,13 +126,32 @@ export default function AddMember() {
           <FontAwesomeIcon icon={faSearch} style={{ fontSize: '22px' }} />
         </MyAddSearchIconWrap>
       </MyAddMemberInputWrap>
-      <MyMemberWrap>
+      {userlist.map(data => {
+        return (
+          <MyMemberWrap key={data.user_id}>
+            <MyProfileImgWrap>
+              <MyMemberProfileImg
+                src="/images/icon/user.png"
+                alt="멤버 이미지"
+              />
+            </MyProfileImgWrap>
+            <MyMemberName>{data.user_name}</MyMemberName>
+            <MyMemberCheckBox
+              type="checkbox"
+              onChange={e => {
+                checkOnChange(e.target.checked, data.user_id);
+              }}
+            />
+          </MyMemberWrap>
+        );
+      })}
+      {/* <MyMemberWrap>
         <MyProfileImgWrap>
           <MyMemberProfileImg src="/images/icon/user.png" alt="멤버 이미지" />
         </MyProfileImgWrap>
         <MyMemberName>김호준</MyMemberName>
         <MyMemberCheckBox type="checkbox" defaultChecked readOnly />
-      </MyMemberWrap>
+      </MyMemberWrap> */}
     </MyInfoRightWrap>
   );
 }

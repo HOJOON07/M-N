@@ -15,6 +15,7 @@ const initState = {
             id: '001',
             content: '내용1',
             createDate: '2023-04-01:0001',
+            startDate: '2023-04-11',
             endDate: '2023-04-12',
             importance: 'low',
           },
@@ -22,13 +23,15 @@ const initState = {
             id: '002',
             content: '내용2',
             createDate: '2023-04-01:0001',
+            startDate: '2023-04-11',
             endDate: '2023-04-12',
-            importance: 'low',
+            importance: 'high',
           },
           {
             id: '003',
             content: '내용3',
             createDate: '2023-04-01:0001',
+            startDate: '2023-04-11',
             endDate: '2023-04-12',
             importance: 'low',
           },
@@ -38,13 +41,15 @@ const initState = {
             id: '011',
             content: '내용2',
             createDate: '2023-04-01:0002',
+            startDate: '2023-04-11',
             endDate: '2023-04-12',
-            importance: 'low',
+            importance: 'medium',
           },
           {
             id: '012',
             content: '내용3',
             createDate: '2023-04-01:0002',
+            startDate: '2023-04-11',
             endDate: '2023-04-12',
             importance: 'low',
           },
@@ -54,6 +59,7 @@ const initState = {
             id: '200',
             content: '3',
             createDate: '2023-04-01:0003',
+            startDate: '2023-04-11',
             endDate: '2023-04-12',
             importance: 'low',
           },
@@ -63,6 +69,7 @@ const initState = {
             id: '300',
             content: '666',
             createDate: '2023-04-01:0004',
+            startDate: '2023-04-11',
             endDate: '2023-04-12',
             importance: 'low',
           },
@@ -72,6 +79,7 @@ const initState = {
             id: '040',
             content: '1',
             createDate: '2023-04-01:0005',
+            startDate: '2023-04-11',
             endDate: '2023-04-12',
             importance: 'low',
           },
@@ -93,6 +101,7 @@ const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
 const NEWTASK_BLOCKED = 'workflow/NEWTASK_BLOCKED';
 const NEWTASK_DONE = 'workflow/NEWTASK_DONE';
 // const DELETE_TASK = 'worfkflow/DELETE_TASK';
+const MODIFY_TASK = 'workflow/MODIFY_TASK';
 
 const ADD_LIST = 'workflow/ADD_LIST';
 const SUBTRACT_LIST = 'workflow/SUBTRACT_LIST';
@@ -121,6 +130,13 @@ export function deleteItem(payload) {
   return {
     type: DELETE,
     payload: { workspaceId, selectedId },
+  };
+}
+
+export function modifyItem(payload) {
+  return {
+    type: MODIFY_TASK,
+    payload,
   };
 }
 
@@ -213,6 +229,62 @@ export default function workspace(state = initState, action) {
     case DELETE:
       console.log(action.payload);
       return { ...state, ...action.payload };
+    case MODIFY_TASK:
+      let {
+        workspaceId,
+        selectedItem,
+        content,
+        startDate,
+        endDate,
+        importance,
+        progress,
+      } = action.payload;
+
+      switch (progress) {
+        case 'Request':
+          progress = 'todoList';
+          break;
+        case 'In Progress':
+          progress = 'inprogressList';
+          break;
+        case 'In Review':
+          progress = 'inreviewList';
+          break;
+        case 'Blocked':
+          progress = 'blockedList';
+          break;
+        case 'Completed':
+          progress = 'doneList';
+          break;
+        default:
+          break;
+      }
+
+      const copyList = [...state.workspaceList[workspaceId].workflow[progress]];
+      const findIndex = copyList.findIndex(el => el.id === selectedItem.id);
+      const newTask = {
+        content,
+        startDate,
+        endDate,
+        importance,
+        id: copyList[findIndex].id,
+        createDate: copyList[findIndex].createDate,
+      };
+
+      copyList.splice(findIndex, 1, newTask);
+
+      return {
+        ...state,
+        workspaceList: [
+          {
+            ...state.workspaceList[workspaceId],
+            workflow: {
+              ...state.workspaceList[workspaceId].workflow,
+              [progress]: copyList,
+            },
+          },
+        ],
+      };
     case BOOKMARK:
       return {
         ...state,

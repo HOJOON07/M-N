@@ -29,6 +29,7 @@ const MyAddMeberWrap = styled.div`
   justify-content: space-around;
   align-items: center;
   margin: 0 auto;
+  margin-bottom: 10px;
 `;
 
 const MyAddMeberImgWrap = styled.div`
@@ -47,10 +48,37 @@ const MyAddMemberName = styled.p`
   font-weight: 800;
   font-size: 20px;
 `;
-export default function InvitedMember() {
+export default function InvitedMember(props) {
+  const { checkedUserList, userlist, searchUserList } = props;
+  // const result = () => {
+  //   let arr = [];
+  //   for (let i = 0; i < userlist.length; i++) {
+  //     for (let j = 0; j < checkedUserList.length; j++) {
+  //       if (userlist[i].user_id == checkedUserList[j]) {
+  //         arr.push(userlist[i]);
+  //       }
+  //     }
+  //   }
+  //   return arr;
+  // };
+  // const searchUserList = result();
+
   return (
     <MyRightContent>
       <MyRightName>
+        Invited <br /> Member
+      </MyRightName>
+      {searchUserList.map(list => {
+        return (
+          <MyAddMeberWrap key={list.user_id}>
+            <MyAddMeberImgWrap>
+              <MyAddMeberImg src="/images/icon/user.png" />
+            </MyAddMeberImgWrap>
+            <MyAddMemberName>{list.user_name}</MyAddMemberName>
+          </MyAddMeberWrap>
+        );
+      })}
+      {/* <MyRightName>
         Invited <br /> Member
       </MyRightName>
       <MyAddMeberWrap>
@@ -58,7 +86,7 @@ export default function InvitedMember() {
           <MyAddMeberImg src="/images/icon/user.png" />
         </MyAddMeberImgWrap>
         <MyAddMemberName>김호준</MyAddMemberName>
-      </MyAddMeberWrap>
+      </MyAddMeberWrap> */}
     </MyRightContent>
   );
 }

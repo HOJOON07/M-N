@@ -29,7 +29,9 @@ const MyJobSelect = styled.select`
   font-size: 15px;
 `;
 
-export default function Select() {
+export default function Select(props) {
+  const { categoryOnChange, createData } = props;
+
   const JOBLIST = [
     'FrontEnd',
     'BackEnd',
@@ -40,7 +42,12 @@ export default function Select() {
   return (
     <MyCategorySelecteWrap>
       <MyCategoryTitle>Category</MyCategoryTitle>
-      <MyJobSelect name="Choose Category">
+      <MyJobSelect
+        name="Choose Category"
+        onChange={e => {
+          categoryOnChange(e);
+        }}
+      >
         {JOBLIST.map(item => {
           return (
             <option key={item} value={item}>
