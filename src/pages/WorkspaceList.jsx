@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import mymagnify from '../assets/images/menu.png';
+import mymagnify from '../assets/images/search.png';
 import Workspace from './components/workspaceList/Workspace';
 
 // Color Variables
@@ -9,6 +9,7 @@ const hoverMainColor = '#7855db';
 const subColor = '#d5cee8';
 const brightSubColor = '#e9e4f5';
 const progressColor = '#9781dd';
+const bookmarkDefault = `#ddd`;
 
 const MyContainer = styled.div`
   max-width: 1200px;
@@ -70,10 +71,10 @@ const MySpaceInput = styled.input`
 const MySpaceMagify = styled.img`
   position: absolute;
   font-size: 1rem;
-  width: 35px;
-  height: 35px;
-  top: 58px;
-  right: 7px;
+  width: 27px;
+  height: 27px;
+  top: 62px;
+  right: 9px;
 `;
 const MySpaceNewBtn = styled.button`
   width: 251px;
