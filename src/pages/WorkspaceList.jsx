@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import mymagnify from '../images/magnify.png';
-
 import Workspace from './components/workspaceList/Workspace';
 
 // Color Variables
@@ -13,7 +12,7 @@ const progressColor = '#9781dd';
 
 const MyContainer = styled.div`
   max-width: 1200px;
-  height: 70vh;
+  height: 100vh;
   margin: auto;
 `;
 
@@ -22,57 +21,65 @@ const MySpaceList = styled.div`
   justify-content: space-between;
 `;
 
-const MySpaceWord = styled.span`
+const MySpaceWord = styled.div`
   display: flex;
   margin-top: 10px;
 `;
 const MySpaceListMain = styled.p`
-  font-size: 40px;
-  font-weight: bold;
+  font-family: 'LINESeedKR-Bd';
+  font-size: 2.5rem;
+  font-weight: 700;
   text-align: center;
   margin-top: 40px;
+`;
+const MyBar = styled.div`
+  width: 75px;
+  height: 8px;
+  background-color: ${mainColor};
+  border-radius: 5px;
+  margin: 10px 0 25px;
 `;
 const MySpaceListSub = styled.p`
   font-size: 15px;
   font-weight: 400;
-  margin-top: 60px;
+  margin-top: 63px;
   margin-left: 10px;
 `;
 
-const MySpaceContent = styled.span`
+const MySpaceContent = styled.div`
   display: flex;
   justify-content: center;
 `;
 const MySpaceInput = styled.input`
-  text-align: center;
   font-size: 1.1rem;
   width: 251px;
-  height: 58px;
+  height: 52px;
   margin-top: 50px;
-  margin-left: 150px;
+  color: #777;
+  box-sizing: border-box;
+  padding: 5px 10px;
   box-sizing: border-box;
   border: 1px solid #516974;
   border-radius: 6px;
   outline: none;
   &:focus {
-    border-color: #ffdb29;
+    border: 2px solid ${mainColor};
   }
 `;
 
 const MySpaceMagify = styled.img`
-  display: flex;
   position: absolute;
   font-size: 1rem;
-  width: 25px;
-  height: 25px;
-  margin-top: 60px;
-  margin-left: 50px;
+  width: 35px;
+  height: 35px;
+  top: 58px;
+  right: 7px;
 `;
 const MySpaceNewBtn = styled.button`
   width: 251px;
-  height: 58px;
-  margin-left: 10px;
-  margin-top: 50px;
+  height: 52px;
+
+  margin: 50px 0 0 15px;
   box-sizing: border-box;
   font-size: 1.1rem;
   background-color: ${mainColor};
@@ -81,6 +88,11 @@ const MySpaceNewBtn = styled.button`
   cursor: pointer;
   font-weight: 700;
   color: white;
+  transition: 0.4s;
+
+  &:hover {
+    background-color: ${hoverMainColor};
+  }
 `;
 
 export default function Workspacelist() {
@@ -105,20 +117,26 @@ export default function Workspacelist() {
   useEffect(() => {
     getAllWS();
   }, []);
+
   return (
     <MyContainer>
       <MySpaceList>
         <MySpaceWord>
-          <MySpaceListMain>Workspace List</MySpaceListMain>
+          <div>
+            <MySpaceListMain>Workspace List</MySpaceListMain>
+            <MyBar />
+          </div>
           <MySpaceListSub>latest</MySpaceListSub>
         </MySpaceWord>
         <MySpaceContent>
-          <MySpaceInput type="text" placeholder="Search by Workspace" />
-          <MySpaceMagify src={mymagnify} alt="돋보기" />
+          <div style={{ position: 'relative' }}>
+            <MySpaceInput type="text" placeholder="Search by Workspace" />
+            <MySpaceMagify src={mymagnify} alt="돋보기" />
+          </div>
           <MySpaceNewBtn> New Workspace</MySpaceNewBtn>
         </MySpaceContent>
       </MySpaceList>
-      {dataArr ? (
+      {!dataArr ? (
         dataArr.map((el, idx) => (
           <Workspace
             workspace_name={el.workspace_name}

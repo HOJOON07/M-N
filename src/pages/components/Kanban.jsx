@@ -10,15 +10,29 @@ import { DropTarget } from 'react-dnd';
 
 // Color Variables
 const backColor = '#eef1f5';
+const mainColor = '#623ad6';
+const hoverMainColor = '#7855db';
+const subColor = '#d5cee8';
+const brightSubColor = '#e9e4f5';
 
 // Styled Components
-const MyTitle = styled.p`
-  font-size: ${props => props.fontSize};
+const MyTitle = styled.h2`
+  margin: 30px 0 10px 10px;
+  font-size: 2.5rem;
   font-family: 'LINESeedKR-Bd';
+`;
+
+const MyBar = styled.div`
+  width: 75px;
+  height: 8px;
+  background-color: ${mainColor};
+  border-radius: 5px;
+  margin: 10px 0 15px 10px;
 `;
 
 const MySubTitle = styled.p`
   font-size: ${props => props.fontSize};
+  margin: 15px 0 0 10px;
   text-decoration-line: underline;
 `;
 
@@ -27,9 +41,6 @@ const MyTitleArea = styled.div`
   display: flex;
   align-items: center;
   margin: 10px;
-  & > p {
-    margin: 10px;
-  }
 `;
 
 const MyProgressArea = styled.div`
@@ -54,45 +65,20 @@ export default function Kanban() {
   /** 임시로 특정 워크스페이스(id가 0) 지정 */
   const workspaceList = useSelector(state => state.workspace.workspaceList)[0];
   const workflowList = workspaceList.workflow;
-  const workflowProgressArr = [
-    'todoList',
-    'inprogressList',
-    'inreviewList',
-    'blockedList',
-    'doneList',
-  ];
-  const workflowProgress = [
-    'Request',
-    'In Progress',
-    'In Review',
-    'Blocked',
-    'Completed',
-  ];
   const iconList = ['✉️', '🔨', '📌', '🔒', '🎉'];
 
   return (
     <div>
       <MyTitleArea>
-        <MyTitle fontSize="25px">Workflow</MyTitle>
-        <MySubTitle fontSize="14px">{workspaceList.name}</MySubTitle>
+        <div>
+          <MyTitle>Workflow</MyTitle>
+          <MyBar />
+        </div>
+        <MySubTitle fontSize="14px">
+          {workspaceList.name}워크스페이스명
+        </MySubTitle>
       </MyTitleArea>
       <MyProgressArea>
-        {/* {workflowProgressArr.map((e, idx) => {
-          for (let i = 0; i < workflowList[e].length; i++) {
-            console.log('id', workflowList[e][i].createDate);
-          }
-
-          return (
-            <KanbanProgress
-              key={idx}
-              id={1}
-              workflowList={workflowList[e]}
-              progress={workflowProgress[idx]}
-              icon={iconList[idx]}
-            />
-          );
-        })} */}
-
         <KanbanProgress
           workflowList={workflowList.todoList}
           progress="Request"
