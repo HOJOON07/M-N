@@ -2,6 +2,11 @@ import React from 'react';
 import logoImg from '../../../assets/images/logo.png';
 import styled from 'styled-components';
 
+// Color Variables
+const mainColor = '#623ad6';
+const hoverMainColor = '#7855db';
+
+// Styled Components
 const MySignUpFinish = styled.div`
   width: 100%;
   padding: 0;
@@ -15,16 +20,23 @@ const MyLogo = styled.img`
   object-fit: contain;
 `;
 
-const MyPageBtn = styled.div`
-  font-size: 14px;
-  text-align: center;
-  width: 120px;
-  height: 39px;
-  line-height: 40px;
-  background-color: ${props => props.backgroundColor};
-  color: ${props => props.color};
-  cursor: pointer;
+const MyPageBtn = styled.button`
   margin: 30px auto;
+  padding: 10px 10px;
+  width: 90px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  background-color: ${mainColor};
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: ${hoverMainColor};
+  }
 `;
 
 export default function SignUpSuccess() {

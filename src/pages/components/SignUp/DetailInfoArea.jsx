@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+// Color Variables
+const mainColor = '#623ad6';
+const hoverMainColor = '#7855db';
+
+// Styled Components
 const MyProfile = styled.div`
   display: flex;
   flex-direction: column;
@@ -23,7 +28,7 @@ const MyProfile = styled.div`
   }
 
   & > form > label {
-    background-color: #3c62e5;
+    background-color: ${mainColor};
     border-style: none;
     height: 55px;
     font-size: 16px;
@@ -32,6 +37,10 @@ const MyProfile = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &:hover {
+      background-color: ${hoverMainColor};
+    }
   }
 `;
 
