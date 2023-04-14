@@ -10,6 +10,9 @@ import {
   newDone,
 } from '../../store/modules/workspace';
 
+const mainColor = '#623ad6';
+const hoverMainColor = '#7855db';
+const brightSubColor = '#e9e4f5';
 // Color Variables
 const contentColor = '#fff';
 const subColor = '#cbcbcb';
@@ -22,7 +25,6 @@ const MyNewTask = styled.div`
   border-radius: 5px;
   background-color: ${contentColor};
   padding: 10px 10px 42px;
-  /* width: 84%; */
 
   margin-bottom: 15px;
 
@@ -41,7 +43,9 @@ const MyCalendarContainer = styled.div`
   justify-content: center;
   flex-direction: column; */
 `;
-const MyCalenderSpan = styled.span``;
+const MyCalenderSpan = styled.span`
+  font-size: 0.7rem;
+`;
 
 const MyCalendar = styled.input`
   width: 100px;
@@ -50,30 +54,52 @@ const MyCalendar = styled.input`
 `;
 
 const MyContent = styled.input`
-  width: 80%;
+  margin: 10px 0;
+  width: 95%;
   height: 60px;
+  outline-color: ${mainColor};
+  padding: 5px 10px;
+  box-sizing: border-box;
 `;
 const MyBottom = styled.div`
-  width: 80%;
   height: 15px;
+  line-height: 19px;
   font-size: 11px;
+  text-align: center;
 
   display: flex;
+  justify-content: flex-start;
   position: absolute;
   left: 15px;
   bottom: 15px;
 `;
 
+const MyRadio = styled.input`
+  vertical-align: middle;
+  appearance: none;
+  border: max(2px, 0.1em) solid gray;
+  border-radius: 50%;
+  width: 1.2em;
+  height: 1.2em;
+
+  &:checked {
+    border: 0.4em solid ${mainColor};
+  }
+  &:focus-visible {
+    outline-offset: max(2px, 0.1em);
+    outline: max(2px, 0.1em) dotted tomato;
+  }
+`;
+
 const MySubmit = styled.div`
   display: flex;
   position: absolute;
-  bottom: 15px;
+  bottom: 9px;
   right: 10px;
 `;
 
 const MySubmitButton = styled.button`
-  padding: 5px 10px;
-  margin: 10px 0 0;
+  padding: 7px 12px;
   box-sizing: border-box;
   font-size: 10px;
   font-weight: 700;
@@ -84,12 +110,15 @@ const MySubmitButton = styled.button`
   color: ${greyColor};
   cursor: pointer;
   transition: 0.2s;
+
   &:hover {
-    background-color: 'black';
+    background-color: ${mainColor};
+    color: white;
   }
 `;
 
 export default function NewTask({ progress }) {
+  const [state, setState] = useState(true);
   const contentRef = useRef();
   const dispatch = useDispatch();
   const startDateRef = useRef();
@@ -107,7 +136,7 @@ export default function NewTask({ progress }) {
         createDate: Date(),
         startDate: startDateRef.current.value, // 시작날짜 추가
         endDate: endDateRef.current.value,
-        importance: importance,
+        importance: importance ? importance : 'medium', // 중요도 기본값 추가
       },
     };
     if (progress === 'Request') {
@@ -119,57 +148,63 @@ export default function NewTask({ progress }) {
     } else if (progress === 'Blocked') {
       dispatch(newBlocked(payload));
     } else dispatch(newDone(payload));
+
+    setState(e => !e);
   };
+
   return (
-    <MyNewTask>
-      <MyTop>
-        <img
-          src={defaultProfile}
-          style={{ width: '40px', height: '40px' }}
-          alt="기본 프로필 이미지"
-        />
-        <MyCalendarContainer>
-          <MyCalenderSpan>시작일 : </MyCalenderSpan>
-          <MyCalendar required type="date" ref={startDateRef} />
-          <br />
-          <MyCalenderSpan>종료일 : </MyCalenderSpan>
-          <MyCalendar required type="date" ref={endDateRef} />
-        </MyCalendarContainer>
-      </MyTop>
+    state && (
+      <MyNewTask>
+        <MyTop>
+          <img
+            src={defaultProfile}
+            style={{ width: '40px', height: '40px' }}
+            alt="기본 프로필 이미지"
+          />
+          <MyCalendarContainer>
+            <MyCalenderSpan>시작일 : </MyCalenderSpan>
+            <MyCalendar required type="date" ref={startDateRef} />
+            <br />
+            <MyCalenderSpan>종료일 : </MyCalenderSpan>
+            <MyCalendar required type="date" ref={endDateRef} />
+          </MyCalendarContainer>
+        </MyTop>
 
-      <MyContent
-        required
-        type="textarea"
-        ref={contentRef}
-        placeholder="Contents"
-      />
+        <MyContent
+          required
+          type="textarea"
+          ref={contentRef}
+          placeholder="Contents"
+        />
 
-      <MyBottom>
-        <input
-          type="radio"
-          value="high"
-          name="myImportance"
-          onChange={handleImportanceChange}
-        />
-        High
-        <input
-          type="radio"
-          value="medium"
-          name="myImportance"
-          onChange={handleImportanceChange}
-        />
-        Medium
-        <input
-          type="radio"
-          value="low"
-          name="myImportance"
-          onChange={handleImportanceChange}
-        />
-        Low
-      </MyBottom>
-      <MySubmit>
-        <MySubmitButton onClick={handelClick}>submit</MySubmitButton>
-      </MySubmit>
-    </MyNewTask>
+        <MyBottom>
+          <MyRadio
+            type="radio"
+            value="high"
+            name="myImportance"
+            onChange={handleImportanceChange}
+          />
+          High
+          <MyRadio
+            checked
+            type="radio"
+            value="medium"
+            name="myImportance"
+            onChange={handleImportanceChange}
+          />
+          Medium
+          <MyRadio
+            type="radio"
+            value="low"
+            name="myImportance"
+            onChange={handleImportanceChange}
+          />
+          Low
+        </MyBottom>
+        <MySubmit>
+          <MySubmitButton onClick={handelClick}>submit</MySubmitButton>
+        </MySubmit>
+      </MyNewTask>
+    )
   );
 }

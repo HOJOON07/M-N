@@ -4,6 +4,11 @@ import { useSelector } from 'react-redux';
 import bookmarkIcon from '../assets/images/bookmark-icon.png';
 import Kanban from './components/Kanban';
 
+const mainColor = '#623ad6';
+const hoverMainColor = '#7855db';
+const subColor = '#d5cee8';
+const brightSubColor = '#e9e4f5';
+
 const MyWorkspaceArea = styled.div`
   display: flex;
   width: 100%;
@@ -16,9 +21,9 @@ const MyWorkspaceArea = styled.div`
   }
 `;
 
-const MyTitle = styled.p`
+const MyTitle = styled.h2`
   font-size: 20px;
-  font-family: 'LINESeedKR-Bd';
+  margin-left: 15px;
 `;
 
 const MyWorkspaceList = styled.div`
