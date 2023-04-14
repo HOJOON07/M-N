@@ -12,6 +12,7 @@ import WorkspaceList from './pages/WorkspaceList';
 import CreateWorkspace from './pages/CreateWorkspace';
 import Workflow from './pages/Workflow';
 import NotFound from './pages/NotFound';
+import Kakao from './pages/components/Kakao';
 
 const Router = () => {
   return (
@@ -25,8 +26,10 @@ const Router = () => {
         <Route path="/workspace" element={<WorkspaceList />} />
         <Route path="/create" element={<CreateWorkspace />} />
         <Route path="/workflow" element={<Workflow />} />
+        <Route path="/oauth/kakao/callback" element={<Kakao />} />
+
         <Route path="*" element={<NotFound />} />
-        <Route path=""></Route>
+        <Route path="" />
       </Routes>
       <Footer />
     </BrowserRouter>

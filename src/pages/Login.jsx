@@ -1,12 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import myLogo from '../images/mnlogopp.png';
-import mySocialGit from '../images/git.png';
-import mySocialNaver from '../images/naver.png';
-import mySocialKakao from '../images/pngegg.png';
+import myLogo from '../assets/images/logo.png';
+import mySocialGit from '../assets/images/github-square.png';
+import mySocialNaver from '../assets/images/naver-icon.png';
+import mySocialKakao from '../assets/images/kakao-icon.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Kakao from './components/Kakao';
+import Naver from './components/Naver';
+
+// Color Variables
+const mainColor = '#623ad6';
+const hoverMainColor = '#7855db';
+const subColor = '#d5cee8';
+const brightSubColor = '#e9e4f5';
 
 const MyContainer = styled.section`
   display: flex;
@@ -32,6 +39,13 @@ const MyTitle = styled.p`
   font-weight: bold;
   margin-bottom: 10px;
 `;
+const MyLogoTitle = styled.p`
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: auto 0;
+  position: absolute;
+  top: 30px;
+`;
 
 const MyList = styled.p`
   font-size: 20px;
@@ -49,15 +63,23 @@ const MyLogin = styled.span`
   align-items: center;
   margin-left: 20px;
   border-style: 2px solid black;
-  box-shadow: 7px 7px 7px 0px #725884;
+  box-shadow: 5px 5px 7px 0px #52525267;
   border-radius: 30px;
 `;
 
 const MyLogo = styled.img`
-  text-align: center;
-  width: 70px;
-  height: 70px;
-  padding: 20px;
+  width: 60px;
+  height: 60px;
+
+  filter: invert(93%) sepia(7%) saturate(337%) hue-rotate(215deg)
+    brightness(95%) contrast(103%);
+`;
+
+const MyDivContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+  position: relative;
 `;
 
 const MyInputPart = styled.div`
@@ -65,12 +87,12 @@ const MyInputPart = styled.div`
   background-color: #e9e4f5;
 `;
 const MyInput = styled.input`
-  text-align: center;
   width: 70%;
   margin-top: 15px;
   box-sizing: border-box;
   height: 40px;
   border: 1px solid #ddd7ed;
+  padding: 5px 10px;
   border-radius: 6px;
   margin-right: 4px;
   outline: none;
@@ -80,41 +102,72 @@ const MyInput = styled.input`
 `;
 
 const MyButton = styled.button`
-  width: 60%;
+  width: 70%;
   height: 40px;
   margin-top: 20px;
   box-sizing: border-box;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   border-radius: 6px;
-  background-color: #9781dd;
+
+  color: white;
+  background-color: ${hoverMainColor};
   border-radius: 6px;
   border: none;
   cursor: pointer;
   font-weight: 700;
+  transition: 0.2s;
+
   &:hover {
     border-color: #11110d;
+    background-color: ${mainColor};
   }
 `;
 const MyLinkList = styled.span`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 15px;
 `;
 
 const MyLink = styled.p`
-  font-size: 1rem;
+  color: #767676;
+  font-size: 0.8rem;
   font-weight: 300;
-  margin-bottom: 10px;
-  padding: 10px;
+  margin: 0 10px 30px;
+  text-decoration: underline;
+  cursor: pointer;
 `;
 
 const MyShortCut = styled.p`
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 300;
-  margin-bottom: 10px;
+  margin: 15px 0;
+  position: relative;
 `;
 
-const MyIcon = styled.span`
+const MyBlank = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 25px;
+  width: 80px;
+
+  background-color: white;
+`;
+
+const MyBar = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 1px;
+  width: 195px;
+
+  background-color: #a4a4a4;
+`;
+
+const MyIcon = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
 `;
@@ -123,7 +176,29 @@ const MySocial = styled.img`
   display: flex;
   width: 55px;
   height: 55px;
-  padding: 10px;
+`;
+
+const MySocialBack = styled.div`
+  position: absolute;
+  z-index: -1;
+  width: 55px;
+  height: 55px;
+  background-color: ${props => props.color};
+  border-radius: 6px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+const MySocialBackSec = styled.div`
+  position: absolute;
+  z-index: -1;
+  width: 55px;
+  height: 55px;
+  box-sizing: border-box;
+  border: 3px solid ${props => props.color};
+  border-radius: 6px;
+  bottom: 0;
 `;
 
 export default function Login() {
@@ -192,7 +267,7 @@ export default function Login() {
 
   // 카카오
   const KAKAO_CLIENT_ID = 'c37163557aa622477d21aee2d6f6dbdc';
-  const KAKAO_REDIRECT_URI = 'http://localhost:3000/login';
+  const KAKAO_REDIRECT_URI = 'http://localhost:3000/oauth/kakao/callback';
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
   const KAKAO_LOGOUT_URI = 'http://localhost:3000';
   const KAKAO_LOGOUT_URL = `https://kauth.kakao.com/oauth/logout?client_id=${KAKAO_CLIENT_ID}&logout_redirect_uri=${KAKAO_LOGOUT_URI}`;
@@ -208,8 +283,10 @@ export default function Login() {
         <MyList>☑️기획서</MyList>
       </MyExplain>
       <MyLogin>
-        <MyLogo src={myLogo} alt="로고이미지" />
-        <br />
+        <MyDivContainer>
+          <MyLogo src={myLogo} alt="로고이미지" />
+          <MyLogoTitle>지금 무료로 시작하기</MyLogoTitle>
+        </MyDivContainer>
         <MyInputPart>
           <MyInput
             type="text"
@@ -243,16 +320,35 @@ export default function Login() {
           <MyLink to="/">회원가입 하기</MyLink>
         </MyLinkList>
 
-        <MyShortCut>---- 간편 로그인 ----</MyShortCut>
+        <div style={{ position: 'relative' }}>
+          <MyBar />
+          <MyBlank />
+          <MyShortCut>간편 로그인</MyShortCut>
+        </div>
         <MyIcon>
-          <Link to={KAKAO_AUTH_URL}>
-            <MySocial src={mySocialKakao} alt="카카오톡이미지" />
+          <Link to={KAKAO_AUTH_URL} style={{ marginRight: '15px' }}>
+            <div
+              style={{ position: 'relative', width: '55px', height: '55px' }}
+            >
+              <MySocial
+                src={mySocialKakao}
+                alt="카카오톡이미지"
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  display: 'inline-block',
+                  marginTop: '7px',
+                }}
+              />
+              <MySocialBack color="#ffeb3b" />
+            </div>
           </Link>
-          <Link to="/">
+          <Link to="/" style={{ marginRight: '15px' }}>
             <MySocial src={mySocialNaver} alt="네이버이미지" />
           </Link>
           <Link to="/">
             <MySocial src={mySocialGit} alt="깃헙이미지" />
+            <MySocialBackSec color="#000" />
           </Link>
         </MyIcon>
       </MyLogin>
