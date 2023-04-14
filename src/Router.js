@@ -13,6 +13,7 @@ import CreateWorkspace from './pages/CreateWorkspace';
 import Workflow from './pages/Workflow';
 import NotFound from './pages/NotFound';
 import Kakao from './pages/components/Kakao';
+import GitHub from './pages/components/GitHub';
 
 const Router = () => {
   return (
@@ -27,6 +28,7 @@ const Router = () => {
         <Route path="/create" element={<CreateWorkspace />} />
         <Route path="/workflow" element={<Workflow />} />
         <Route path="/oauth/kakao/callback" element={<Kakao />} />
+        <Route path="/oauth/github/callback" element={<GitHub />} />
 
         <Route path="*" element={<NotFound />} />
         <Route path="" />
