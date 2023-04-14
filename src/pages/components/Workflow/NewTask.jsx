@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import defaultProfile from '../../assets/images/default-profile.png';
+import defaultProfile from '../../../assets/images/default-profile.png';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import {
@@ -8,7 +8,7 @@ import {
   newInReview,
   newBlocked,
   newDone,
-} from '../../store/modules/workspace';
+} from '../../../store/modules/workspace';
 
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';

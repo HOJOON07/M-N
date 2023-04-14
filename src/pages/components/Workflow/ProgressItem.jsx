@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
-import defaultProfile from '../../assets/images/default-profile.png';
+import defaultProfile from '../../../assets/images/default-profile.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { useDrag, useDrop } from 'react-dnd';
-import { addList, subtractList } from '../../store/modules/workspace';
-import { deleteItem, modifyItem } from '../../store/modules/workspace';
+import { useDrag } from 'react-dnd';
+import { addList, subtractList } from '../../../store/modules/workspace';
+import { deleteItem, modifyItem } from '../../../store/modules/workspace';
 import styled from 'styled-components';
 
 // 드롭 된 아이템 구분용 전역 변수
