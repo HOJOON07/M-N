@@ -1,9 +1,9 @@
 import React from 'react';
-import InfoArea from './components/InfoArea';
+import InfoArea from './components/SignUp/InfoArea';
 import styled from 'styled-components';
-import SocialInfo from './components/SocialInfo';
-import DetailInfoArea from './components/DetailInfoArea';
-import SignUpSuccess from './components/SignUpSuccess';
+import SocialInfo from './components/SignUp/SocialInfo';
+import DetailInfoArea from './components/SignUp/DetailInfoArea';
+import SignUpSuccess from './components/SignUp/SignUpSuccess';
 
 const MyStageArea = styled.div`
   width: 100%;
@@ -35,10 +35,10 @@ export default function SignUp() {
       <h1>회원가입</h1>
       <p>소셜 로그인 및 이메일로 가입할 수 있습니다.</p>
       <hr />
-      {/* <SocialInfo /> */}
+      <SocialInfo />
       {/* <InfoArea /> */}
       {/* <DetailInfoArea /> */}
-      <SignUpSuccess />
+      {/* <SignUpSuccess /> */}
       {/* <MyStageArea>
         <MyPageBtn backgroundColor="#333333" color="#fff">
           이전

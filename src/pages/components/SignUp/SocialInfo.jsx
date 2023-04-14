@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import kakaoIcon from '../../assets/images/kakao-icon.png';
-import naverIcon from '../../assets/images/naver-icon.png';
-import githubIcon from '../../assets/images/github-icon.png';
+import kakaoIcon from '../../../assets/images/kakao-icon.png';
+import naverIcon from '../../../assets/images/naver-icon.png';
+import githubIcon from '../../../assets/images/github-icon.png';
 
 const MyChoiceArea = styled.div`
   width: 100%;

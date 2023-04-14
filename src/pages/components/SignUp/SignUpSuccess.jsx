@@ -1,5 +1,5 @@
 import React from 'react';
-import logoImg from '../../assets/images/logo.png';
+import logoImg from '../../../assets/images/logo.png';
 import styled from 'styled-components';
 
 const MySignUpFinish = styled.div`
