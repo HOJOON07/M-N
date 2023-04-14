@@ -1,10 +1,12 @@
 import React from 'react';
 import logoImg from '../../../assets/images/logo.png';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // Color Variables
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
+const btnFontColor = '#fff';
 
 // Styled Components
 const MySignUpFinish = styled.div`
@@ -29,13 +31,13 @@ const MyPageBtn = styled.button`
   font-weight: 700;
   border-radius: 10px;
   border: none;
-  background-color: ${mainColor};
-  color: white;
+  background-color: ${props => props.backgroundColor};
+  color: ${btnFontColor};
   cursor: pointer;
   transition: 0.2s;
 
   &:hover {
-    background-color: ${hoverMainColor};
+    background-color: ${props => props.hoverColor};
   }
 `;
 
@@ -45,9 +47,11 @@ export default function SignUpSuccess() {
       <MyLogo src={logoImg} alt="임시 로고 이미지" />
       <h2>감사합니다</h2>
       <p>회원가입이 완료되었습니다.</p>
-      <MyPageBtn backgroundColor="#3c62e5" color="#fff">
-        홈으로
-      </MyPageBtn>
+      <Link to="/workflow">
+        <MyPageBtn backgroundColor={mainColor} hoverColor={hoverMainColor}>
+          홈으로
+        </MyPageBtn>
+      </Link>
     </MySignUpFinish>
   );
 }

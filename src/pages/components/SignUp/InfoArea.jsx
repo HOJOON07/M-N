@@ -66,7 +66,7 @@ const MyErrArea = styled.div`
   height: 30px;
 `;
 
-export default function InfoArea() {
+export default function InfoArea(props) {
   const emailList = ['naver.com', 'kakao.com', 'github.com'];
   const [email, setEmail] = useState('');
 

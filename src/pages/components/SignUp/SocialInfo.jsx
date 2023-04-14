@@ -4,6 +4,7 @@ import kakaoIcon from '../../../assets/images/kakao-icon.png';
 import naverIcon from '../../../assets/images/naver-icon.png';
 import githubIcon from '../../../assets/images/github-icon.png';
 
+// Styled Components
 const MyChoiceArea = styled.div`
   width: 100%;
   margin: auto;
@@ -39,6 +40,7 @@ const MyJoinBox = styled.div`
   position: relative;
   display: flex;
   padding: 10px 0;
+  cursor: pointer;
 
   &:nth-child(2) {
     margin: 15px 0;
@@ -58,7 +60,9 @@ const MyJoinBox = styled.div`
 
 const MyDirectArea = styled.div``;
 
-export default function SocialInfo() {
+export default function SocialInfo(props) {
+  const { changeState, nextChange } = props;
+
   return (
     <MyChoiceArea>
       <MySocialArea>
@@ -79,7 +83,11 @@ export default function SocialInfo() {
         <p>또는</p>
       </div>
       <MyDirectArea>
-        <MyJoinBox backgroundColor="#fff" border="#707070">
+        <MyJoinBox
+          backgroundColor="#fff"
+          border="#707070"
+          onClick={(changeState, nextChange)}
+        >
           ID/PW 회원가입
         </MyJoinBox>
       </MyDirectArea>
