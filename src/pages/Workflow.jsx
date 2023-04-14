@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import bookmarkIcon from '../assets/images/bookmark-icon.png';
 import Kanban from './components/Kanban';
+import { initList } from '../store/modules/workspace';
+import Loading from '../pages/Loading';
 
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
@@ -76,17 +78,45 @@ const MyNoneBookmark = styled.img`
 `;
 
 export default function Workflow() {
-  const workspaceList = useSelector(
-    state => state.workspace.workspaceList
-  ).filter(el => el.bookmarked);
-  const bookmarkedList = useSelector(
-    state => state.workspace.workspaceList
-  ).filter(el => !el.bookmarked);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const resGetAllWS = await fetch(
+          'http://192.168.0.230:8001/workspace/643818de0a5dddd886bff311', // 임시 id값
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        if (resGetAllWS.status !== 200) return 'fail';
+        const data = await resGetAllWS.json();
+        dispatch(initList(data));
+      } catch (err) {
+        console.error(err);
+      }
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  // const workspaceList = useSelector(
+  //   state => state.workspace.workspaceList
+  // ).filter(el => el.bookmarked);
+  // const bookmarkedList = useSelector(
+  //   state => state.workspace.workspaceList
+  // ).filter(el => !el.bookmarked);
+
   return (
     <MyWorkspaceArea>
       <MyWorkspaceList>
         <MyTitle>Workspace</MyTitle>
-        <MyList>
+        {/* <MyList>
           <p>Bookmark</p>
           {bookmarkedList.map(el => {
             return (
@@ -107,9 +137,9 @@ export default function Workflow() {
               </div>
             );
           })}
-        </MyList>
+        </MyList> */}
       </MyWorkspaceList>
-      <Kanban />
+      {!loading ? <Kanban /> : <Loading />}
     </MyWorkspaceArea>
   );
 }

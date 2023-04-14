@@ -1,92 +1,92 @@
 const initState = {
-  workspaceList: [
-    {
-      id: 0,
-      workspace_name: 'workspace1',
-      workspace_category: 'web',
-      workspace_startDate: '2023-04-01:0000',
-      workspace_endDate: '2023-04-01:1111',
-      githubRepository: 'https://github.com/0uizi0/test1',
-      member: ['qkrtjdwo5662', 'psjj03'],
-      bookmarked: false,
-      workflow: {
-        todoList: [
-          {
-            id: '001',
-            content: '내용1',
-            createDate: '2023-04-01:0001',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-          {
-            id: '002',
-            content: '내용2',
-            createDate: '2023-04-01:0001',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'high',
-          },
-          {
-            id: '003',
-            content: '내용3',
-            createDate: '2023-04-01:0001',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-        inprogressList: [
-          {
-            id: '011',
-            content: '내용2',
-            createDate: '2023-04-01:0002',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'medium',
-          },
-          {
-            id: '012',
-            content: '내용3',
-            createDate: '2023-04-01:0002',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-        inreviewList: [
-          {
-            id: '200',
-            content: '3',
-            createDate: '2023-04-01:0003',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-        blockedList: [
-          {
-            id: '300',
-            content: '666',
-            createDate: '2023-04-01:0004',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-        doneList: [
-          {
-            id: '040',
-            content: '1',
-            createDate: '2023-04-01:0005',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-      },
-    },
-  ],
+  // workspaceList: [
+  //   {
+  //     id: 0,
+  //     workspace_name: 'workspace1',
+  //     workspace_category: 'web',
+  //     workspace_startDate: '2023-04-01:0000',
+  //     workspace_endDate: '2023-04-01:1111',
+  //     githubRepository: 'https://github.com/0uizi0/test1',
+  //     member: ['qkrtjdwo5662', 'psjj03'],
+  //     bookmarked: false,
+  //     workflow: {
+  //       todoList: [
+  //         {
+  //           id: '001',
+  //           content: '내용1',
+  //           createDate: '2023-04-01:0001',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //         {
+  //           id: '002',
+  //           content: '내용2',
+  //           createDate: '2023-04-01:0001',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'high',
+  //         },
+  //         {
+  //           id: '003',
+  //           content: '내용3',
+  //           createDate: '2023-04-01:0001',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //       inprogressList: [
+  //         {
+  //           id: '011',
+  //           content: '내용2',
+  //           createDate: '2023-04-01:0002',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'medium',
+  //         },
+  //         {
+  //           id: '012',
+  //           content: '내용3',
+  //           createDate: '2023-04-01:0002',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //       inreviewList: [
+  //         {
+  //           id: '200',
+  //           content: '3',
+  //           createDate: '2023-04-01:0003',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //       blockedList: [
+  //         {
+  //           id: '300',
+  //           content: '666',
+  //           createDate: '2023-04-01:0004',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //       doneList: [
+  //         {
+  //           id: '040',
+  //           content: '1',
+  //           createDate: '2023-04-01:0005',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //     },
+  //   },
+  // ],
 };
 
 // 액션 타입 정의
@@ -95,6 +95,8 @@ const DELETE = 'workspace/DELETE';
 const DONE = 'workspace/DONE';
 const BOOKMARK = 'workspace/BOOKMARK';
 // NEW TASK 액션 타입 정의
+const INIT_LIST = 'workflow/INIT_LIST';
+
 const NEWTASK_TODO = 'workflow/NEWTASK_TODO';
 const NEWTASK_PROGRESS = 'workflow/NEWTASK_PROGRESS';
 const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
@@ -106,6 +108,12 @@ const MODIFY_TASK = 'workflow/MODIFY_TASK';
 const ADD_LIST = 'workflow/ADD_LIST';
 const SUBTRACT_LIST = 'workflow/SUBTRACT_LIST';
 
+export function initList(payload) {
+  return {
+    type: INIT_LIST,
+    payload,
+  };
+}
 export function subtractList(subListType, selectedDragItem, subList) {
   return {
     type: SUBTRACT_LIST,
@@ -299,6 +307,14 @@ export default function workspace(state = initState, action) {
           }
         }),
       };
+
+    case INIT_LIST:
+      console.log('초기화', action.payload);
+      // 받아온 정보를 초기화
+      return {
+        ...action.payload,
+      };
+
     case NEWTASK_TODO:
       const workspaceId_todo = action.payload.workspaceId;
       const newtask_todo = action.payload.newtask;
