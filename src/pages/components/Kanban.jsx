@@ -76,12 +76,12 @@ export default function Kanban() {
           icon={iconList[0]}
         />
         <KanbanProgress
-          workflowList={workflowList?.inprogressList}
+          workflowList={workflowList?.inProgressList}
           progress="In Progress"
           icon={iconList[1]}
         />
         <KanbanProgress
-          workflowList={workflowList?.inreviewList}
+          workflowList={workflowList?.inReviewList}
           progress="In Review"
           icon={iconList[2]}
         />
@@ -91,7 +91,7 @@ export default function Kanban() {
           icon={iconList[3]}
         />
         <KanbanProgress
-          workflowList={workflowList?.doneList}
+          workflowList={workflowList?.completedList}
           progress="Completed"
           icon={iconList[4]}
         />
