@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 // Color Variables
@@ -93,6 +94,7 @@ const MyFreeButton = styled.button`
   }
 `;
 export default function MainFir() {
+  const navigation = useNavigate();
   return (
     <MyMainContainer>
       <MyBackImgContainer>
@@ -103,7 +105,9 @@ export default function MainFir() {
       <MyDivContainer>
         <MyH3>MeetNotes로 스마트하게 프로젝트를 관리해보세요!</MyH3>
         <MyP>개발자가 개발에만 집중할 수 있도록</MyP>
-        <MyFreeButton>무료로 시작</MyFreeButton>
+        <MyFreeButton onClick={() => navigation('/login')}>
+          무료로 시작
+        </MyFreeButton>
       </MyDivContainer>
     </MyMainContainer>
   );

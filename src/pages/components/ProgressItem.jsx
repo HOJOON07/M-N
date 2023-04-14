@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import defaultProfile from '../../assets/images/default-profile.png';
-import NewTask from './NewTask';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { addList, subtractList } from '../../store/modules/workspace';
-import { deleteItem } from '../../store/modules/workspace';
+import { deleteItem, modifyItem } from '../../store/modules/workspace';
 import styled from 'styled-components';
-import { useRef } from 'react';
+
+// 드롭 된 아이템 구분용 전역 변수
+let dropItem = null;
 
 // Color Variables
 const contentColor = '#fff';
@@ -18,7 +19,6 @@ const MyTaskContainer = styled.div`
   border: 1px solid #bcc2d1;
   border-radius: 5px;
   background-color: ${contentColor};
-  width: 95%;
   height: 70px;
   display: block;
   cursor: pointer;
@@ -92,10 +92,52 @@ const MyImportanceButton = styled.button`
   }
 `;
 
+// 콘텐츠 수정 시, 적용되는 Styled
+const MyContentMA = styled.div`
+  padding: 10px;
+  & > p {
+    margin-bottom: 10px;
+  }
+`;
+const MyContentModify = styled.input`
+  width: 80%;
+  height: 60px;
+`;
+const MyDateMA = styled.div`
+  padding: 10px;
+  & > div {
+    display: flex;
+    align-items: center;
+
+    & > p {
+      margin: 0 10px 10px 0;
+    }
+  }
+`;
+const MyImportantMA = styled.div`
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+
+  & > p {
+    margin-right: 10px;
+  }
+`;
+
 export default function ProgressItem({ workflowList, item, id, progress }) {
-  const [status, setStatus] = useState(false);
+  const [modify, setModify] = useState(false);
   const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
+  const contentRef = useRef();
+  const startDateRef = useRef();
+  const endDateRef = useRef();
+  let contentInput, startDateInput, endDateInput, checkedImportance;
+  const selectList = ['high', 'medium', 'low'];
+  const [selected, setSelected] = useState(item.importance);
+
+  const selectHandler = e => {
+    setSelected(e.target.value);
+  };
   const selectedDragItem = useRef(null);
   const droppedItem = useRef(null);
 
@@ -117,12 +159,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
             subtractList(item.progress, selectedDragItem.current, subtractLists)
           );
           dispatch(
-            addList(
-              dropResult.name,
-              selectedDragItem.current,
-              addLists,
-              droppedItem.current
-            )
+            addList(dropResult.name, selectedDragItem.current, dropItem)
           );
         }
       }
@@ -151,8 +188,31 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     }
   };
 
-  const findDropItem = e => {
-    let dropItem = null;
+  // const findDropItem = (id, progress) => {
+  //   let dropItem = null;
+  //   for (const ws of workspaceList) {
+  //     let specificProgress;
+  //     if (progress === 'Request') {
+  //       specificProgress = ws.workflow.todoList;
+  //     } else if (progress === 'In Progress') {
+  //       specificProgress = ws.workflow.inprogressList;
+  //     } else if (progress === 'In Review') {
+  //       specificProgress = ws.workflow.inreviewList;
+  //     } else if (progress === 'Blocked') {
+  //       specificProgress = ws.workflow.blockedList;
+  //     } else {
+  //       specificProgress = ws.workflow.doneList;
+  //     }
+
+  //     if (dropItem) {
+  //       droppedItem.current = dropItem;
+  //       console.log(droppedItem.current, 'dsds');
+  //     }
+  //   }
+  // };
+
+  // tetz, 드랍 된 아이템의 배열 순서를 찾아내는 함수
+  const findDroppedItem = (id, progress) => {
     for (const ws of workspaceList) {
       let specificProgress;
       if (progress === 'Request') {
@@ -166,17 +226,25 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       } else {
         specificProgress = ws.workflow.doneList;
       }
-      // console.log(e.target.id);
 
-      dropItem = specificProgress.find(item => item.id !== e.target.id);
-
-      if (dropItem) {
-        droppedItem.current = dropItem;
-        console.log(droppedItem.current, 'dsds');
+      // tetz, 아무도 없는 바닥에 올려 놓았을 경우 id 가 null 이 뜨므로, null 이 아닌 경우에만
+      // index 값을 찾아서 dropItem 전역 변수에 업데이트
+      if (id !== null) {
+        dropItem = specificProgress.findIndex(item => item.id === id);
+        // 다만 첫번째 아이템이 드롭이 되면, findIndex 함수가 null 을 반환하므로, 이 경우에는 index 가 0 인 케이스
+        if (dropItem === null) dropItem = 0;
+      } else {
+        // 바닥에 드랍한 경우는 null 로 전달
+        dropItem = null;
       }
+
+      // droppedItemTemp = specificProgress.findIndex(item => item.id === id);
+      // if (droppedItemTemp !== null) droppedItem.current = droppedItemTemp;
+      // console.log('함수 안', droppedItem.current);
     }
   };
-  /** 버튼 클릭 시 특정 createDate에 해당하는 배열 찾기 함수 */
+
+  /** 버튼 클릭 시 특정 id에 해당하는 배열 찾기 함수 */
   const createDateClickHandler = (id, progress) => {
     buttonClickHandler(id, progress);
   };
@@ -212,7 +280,102 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       dispatch(deleteItem(payload));
     }
   };
-  const startDate = item.createDate.split(':')[0];
+
+  const updateContentClickHandler = (id, progress) => {
+    updateHandler(id, progress);
+  };
+
+  const updateHandler = (id, progress) => {
+    let payload = {};
+    let selectedItem = null;
+    let workspace = null;
+    for (const ws of workspaceList) {
+      let specificProgress;
+      if (progress === 'Request') {
+        specificProgress = ws.workflow.todoList;
+      } else if (progress === 'In Progress') {
+        specificProgress = ws.workflow.inprogressList;
+      } else if (progress === 'In Review') {
+        specificProgress = ws.workflow.inreviewList;
+      } else if (progress === 'Blocked') {
+        specificProgress = ws.workflow.blockedList;
+      } else {
+        specificProgress = ws.workflow.doneList;
+      }
+      selectedItem = specificProgress.find(item => item.id === id);
+      if (selectedItem) {
+        workspace = ws;
+        break;
+      }
+    }
+
+    if (workspace && selectedItem) {
+      if (modify) {
+        // useRef 값 받아오기
+        contentInput = contentRef.current.value;
+        startDateInput = startDateRef.current.value;
+        endDateInput = endDateRef.current.value;
+        checkedImportance = selected;
+      }
+      payload = {
+        workspaceId: workspace.id,
+        selectedItem: selectedItem,
+        content: contentInput,
+        startDate: startDateInput,
+        endDate: endDateInput,
+        importance: checkedImportance,
+        progress,
+      };
+      if (modify) dispatch(modifyItem(payload));
+    }
+  };
+
+  let contentSpace, dateSpace, importantSpace;
+  if (modify === false) {
+    contentSpace = <MyContent>{item.content}</MyContent>;
+    dateSpace = (
+      <MyCreateData>
+        {item.startDate} ~ {item.endDate}
+      </MyCreateData>
+    );
+    importantSpace = (
+      <MyImportanceButton {...item}>{item.importance}</MyImportanceButton>
+    );
+  } else {
+    contentSpace = (
+      <MyContentMA>
+        <p>내용: </p>
+        <MyContentModify defaultValue={item.content} ref={contentRef} />
+      </MyContentMA>
+    );
+    dateSpace = (
+      <MyDateMA>
+        <div>
+          <p>시작일 : </p>
+          <input type="date" defaultValue={item.startDate} ref={startDateRef} />
+        </div>
+        <br />
+        <div>
+          <p>종료일 : </p>
+          <input type="date" defaultValue={item.endDate} ref={endDateRef} />
+        </div>
+      </MyDateMA>
+    );
+
+    importantSpace = (
+      <MyImportantMA>
+        <p>중요도 : </p>
+        <select onChange={selectHandler} value={selected}>
+          {selectList.map(item => (
+            <option value={item} key={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </MyImportantMA>
+    );
+  }
+
   return (
     <MyTaskContainer
       id={id}
@@ -221,12 +384,20 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       draggable
       key={id}
       onDragStart={() => findClickItem(id, progress)}
-      onDragEnter={findDropItem}
+      onDrop={() => findDroppedItem(id, progress)}
+      style={modify ? { height: '230px' } : { height: '70px' }}
     >
       <div key={id}>
-        <MyContent>{item.content}</MyContent>
+        {contentSpace}
         <div>
-          <span>✏️</span>
+          <span
+            onClick={() => {
+              updateContentClickHandler(id, progress);
+              setModify(state => !state);
+            }}
+          >
+            ✏️
+          </span>
           <span
             onClick={() => {
               createDateClickHandler(id, progress);
@@ -235,11 +406,9 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
             ❌
           </span>
         </div>
-        <MyCreateData>
-          {startDate} ~ {item.endDate}
-        </MyCreateData>
+        {dateSpace}
         <div>
-          <MyImportanceButton {...item}>{item.importance}</MyImportanceButton>
+          {importantSpace}
           <img src={defaultProfile} alt="기본 프로필 이미지" />
         </div>
       </div>
