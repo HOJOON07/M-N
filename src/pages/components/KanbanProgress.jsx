@@ -162,7 +162,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
         </MyTitle>
       </MyTask>
       {status && <NewTask progress={progress} />}
-      {workflowList.map((el, idx) => {
+      {workflowList?.map((el, idx) => {
         return (
           <ProgressItem
             key={el.id}
