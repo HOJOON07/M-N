@@ -8,6 +8,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Kakao from './components/Kakao';
 import Naver from './components/Naver';
+import GitHub from './components/GitHub';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -272,6 +273,10 @@ export default function Login() {
   const KAKAO_LOGOUT_URI = 'http://localhost:3000';
   const KAKAO_LOGOUT_URL = `https://kauth.kakao.com/oauth/logout?client_id=${KAKAO_CLIENT_ID}&logout_redirect_uri=${KAKAO_LOGOUT_URI}`;
 
+  //깃헙
+  const GITHUB_CLIENT_ID = '052e16cc26d82c4a72dc';
+  const GITHUB_REDIRECT = `http://localhost:3000/oauth/github/callback`;
+  const GITHUB_LOGIN = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${GITHUB_REDIRECT}`;
   return (
     <MyContainer>
       <MyExplain>
@@ -346,7 +351,7 @@ export default function Login() {
           <Link to="/" style={{ marginRight: '15px' }}>
             <MySocial src={mySocialNaver} alt="네이버이미지" />
           </Link>
-          <Link to="/">
+          <Link to={GITHUB_LOGIN}>
             <MySocial src={mySocialGit} alt="깃헙이미지" />
             <MySocialBackSec color="#000" />
           </Link>
