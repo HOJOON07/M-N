@@ -1,14 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import mystar from '../../../assets/images/bookmark-icon.png';
-import mybar from '../../../assets/images/menu.png';
-import myrepo from '../../../assets/images/gitcat.png';
-import myface_a from '../../../assets/images/default-profile.png';
+import mystar from '../../../images/star.png';
+import mybar from '../../../images/dots.png';
+import myrepo from '../../../images/gitcat.png';
+import myface from '../../../images/face.png';
+import myface_a from '../../../images/face.png';
+import myface_b from '../../../images/face.png';
+
 const progressColor = '#9781dd';
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
-const brightSubColor = '#f5f4e4';
+const brightSubColor = '#e9e4f5';
+const subColor = '#cbcbcb';
 
 const MyWorkSpace = styled.section`
   justify-content: space-between;
@@ -23,7 +27,7 @@ const MySpaceContainer = styled.div`
 const MySpaceLeft = styled.div`
   width: 100%;
   height: 120px;
-  background-color: #e9e4f5;
+  background-color: ${brightSubColor};
   border-top-left-radius: 7px;
   border-bottom-left-radius: 7px;
 `;
