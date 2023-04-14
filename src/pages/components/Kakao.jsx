@@ -11,7 +11,7 @@ const Kakao = () => {
     const CODE = new URLSearchParams(location.search).get('code');
     const GRANT_TYPE = 'authorization_code';
     const KAKAO_CLIENT_ID = 'c37163557aa622477d21aee2d6f6dbdc';
-    const KAKAO_REDIRECT_URI = 'http://localhost:3000/workspace'; // 빈페이지로 보내서
+    const KAKAO_REDIRECT_URI = 'http://localhost:3000/oauth/kakao/callback'; // 빈페이지로 보내서
 
     async function loginFetch() {
       const tokenResponse = await fetch(
@@ -26,6 +26,7 @@ const Kakao = () => {
       //해킹 문제 -> 인가코드 잘라서 백엔드로 인가코드 넘겨주라고 / jwt 까지
       if (tokenResponse.status === 200) {
         const tokenData = await tokenResponse.json();
+        console.log(tokenData);
 
         const userResponese = await fetch(`https://kapi.kakao.com/v2/user/me`, {
           method: 'POST',
@@ -37,19 +38,23 @@ const Kakao = () => {
 
         if (userResponese.status === 200) {
           const userKaKaoInfo = await userResponese.json();
-
+          console.log(userKaKaoInfo);
           const userLoginInfo = {
             type: 'kakao',
-            id: userKaKaoInfo.kakao_account.email,
+            user_id: userKaKaoInfo.kakao_account.email, //
           };
+          console.log(userLoginInfo);
 
-          const registerResponse = await fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userLoginInfo),
-          });
+          const registerResponse = await fetch(
+            'http://192.168.0.222:5500/user/kakaologin',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(userLoginInfo),
+            }
+          );
 
           if (registerResponse.status === 200) {
             dispatch(login(userLoginInfo));

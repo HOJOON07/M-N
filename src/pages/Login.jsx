@@ -7,6 +7,7 @@ import mySocialKakao from '../images/pngegg.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Kakao from './components/Kakao';
+import Naver from './components/Naver';
 
 const MyContainer = styled.section`
   display: flex;
@@ -192,7 +193,7 @@ export default function Login() {
 
   // 카카오
   const KAKAO_CLIENT_ID = 'c37163557aa622477d21aee2d6f6dbdc';
-  const KAKAO_REDIRECT_URI = 'http://localhost:3000/login';
+  const KAKAO_REDIRECT_URI = 'http://localhost:3000/oauth/kakao/callback';
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
   const KAKAO_LOGOUT_URI = 'http://localhost:3000';
   const KAKAO_LOGOUT_URL = `https://kauth.kakao.com/oauth/logout?client_id=${KAKAO_CLIENT_ID}&logout_redirect_uri=${KAKAO_LOGOUT_URI}`;
@@ -248,7 +249,7 @@ export default function Login() {
           <Link to={KAKAO_AUTH_URL}>
             <MySocial src={mySocialKakao} alt="카카오톡이미지" />
           </Link>
-          <Link to="/">
+          <Link to={Naver} id="naverIdLogin">
             <MySocial src={mySocialNaver} alt="네이버이미지" />
           </Link>
           <Link to="/">
