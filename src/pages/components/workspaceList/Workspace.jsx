@@ -8,7 +8,7 @@ import myface_a from '../../../assets/images/default-profile.png';
 const progressColor = '#9781dd';
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
-const brightSubColor = '#e9e4f5';
+const brightSubColor = '#f5f4e4';
 
 const MyWorkSpace = styled.section`
   justify-content: space-between;
@@ -24,6 +24,8 @@ const MySpaceLeft = styled.div`
   width: 100%;
   height: 120px;
   background-color: #e9e4f5;
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
 `;
 const MySpaceStar = styled.img`
   position: absolute;
@@ -31,12 +33,20 @@ const MySpaceStar = styled.img`
   height: 20px;
   margin-top: 5px;
   margin-left: 5px;
+
+  filter: invert(38%) sepia(6%) saturate(4%) hue-rotate(345deg) brightness(97%)
+    contrast(82%);
+  /* 즐겨찾기를 눌렀을 때 색(노랑)
+    filter: invert(83%) sepia(92%) saturate(1371%) hue-rotate(360deg) brightness(107%) contrast(105%);
+    */
 `;
+
 const MyInfo = styled.div`
   position: absolute;
   margin-left: 10px;
   margin-top: 20px;
 `;
+
 const MyWork = styled.p`
   font-size: 1.5rem;
   font-weight: bold;
@@ -63,6 +73,7 @@ const MyRepository = styled.div`
   margin-left: 250px;
   margin-top: 18px;
 `;
+
 const MyRepoName = styled.img`
   width: 30px;
   margin-bottom: 10px;
@@ -75,14 +86,7 @@ const MyRepoText = styled.p`
   font-size: 1rem;
   font-weight: bold;
 `;
-const MySpaceFace = styled.img`
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  margin-left: 750px;
-  margin-top: 15px;
-  padding: 5px;
-`;
+
 const MySpaceFaceA = styled.img`
   position: absolute;
   width: 30px;
@@ -91,19 +95,13 @@ const MySpaceFaceA = styled.img`
   margin-top: 25px;
   padding: 5px;
 `;
-const MySpaceFaceB = styled.img`
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  margin-left: 820px;
-  margin-top: 25px;
-  padding: 5px;
-`;
+
 const MyWorkBar = styled.div`
   display: flex;
   margin-left: 250px;
   margin-top: 70px;
 `;
+
 const MySpaceProgress = styled.div`
   width: 650px;
   height: 35px;
@@ -111,6 +109,7 @@ const MySpaceProgress = styled.div`
   border-radius: 3px;
   border: 1px solid #c0adad;
 `;
+
 const MyProgressBar = styled.div`
   background-color: ${progressColor};
   width: 640px;
@@ -118,42 +117,47 @@ const MyProgressBar = styled.div`
   margin-top: 5px;
   margin-left: 5px;
 `;
+
 const MySpaceRight = styled.div`
   position: relative;
   width: 30%;
   background-color: ${progressColor};
+
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
 `;
+
 const MyPrivateBtn = styled.button`
   width: 60%;
-  height: 35px;
-  margin-top: 20px;
+  height: 40px;
+  margin-top: 15px;
   margin-left: 30px;
   box-sizing: border-box;
   font-size: 1.1rem;
   text-align: center;
   border-radius: 6px;
   background-color: #ddd7ed;
-  border-radius: 6px;
   border: none;
   cursor: pointer;
   font-weight: 700;
+
   &:hover {
     border-color: #11110d;
   }
 `;
 const MyCategoryBtn = styled.button`
   width: 60%;
-  height: 35px;
+  height: 40px;
   margin-top: 10px;
   margin-left: 30px;
   box-sizing: border-box;
   font-size: 1.1rem;
   border-radius: 6px;
   background-color: #726b87;
-  border-radius: 6px;
   border: none;
   cursor: pointer;
   font-weight: 700;
+
   &:hover {
     border-color: #11110d;
   }
@@ -162,7 +166,7 @@ const MyMenuBar = styled.img`
   position: absolute;
   width: 25px;
   height: 25px;
-  margin-left: 50px;
+  margin-left: 40px;
   top: 10px;
 `;
 export default function Workspace({
