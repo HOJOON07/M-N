@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import MainSec from './components/MainSec';
-import MainFir from './components/MainFir';
+import MainSec from '../pages/components/Main/MainSec';
+import MainFir from '../pages/components/Main/MainFir';
 
 // Color Variables
 const mainColor = '#623ad6';

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import bookmarkIcon from '../assets/images/bookmark-icon.png';
-import Kanban from './components/Kanban';
+import Kanban from './components/Workflow/Kanban';
 import { initList } from '../store/modules/workspace';
 import Loading from '../pages/Loading';
 
