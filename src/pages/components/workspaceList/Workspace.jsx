@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import mystar from '../../../images/star.png';
-import mybar from '../../../images/dots.png';
-import myrepo from '../../../images/gitcat.png';
-import myface from '../../../images/face.png';
-import myface_a from '../../../images/face.png';
-import myface_b from '../../../images/face.png';
+import mystar from '../../../assets/images/bookmark-icon.png';
+import mybar from '../../../assets/images/menu.png';
+import myrepo from '../../../assets/images/gitcat.png';
+import myface_a from '../../../assets/images/default-profile.png';
 const progressColor = '#9781dd';
+const mainColor = '#623ad6';
+const hoverMainColor = '#7855db';
+const brightSubColor = '#e9e4f5';
 
 const MyWorkSpace = styled.section`
   justify-content: space-between;
@@ -15,7 +16,7 @@ const MyWorkSpace = styled.section`
 
 const MySpaceContainer = styled.div`
   display: flex;
-  margin-top: 30px;
+  margin: 30px 0;
   max-width: 1200px;
 `;
 
@@ -43,23 +44,24 @@ const MyWork = styled.p`
   padding: 5px;
 `;
 
-const Myline = styled.p`
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-top: 0;
+const Myline = styled.div`
+  margin-left: 7px;
+  width: 95%;
+  height: 4px;
+  background-color: ${mainColor};
 `;
 
 const MySpaceDate = styled.p`
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   font-weight: 300;
-  text-align: left;
+  margin: 10px 0 0 7px;
 `;
 
 const MyRepository = styled.div`
   display: flex;
   position: absolute;
   margin-left: 250px;
-  margin-top: 30px;
+  margin-top: 18px;
 `;
 const MyRepoName = styled.img`
   width: 30px;
@@ -100,7 +102,7 @@ const MySpaceFaceB = styled.img`
 const MyWorkBar = styled.div`
   display: flex;
   margin-left: 250px;
-  margin-top: 75px;
+  margin-top: 70px;
 `;
 const MySpaceProgress = styled.div`
   width: 650px;
@@ -182,7 +184,7 @@ export default function Workspace({
             <MyWork>
               {workspace_name ? workspace_name : 'workspace_name'}
             </MyWork>
-            <Myline>------------------</Myline>
+            <Myline />
             <MySpaceDate>
               {workspace_startDate ? workspace_startDate : '0000-00-00'}
               &nbsp;-&nbsp;
@@ -217,7 +219,7 @@ export default function Workspace({
                   width: `${progressPercent * 640}px`,
                 }}
               >
-                {progressPercent * 100}%
+                <span>{progressPercent * 100}%</span>
               </MyProgressBar>
             </MySpaceProgress>
           </MyWorkBar>

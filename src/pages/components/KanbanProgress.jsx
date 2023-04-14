@@ -21,6 +21,10 @@ const subColor = '#cbcbcb';
 const MyTitle = styled.p`
   font-size: ${props => props.fontSize};
   font-family: 'LINESeedKR-Bd';
+
+  &:hover {
+    background-color: ${subColor};
+  }
 `;
 
 const MyProgressTitle = styled.div`
@@ -45,13 +49,12 @@ const MyTask = styled.div`
   border: 1px solid #bcc2d1;
   border-radius: 5px;
   background-color: ${contentColor};
-  width: 95%;
   height: 30px;
   margin: 0 0 20px 0;
   cursor: pointer;
 
   & > p {
-    padding: 8px 5px 0 8px;
+    padding: 8px 5px 9px 8px;
   }
 `;
 
@@ -128,9 +131,18 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
       dispatch(deleteItem(payload));
     }
   };
+  const subColor = '#d5cee8';
+  const brightSubColor = '#e9e4f5';
+  let backColor = isOver ? `${brightSubColor}` : '';
 
   return (
-    <div ref={drop} style={{ overflowY: 'auto' }}>
+    <div
+      ref={drop}
+      style={{
+        overflowY: 'auto',
+        backgroundColor: backColor,
+      }}
+    >
       <MyProgressTitle>
         <div>
           <p>{icon}</p>

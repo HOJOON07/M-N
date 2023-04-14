@@ -113,8 +113,8 @@ export function subtractList(subListType, selectedDragItem, subList) {
   };
 }
 
-export function addList(addListType, item, addList, dropItem) {
-  return { type: ADD_LIST, payload: { addListType, item, addList, dropItem } };
+export function addList(addListType, item, dropIndex) {
+  return { type: ADD_LIST, payload: { addListType, item, dropIndex } };
 }
 
 // 액션 생성 함수 작성
@@ -464,7 +464,7 @@ export default function workspace(state = initState, action) {
 
     case ADD_LIST:
       console.log('ADDLIST');
-      let { addListType, item, addList, dropItem } = action.payload;
+      let { addListType, item, dropIndex } = action.payload;
 
       switch (addListType) {
         case 'Request':
@@ -485,13 +485,17 @@ export default function workspace(state = initState, action) {
         default:
       }
 
-      console.log('dsdasfafsfasfasfsa', dropItem);
-      const updateAddList = [
-        ...state.workspaceList[0].workflow[addListType].filter(
-          i => i.id !== item.id
-        ),
-        item,
-      ];
+      // tetz, 배열을 직접 변경하면 mutation 에러가 뜨므로 해당 부분을 피하기 위해서
+      // 배열을 카피해서 변경 후 직접 부여
+      let updateAddList = [...state.workspaceList[0].workflow[addListType]];
+
+      // dropIndex 가 null 이 아니면 특정 task 위에 드롭이 되었다는 것이므로, 해당 위치에 가져온 item 을 추가
+      if (dropIndex !== null) {
+        updateAddList.splice(dropIndex, 0, item);
+      } else {
+        // dropIndex 가 null 이면 바닥에 드롭한 것이므로 task 의 마지막에 추가
+        updateAddList.splice(updateAddList.length, 0, item);
+      }
 
       return {
         ...state,
