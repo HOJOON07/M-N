@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import mymagnify from '../images/magnify.png';
+import mymagnify from '../assets/images/menu.png';
 import Workspace from './components/workspaceList/Workspace';
 
 // Color Variables
