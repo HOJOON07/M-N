@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
+const titleColor = '#4d3b82';
 
 const MyDivContainer = styled.div`
   max-width: 1000px;
@@ -14,13 +15,13 @@ const MyDivContainer = styled.div`
 `;
 const MyTitle = styled.h2`
   margin-top: 80px;
-  color: ${mainColor};
+  color: ${titleColor};
   font-family: 'LINESeedKR-Bd';
   font-size: 4rem;
   text-align: center;
   font-weight: 700;
 
-  text-shadow: 2px 2px 0 black;
+  text-shadow: 2px 2px 3px #a9a9a992;
 `;
 
 const MyImg = styled.img`

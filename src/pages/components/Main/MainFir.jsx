@@ -1,12 +1,20 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { keyframes } from 'styled-components';
 
 // Color Variables
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
 const subColor = '#d5cee8';
 const brightSubColor = '#e9e4f5';
+
+//keyframes
+const rotateAnim = keyframes`
+to {
+  transform: rotate(360deg);
+}
+`;
 
 const MyMainContainer = styled.div`
   max-width: 100vw;
@@ -27,24 +35,28 @@ const MyBackImg = styled.div`
   position: absolute;
   top: 6vh;
   left: -30px;
+  margin: 0 auto;
+  padding: 20px;
 
-  width: 550px;
-  height: 550px;
   border-radius: 50%;
   background-color: ${brightSubColor};
-  opacity: 0.4;
+  width: 550px;
+  height: 550px;
+  border: 10px solid rgba(163, 151, 198, 0.2);
+  border-top: 15px solid rgba(163, 151, 198, 1);
+
+  animation: ${rotateAnim} 12s linear 0s infinite;
 `;
 
 const MyBackImgSec = styled.div`
   position: absolute;
-  top: 37vh;
-  left: 220px;
+  top: 51vh;
+  left: 287px;
 
-  width: 350px;
-  height: 350px;
+  width: 320px;
+  height: 320px;
   border-radius: 50%;
   background-color: ${subColor};
-  opacity: 0.6;
 `;
 
 const MyBackImgThr = styled.div`
@@ -98,7 +110,11 @@ export default function MainFir() {
   return (
     <MyMainContainer>
       <MyBackImgContainer>
-        <MyBackImg />
+        <div>
+          <MyBackImg />
+          {/* <MyBackImgRotate /> */}
+        </div>
+
         <MyBackImgSec />
         <MyBackImgThr />
       </MyBackImgContainer>
