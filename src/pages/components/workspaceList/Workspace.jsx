@@ -1,12 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import mystar from '../../../images/star.png';
-import mybar from '../../../images/dots.png';
-import myrepo from '../../../images/gitcat.png';
-import myface from '../../../images/face.png';
-import myface_a from '../../../images/face.png';
-import myface_b from '../../../images/face.png';
+import mystar from '../../../assets/images/bookmark-icon.png';
+import mybar from '../../../assets/images/menu.png';
+import myrepo from '../../../assets/images/gitcat.png';
+import myface_a from '../../../assets/images/default-profile.png';
 const progressColor = '#9781dd';
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
