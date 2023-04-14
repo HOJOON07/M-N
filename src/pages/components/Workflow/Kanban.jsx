@@ -37,7 +37,7 @@ const MyTitleArea = styled.div`
 
 const MyProgressArea = styled.div`
   width: 100%;
-
+  margin: 20px 0 0 15px;
   background-color: ${backColor};
 
   display: flex;
@@ -63,7 +63,7 @@ export default function Kanban() {
   return (
     <div>
       <MyTitleArea>
-        <div>
+        <div style={{ marginLeft: '15px' }}>
           <MyTitle>Workflow</MyTitle>
           <MyBar />
         </div>

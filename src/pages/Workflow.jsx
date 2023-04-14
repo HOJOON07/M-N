@@ -14,12 +14,11 @@ const brightSubColor = '#e9e4f5';
 const MyWorkspaceArea = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 90vh;
 
   & > div:nth-child(2) {
     width: 100%;
     height: 100%;
-    margin: 10px;
   }
 `;
 
@@ -80,6 +79,7 @@ const MyNoneBookmark = styled.img`
 export default function Workflow() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -114,31 +114,34 @@ export default function Workflow() {
 
   return (
     <MyWorkspaceArea>
-      <MyWorkspaceList>
-        <MyTitle>Workspace</MyTitle>
-        {/* <MyList>
-          <p>Bookmark</p>
-          {bookmarkedList.map(el => {
-            return (
-              <div key={el.id}>
-                <MyBookmark alt="북마크 완료 아이콘" src={bookmarkIcon} />
-                <div>{el.workspace_name}</div>
-              </div>
-            );
-          })}
-        </MyList>
-        <MyList>
-          <p>List</p>
-          {workspaceList.map(el => {
-            return (
-              <div key={el.id}>
-                <MyNoneBookmark alt="북마크 미완료 아이콘" src={bookmarkIcon} />
-                <div>{el.workspace_name}</div>
-              </div>
-            );
-          })}
-        </MyList> */}
-      </MyWorkspaceList>
+      {!loading ? (
+        <MyWorkspaceList>
+          <MyTitle>Workspace</MyTitle>
+          {/* <MyList>
+                <p>Bookmark</p>
+                {bookmarkedList.map(el => {
+                  return (
+                    <div key={el.id}>
+                      <MyBookmark alt="북마크 완료 아이콘" src={bookmarkIcon} />
+                      <div>{el.workspace_name}</div>
+                    </div>
+                  );
+                })}
+              </MyList>
+              <MyList>
+                <p>List</p>
+                {workspaceList.map(el => {
+                  return (
+                    <div key={el.id}>
+                      <MyNoneBookmark alt="북마크 미완료 아이콘" src={bookmarkIcon} />
+                      <div>{el.workspace_name}</div>
+                    </div>
+                  );
+                })}
+              </MyList> */}
+        </MyWorkspaceList>
+      ) : null}
+
       {!loading ? <Kanban /> : <Loading />}
     </MyWorkspaceArea>
   );
