@@ -6,9 +6,6 @@ import { addList, subtractList } from '../../../store/modules/workspace';
 import { deleteItem, modifyItem } from '../../../store/modules/workspace';
 import styled from 'styled-components';
 
-// 드롭 된 아이템 구분용 전역 변수
-let dropItem = null;
-
 // Color Variables
 const contentColor = '#fff';
 const subColor = '#cbcbcb';
@@ -124,9 +121,16 @@ const MyImportantMA = styled.div`
   }
 `;
 
+// 드롭 된 아이템 구분용 전역 변수
+let dropItem = null;
+
 export default function ProgressItem({ workflowList, item, id, progress }) {
   const [modify, setModify] = useState(false);
-  const workspaceList = useSelector(state => state.workspace);
+  // 프론트 더미 데이터
+  const workspaceList = useSelector(state => state.workspace.workspaceList);
+
+  // 백연동시
+  // const workspaceList = useSelector(state => state.workspace);
   const dispatch = useDispatch();
   const contentRef = useRef();
   const startDateRef = useRef();
@@ -139,7 +143,6 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     setSelected(e.target.value);
   };
   const selectedDragItem = useRef(null);
-  const droppedItem = useRef(null);
 
   //react dnd
   const [{ isDragging }, dragRef] = useDrag(() => ({
@@ -166,26 +169,35 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     },
   }));
 
-  const findClickItem = (id, progress) => {
-    let selectedItem = null;
+  // 프로그레스명으로 DB 데이터를 구분하는 함수
+  const findProgress = progress => {
     let specificProgress;
     if (progress === 'Request') {
-      specificProgress = workspaceList.workflow.requestList;
+      specificProgress = workspaceList[0].workflow.requestList;
     } else if (progress === 'In Progress') {
-      specificProgress = workspaceList.workflow.inProgressList;
+      specificProgress = workspaceList[0].workflow.inProgressList;
     } else if (progress === 'In Review') {
-      specificProgress = workspaceList.workflow.inReviewList;
+      specificProgress = workspaceList[0].workflow.inReviewList;
     } else if (progress === 'Blocked') {
-      specificProgress = workspaceList.workflow.blockedList;
+      specificProgress = workspaceList[0].workflow.blockedList;
     } else {
-      specificProgress = workspaceList.workflow.completedList;
+      specificProgress = workspaceList[0].workflow.completedList;
     }
+
+    return specificProgress;
+  };
+
+  const findClickItem = (id, progress) => {
+    let selectedItem = null;
+    const specificProgress = findProgress(progress);
+
     selectedItem = specificProgress.find(item => item.id === id);
     if (selectedItem) {
       selectedDragItem.current = selectedItem;
     }
   };
 
+  // 임시 주석
   // const findDropItem = (id, progress) => {
   //   let dropItem = null;
   //   for (const ws of workspaceList) {
@@ -211,35 +223,17 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
 
   // tetz, 드랍 된 아이템의 배열 순서를 찾아내는 함수
   const findDroppedItem = (id, progress) => {
-    // for (const ws of workspaceList) {
-    let specificProgress;
-    if (progress === 'Request') {
-      specificProgress = workspaceList.workflow.requestList;
-    } else if (progress === 'In Progress') {
-      specificProgress = workspaceList.workflow.inProgressList;
-    } else if (progress === 'In Review') {
-      specificProgress = workspaceList.workflow.inReviewList;
-    } else if (progress === 'Blocked') {
-      specificProgress = workspaceList.workflow.blockedList;
-    } else {
-      specificProgress = workspaceList.workflow.completedList;
-    }
+    const specificProgress = findProgress(progress);
 
     // tetz, 아무도 없는 바닥에 올려 놓았을 경우 id 가 null 이 뜨므로, null 이 아닌 경우에만
     // index 값을 찾아서 dropItem 전역 변수에 업데이트
     if (id !== null) {
       dropItem = specificProgress.findIndex(item => item.id === id);
-      // 다만 첫번째 아이템이 드롭이 되면, findIndex 함수가 null 을 반환하므로, 이 경우에는 index 가 0 인 케이스
+      // 예외) 다만 첫번째 아이템이 드롭이 되면, findIndex 함수가 null 을 반환하므로, 이 경우에는 index 가 0 인 케이스
       if (dropItem === null) dropItem = 0;
     } else {
-      // 바닥에 드랍한 경우는 null 로 전달
       dropItem = null;
     }
-
-    // droppedItemTemp = specificProgress.findIndex(item => item.id === id);
-    // if (droppedItemTemp !== null) droppedItem.current = droppedItemTemp;
-    // console.log('함수 안', droppedItem.current);
-    // }
   };
 
   /** 버튼 클릭 시 특정 id에 해당하는 배열 찾기 함수 */
@@ -251,25 +245,12 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     let payload = {};
     let selectedItem = null;
     let workspace = null;
-    // for (const ws of workspaceList) {
-    let specificProgress;
-    if (progress === 'Request') {
-      specificProgress = workspaceList.workflow.todoList;
-    } else if (progress === 'In Progress') {
-      specificProgress = workspaceList.workflow.inprogressList;
-    } else if (progress === 'In Review') {
-      specificProgress = workspaceList.workflow.inreviewList;
-    } else if (progress === 'Blocked') {
-      specificProgress = workspaceList.workflow.blockedList;
-    } else {
-      specificProgress = workspaceList.workflow.doneList;
-    }
+    const specificProgress = findProgress(progress);
+
     selectedItem = specificProgress.find(item => item.id === id);
     if (selectedItem) {
       workspace = workspaceList;
-      // break;
     }
-    // }
     if (workspace && selectedItem) {
       payload = {
         workspaceId: workspace.id,
@@ -287,25 +268,12 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     let payload = {};
     let selectedItem = null;
     let workspace = null;
-    // for (const ws of workspaceList) {
-    let specificProgress;
-    if (progress === 'Request') {
-      specificProgress = workspaceList.workflow.requestList;
-    } else if (progress === 'In Progress') {
-      specificProgress = workspaceList.workflow.inProgressList;
-    } else if (progress === 'In Review') {
-      specificProgress = workspaceList.workflow.inReviewList;
-    } else if (progress === 'Blocked') {
-      specificProgress = workspaceList.workflow.blockedList;
-    } else {
-      specificProgress = workspaceList.workflow.completedList;
-    }
+    const specificProgress = findProgress(progress);
+
     selectedItem = specificProgress.find(item => item.id === id);
     if (selectedItem) {
       workspace = workspaceList;
-      // break;
     }
-    // }
 
     if (workspace && selectedItem) {
       if (modify) {

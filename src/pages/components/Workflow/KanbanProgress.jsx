@@ -57,30 +57,29 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
   const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
 
+  // 프로그레스명으로 DB 데이터를 구분하는 함수
+  const findProgress = progress => {
+    let specificProgress;
+    if (progress === 'Request') {
+      specificProgress = workspaceList[0].workflow.requestList;
+    } else if (progress === 'In Progress') {
+      specificProgress = workspaceList[0].workflow.inProgressList;
+    } else if (progress === 'In Review') {
+      specificProgress = workspaceList[0].workflow.inReviewList;
+    } else if (progress === 'Blocked') {
+      specificProgress = workspaceList[0].workflow.blockedList;
+    } else {
+      specificProgress = workspaceList[0].workflow.completedList;
+    }
+
+    return specificProgress;
+  };
+
   // react dnd
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: '1',
     drop: item => {
-      let list = [];
-      switch (progress) {
-        case 'Request':
-          list = workspaceList[0].workflow.todoList;
-          break;
-        case 'In Progress':
-          list = workspaceList[0].workflow.inprogressList;
-          break;
-        case 'In Review':
-          list = workspaceList[0].workflow.inreviewList;
-          break;
-        case 'Blocked':
-          list = workspaceList[0].workflow.blockedList;
-          break;
-        case 'Completed':
-          list = workspaceList[0].workflow.doneList;
-          break;
-        default:
-          break;
-      }
+      let list = findProgress(progress);
       return { item, name: progress, list: list };
     },
     collect: monitor => ({
@@ -99,18 +98,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
     let selectedItem = null;
     let workspace = null;
     for (const ws of workspaceList) {
-      let specificProgress;
-      if (progress === 'Request') {
-        specificProgress = ws.workflow.todoList;
-      } else if (progress === 'In Progress') {
-        specificProgress = ws.workflow.inprogressList;
-      } else if (progress === 'In Review') {
-        specificProgress = ws.workflow.inreviewList;
-      } else if (progress === 'Blocked') {
-        specificProgress = ws.workflow.blockedList;
-      } else {
-        specificProgress = ws.workflow.doneList;
-      }
+      const specificProgress = findProgress(progress);
       selectedItem = specificProgress.find(item => item.id === id);
       if (selectedItem) {
         workspace = ws;
@@ -125,7 +113,6 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
       dispatch(deleteItem(payload));
     }
   };
-  const subColor = '#d5cee8';
   const brightSubColor = '#e9e4f5';
   let backColor = isOver ? `${brightSubColor}` : '';
 
