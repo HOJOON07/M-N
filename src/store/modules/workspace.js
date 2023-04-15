@@ -301,7 +301,8 @@ export default function workspace(state = initState, action) {
       // }
 
       // const copyList = [...state.workspaceList[workspaceId].workflow.progress];
-      const copyList = [...state.workspaceList[0].workflow[progress]];
+      // 백엔드
+      const copyList = [...state.workspaceList.workflow[progress]];
 
       const findIndex = copyList.findIndex(el => el.id === selectedItem.id);
       const newTask = {
@@ -315,6 +316,7 @@ export default function workspace(state = initState, action) {
 
       copyList.splice(findIndex, 1, newTask);
 
+      // 백엔드
       return {
         ...state,
         workspaceList: [
@@ -328,6 +330,7 @@ export default function workspace(state = initState, action) {
         ],
       };
 
+    // 프론트
     // return {
     //   ...state,
     //   workspaceList: [

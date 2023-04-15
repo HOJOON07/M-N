@@ -79,31 +79,34 @@ const MyNoneBookmark = styled.img`
 export default function Workflow() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  // 백연동 시
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const resGetAllWS = await fetch(
-  //         'http://192.168.0.230:8001/workspace/643818de0a5dddd886bff311', // 임시 id값
-  //         {
-  //           method: 'GET',
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //         }
-  //       );
-  //       if (resGetAllWS.status !== 200) return 'fail';
-  //       const data = await resGetAllWS.json();
-  //       dispatch(initList(data));
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //     setLoading(false);
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const resGetAllWS = await fetch(
+          'http://localhost:8001/workspace/643a2995b7f6810e3ce63447', // 임시 id값
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        if (resGetAllWS.status !== 200) return 'fail';
+        const data = await resGetAllWS.json();
+        dispatch(initList(data));
+      } catch (err) {
+        console.error(err);
+      }
+      setLoading(false);
+    };
 
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
+
+  // useEffect(() => {
+  //   // test
+  // }, [state]);
 
   // 프론트 더미 데이터
   // const workspaceList = useSelector(

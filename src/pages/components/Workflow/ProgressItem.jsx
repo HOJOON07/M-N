@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import defaultProfile from '../../../assets/images/default-profile.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
@@ -127,10 +127,10 @@ let dropItem = null;
 export default function ProgressItem({ workflowList, item, id, progress }) {
   const [modify, setModify] = useState(false);
   // 프론트 더미 데이터
-  const workspaceList = useSelector(state => state.workspace.workspaceList);
+  // const workspaceList = useSelector(state => state.workspace.workspaceList);
 
   // 백연동시
-  // const workspaceList = useSelector(state => state.workspace);
+  const workspaceList = useSelector(state => state.workspace);
   const dispatch = useDispatch();
   const contentRef = useRef();
   const startDateRef = useRef();
@@ -177,15 +177,15 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     // 백 연결용(구슬기)
     let specificProgress;
     if (progress === 'Request') {
-      specificProgress = workspaceList[0].workflow.requestList;
+      specificProgress = workspaceList.workflow.requestList;
     } else if (progress === 'In Progress') {
-      specificProgress = workspaceList[0].workflow.inProgressList;
+      specificProgress = workspaceList.workflow.inProgressList;
     } else if (progress === 'In Review') {
-      specificProgress = workspaceList[0].workflow.inReviewList;
+      specificProgress = workspaceList.workflow.inReviewList;
     } else if (progress === 'Blocked') {
-      specificProgress = workspaceList[0].workflow.blockedList;
+      specificProgress = workspaceList.workflow.blockedList;
     } else {
-      specificProgress = workspaceList[0].workflow.completedList;
+      specificProgress = workspaceList.workflow.completedList;
     }
     return specificProgress;
 
@@ -259,6 +259,9 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       dropItem = null;
     }
   };
+
+  // useEffect(() => {
+  // }, []);
 
   /** 버튼 클릭 시 특정 id에 해당하는 배열 찾기 함수 */
   const createDateClickHandler = (id, progress) => {
@@ -359,6 +362,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
             </option>
           ))}
         </select>
+        <button>수정 완료</button>
       </MyImportantMA>
     );
   }

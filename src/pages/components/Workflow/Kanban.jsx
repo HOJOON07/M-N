@@ -56,10 +56,10 @@ const MyProgressArea = styled.div`
 export default function Kanban() {
   /** 임시로 특정 워크스페이스(id가 0) 지정 */
   // 프론트 더미 데이터
-  const workspace = useSelector(state => state.workspace.workspaceList)[0];
+  // const workspace = useSelector(state => state.workspace.workspaceList)[0];
 
   // 백 연동 시
-  // const workspace = useSelector(state => state.workspace);
+  const workspace = useSelector(state => state.workspace);
 
   const workflowList = workspace.workflow;
   const iconList = ['✉️', '🔨', '📌', '🔒', '🎉'];
