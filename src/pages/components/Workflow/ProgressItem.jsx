@@ -11,9 +11,19 @@ const contentColor = '#fff';
 const subColor = '#cbcbcb';
 
 // Styled Components
+const MyProfileImg = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+const mainColor = '#623ad6';
+const defaultBorder = '1px solid #cfd4e0';
+const modifyBorder = `2px solid ${mainColor}`;
+
 const MyTaskContainer = styled.div`
   position: relative;
-  border: 1px solid #bcc2d1;
+  border: ${props => props.border};
+  box-shadow: 2px 1px 3px #cfd4e0;
+
   border-radius: 5px;
   background-color: ${contentColor};
   height: 70px;
@@ -25,8 +35,6 @@ const MyTaskContainer = styled.div`
     position: absolute;
     right: 8px;
     bottom: 8px;
-    width: 20px;
-    height: 20px;
   }
 
   & span:first-child {
@@ -90,11 +98,13 @@ const MyImportanceButton = styled.button`
 `;
 
 // 콘텐츠 수정 시, 적용되는 Styled
+const MyProfileImgMA = styled.img`
+  width: 35px;
+  height: 35px;
+`;
+
 const MyContentMA = styled.div`
   padding: 10px;
-  & > p {
-    margin-bottom: 10px;
-  }
 `;
 const MyContentModify = styled.input`
   width: 80%;
@@ -105,20 +115,19 @@ const MyDateMA = styled.div`
   & > div {
     display: flex;
     align-items: center;
-
-    & > p {
-      margin: 0 10px 10px 0;
-    }
   }
 `;
 const MyImportantMA = styled.div`
-  padding: 0 10px;
+  padding: 8px 10px;
   display: flex;
   align-items: center;
+`;
 
-  & > p {
-    margin-right: 10px;
-  }
+const MyPMA = styled.p`
+  font-family: 'LINESeedKR-Bd';
+  font-size: 1rem;
+  margin-right: 10px;
+  font-weight: 700;
 `;
 
 // 드롭 된 아이템 구분용 전역 변수
@@ -310,19 +319,19 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   } else {
     contentSpace = (
       <MyContentMA>
-        <p>내용: </p>
+        <MyPMA style={{ margin: '7px 0' }}>Modify Task </MyPMA>
         <MyContentModify defaultValue={item.content} ref={contentRef} />
       </MyContentMA>
     );
     dateSpace = (
       <MyDateMA>
         <div>
-          <p>시작일 : </p>
+          <MyPMA>시작일 : </MyPMA>
           <input type="date" defaultValue={item.startDate} ref={startDateRef} />
         </div>
         <br />
         <div>
-          <p>종료일 : </p>
+          <MyPMA>종료일 : </MyPMA>
           <input type="date" defaultValue={item.endDate} ref={endDateRef} />
         </div>
       </MyDateMA>
@@ -330,7 +339,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
 
     importantSpace = (
       <MyImportantMA>
-        <p>중요도 : </p>
+        <MyPMA>중요도 : </MyPMA>
         <select onChange={selectHandler} value={selected}>
           {selectList.map(item => (
             <option value={item} key={item}>
@@ -352,6 +361,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       onDragStart={() => findClickItem(id, progress)}
       onDrop={() => findDroppedItem(id, progress)}
       style={modify ? { height: '230px' } : { height: '70px' }}
+      border={modify ? modifyBorder : defaultBorder}
     >
       <div key={id}>
         {contentSpace}
@@ -375,7 +385,11 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
         {dateSpace}
         <div>
           {importantSpace}
-          <img src={defaultProfile} alt="기본 프로필 이미지" />
+          {modify ? (
+            <MyProfileImgMA src={defaultProfile} alt="기본 프로필 이미지" />
+          ) : (
+            <MyProfileImg src={defaultProfile} alt="기본 프로필 이미지" />
+          )}
         </div>
       </div>
     </MyTaskContainer>

@@ -13,7 +13,7 @@ const brightSubColor = '#e9e4f5';
 
 const MyWorkspaceArea = styled.div`
   display: flex;
-  width: 100%;
+  width: 99%;
   height: 90vh;
 
   & > div:nth-child(2) {

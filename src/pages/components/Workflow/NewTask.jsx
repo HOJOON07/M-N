@@ -21,7 +21,7 @@ const greyColor = '#696969';
 // Styled Components
 const MyNewTask = styled.div`
   position: relative;
-  border: 1px solid ${subColor};
+  border: 2px solid ${mainColor};
   border-radius: 5px;
   background-color: ${contentColor};
   padding: 10px 10px 42px;
@@ -202,7 +202,7 @@ export default function NewTask({ progress }) {
           Low
         </MyBottom>
         <MySubmit>
-          <MySubmitButton onClick={handelClick}>submit</MySubmitButton>
+          <MySubmitButton onClick={handelClick}>Submit</MySubmitButton>
         </MySubmit>
       </MyNewTask>
     )
