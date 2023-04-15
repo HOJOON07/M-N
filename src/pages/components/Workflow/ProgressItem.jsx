@@ -169,8 +169,12 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     },
   }));
 
+  // let specificProgress;
+  let selectedItem = null;
+  let workspace = null;
   // 프로그레스명으로 DB 데이터를 구분하는 함수
   const findProgress = progress => {
+    // 백 연결용(구슬기)
     let specificProgress;
     if (progress === 'Request') {
       specificProgress = workspaceList[0].workflow.requestList;
@@ -183,8 +187,28 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     } else {
       specificProgress = workspaceList[0].workflow.completedList;
     }
-
     return specificProgress;
+
+    // 백 연결 전, 프론트 initState 데이터 확인 (김은정)
+    // for (const ws of workspaceList) {
+    //   if (progress === 'Request') {
+    //     specificProgress = ws.workflow.requestList;
+    //   } else if (progress === 'In Progress') {
+    //     specificProgress = ws.workflow.inProgressList;
+    //   } else if (progress === 'In Review') {
+    //     specificProgress = ws.workflow.inReviewList;
+    //   } else if (progress === 'Blocked') {
+    //     specificProgress = ws.workflow.blockedList;
+    //   } else {
+    //     specificProgress = ws.workflow.completedList;
+    //   }
+    //   selectedItem = specificProgress.find(item => item.id === id);
+    //   if (selectedItem) {
+    //     workspace = ws;
+    //     break;
+    //   }
+    // }
+    // return workspace;
   };
 
   const findClickItem = (id, progress) => {
@@ -243,8 +267,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
 
   const buttonClickHandler = (id, progress) => {
     let payload = {};
-    let selectedItem = null;
-    let workspace = null;
+    // const workspace = findProgress(progress);
     const specificProgress = findProgress(progress);
 
     selectedItem = specificProgress.find(item => item.id === id);
@@ -266,10 +289,8 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
 
   const updateHandler = (id, progress) => {
     let payload = {};
-    let selectedItem = null;
-    let workspace = null;
+    // const workspace = findProgress(progress);
     const specificProgress = findProgress(progress);
-
     selectedItem = specificProgress.find(item => item.id === id);
     if (selectedItem) {
       workspace = workspaceList;

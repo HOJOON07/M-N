@@ -321,7 +321,7 @@ export default function workspace(state = initState, action) {
           {
             ...state.workspaceList,
             workflow: {
-              ...state.workspaceList.workflow,
+              ...state.workspaceList[0].workflow,
               [progress]: copyList,
             },
           },
