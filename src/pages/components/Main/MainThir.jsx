@@ -2,13 +2,7 @@ import React from 'react';
 import cooporation from '../../../assets/images/main-img.jpg';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import arrow from '../../../assets/images/arrowButton.png';
 import upArrow from '../../../assets/images/up-arrow.png';
-
-const mainColor = '#623ad6';
-const hoverMainColor = '#7855db';
-const subColor = '#d5cee8';
-const brightSubColor = '#e9e4f5';
 
 const MyMainContainer = styled.div`
   position: relative;
@@ -56,13 +50,12 @@ const MyPLeft = styled.p`
 const MyBtn = styled.button`
   border: none;
   background-color: white;
-  font-size: 1rem;
   cursor: pointer;
   display: flex;
 
   position: absolute;
   top: 60px;
-  left: 70px;
+  left: 90px;
 
   &:hover > img,
   &:hover > div {
@@ -71,19 +64,12 @@ const MyBtn = styled.button`
   }
 `;
 
-const MyImgBtn = styled.img`
-  display: block;
-  margin: 0 5px 3px 0;
-  width: 40px;
-  transition: 0.5s;
-`;
-
 const MyDivText = styled.div`
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
   line-height: 1.5rem;
+
   transition: 0.5s;
-  text-decoration: underline;
 `;
 
 const MyBackImg = styled.img`
@@ -109,8 +95,7 @@ export default function MainThir() {
         <MyPLeft>업종, 인원, 팀 정보에 맞춰 1:1로 상담이 가능합니다</MyPLeft>
         <Link to="/">
           <MyBtn>
-            <MyImgBtn src={arrow} />
-            <MyDivText>1:1 상담 신청</MyDivText>
+            <MyDivText>➡️ 1:1 상담 신청</MyDivText>
           </MyBtn>
         </Link>
       </MyContainer>

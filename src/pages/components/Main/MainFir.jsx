@@ -56,7 +56,8 @@ const MyBackImgSec = styled.div`
   width: 320px;
   height: 320px;
   border-radius: 50%;
-  background-color: ${subColor};
+  background-color: ${brightSubColor};
+  box-shadow: 3px 3px 5px #a4a4a474;
 `;
 
 const MyBackImgThr = styled.div`
@@ -95,7 +96,7 @@ const MyFreeButton = styled.button`
   padding: 15px 40px;
   font-size: 1rem;
   font-weight: 700;
-  border-radius: 10px;
+  border-radius: 50px;
   border: none;
   cursor: pointer;
   background-color: ${mainColor};
@@ -121,7 +122,7 @@ export default function MainFir() {
       <MyDivContainer>
         <MyH3>MeetNotes로 스마트하게 프로젝트를 관리해보세요!</MyH3>
         <MyP>개발자가 개발에만 집중할 수 있도록</MyP>
-        <MyFreeButton onClick={() => navigation('/login')}>
+        <MyFreeButton onClick={() => navigation('/signup')}>
           무료로 시작
         </MyFreeButton>
       </MyDivContainer>
