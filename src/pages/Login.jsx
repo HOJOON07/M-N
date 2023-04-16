@@ -20,13 +20,16 @@ const MyContainer = styled.section`
   position: absolute;
   z-index: 999;
   display: flex;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100%;
+  height: 100%;
   justify-content: space-between;
-  max-width: 1000px;
+  background: rgba(0, 0, 0, 0.8);
   top: 50%;
   left: 50%;
-  margin: auto;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  /* padding-top: 300px;
+  padding-bottom: 300px; */
   transform: translate(-50%, -50%);
 `;
 
@@ -53,12 +56,13 @@ const MyCloseBtn = styled.button`
 `;
 
 const MyLogin = styled.span`
+  position: absolute;
   width: 600px;
   height: 500px;
-  justify-content: center;
   text-align: center;
   align-items: center;
-  margin-left: 20px;
+  top: 15%;
+  left: 33%;
   background-color: white;
   border-style: 2px solid black;
   box-shadow: 5px 5px 7px 0px #52525267;
