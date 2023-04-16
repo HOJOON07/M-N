@@ -99,7 +99,7 @@ export default function Workspacelist() {
   const [dataArr, setDataArr] = useState([]);
   const getAllWS = async () => {
     try {
-      const resGetAllWS = await fetch('http://localhost:8001/workspace', {
+      const resGetAllWS = await fetch('http://localhost:5500/workspace', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

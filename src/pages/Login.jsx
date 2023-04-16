@@ -6,7 +6,8 @@ import mySocialNaver from '../assets/images/naver-icon.png';
 import mySocialKakao from '../assets/images/kakao-icon.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Kakao from './components/Kakao';
+
+axios.defaults.withCredentials = true;
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -210,17 +211,21 @@ export default function Login() {
     id: '',
     password: '',
   });
+  console.log(inputs.password);
   const submit = () => {
     const userData = {
       user_id: inputs.id,
       user_password: inputs.password,
     };
     axios
-      .post('http://192.168.0.222:5500/user/login', userData)
+      .post('http://localhost:5500/user/login', userData, {
+        withCredentials: true,
+      })
       .then(res => {
         if (res.status === 200) {
-          gotoWorkSpaceList();
+          // gotoWorkSpaceList();
           setMsg('');
+          console.log(res);
         }
       })
       .catch(err => {
@@ -228,6 +233,23 @@ export default function Login() {
         alert('ID 또는 비밀번호가 일치하지 않습니다');
         console.log(err.response.data, err);
       });
+    // axios({
+    //   url: 'http://localhost:5500/user/login',
+    //   method: 'POST',
+    //   withCredentials: true,
+    //   userData: userData,
+    // })
+    //   .then(res => {
+    //     if (res.status === 200) {
+    //       gotoWorkSpaceList();
+    //       setMsg('');
+    //     }
+    //   })
+    //   .catch(err => {
+    //     setMsg(err);
+    //     alert('ID 또는 비밀번호가 일치하지 않습니다.');
+    //     console.log(err.response.data, err);
+    //   });
   };
   const inutRef = useRef([]);
 

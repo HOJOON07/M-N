@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { GlobalStyle } from './components/GlobalStyle';
 
@@ -12,8 +12,44 @@ import WorkspaceList from './pages/WorkspaceList';
 import CreateWorkspace from './pages/CreateWorkspace';
 import Workflow from './pages/Workflow';
 import NotFound from './pages/NotFound';
+import axios from 'axios';
+
+import Test from './Test';
 
 const Router = () => {
+  const [isLogin, setIsLogin] = useState(false);
+  const [user, setUser] = useState({});
+  const accessToken = () => {
+    axios.get('http://localhost:5500/token/accessToken', {
+      withCredentials: true,
+    });
+  };
+  const refreshToken = () => {
+    axios.get('http://localhost:5500/token/accessToken', {
+      withCredentials: true,
+    });
+  };
+  const logout = async (req, res) => {
+    axios.post('http://localhost:5500/token/accessToken');
+  };
+  const loginsuccess = async (req, res) => {
+    axios
+      .get('http://localhost:5500/user/loginsuccess', {
+        withCredentials: true,
+      })
+      .then(res => {
+        if (res.data) {
+          setIsLogin(true);
+          setUser(res.data);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+  // useEffect(() => {
+  //   loginsuccess();
+  // }, []);
   return (
     <BrowserRouter>
       <GlobalStyle />
@@ -26,7 +62,8 @@ const Router = () => {
         <Route path="/create" element={<CreateWorkspace />} />
         <Route path="/workflow" element={<Workflow />} />
         <Route path="*" element={<NotFound />} />
-        <Route path=""></Route>
+        <Route path="" />
+        <Route path="/test" element={<Test />} />
       </Routes>
       <Footer />
     </BrowserRouter>
