@@ -26,34 +26,12 @@ const MyContainer = styled.section`
   padding-bottom: 100px;
 `;
 
-const MyExplain = styled.span`
-  width: 600px;
-  height: 500px;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-`;
-
-const MyTitle = styled.p`
-  margin-top: 150px;
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
 const MyLogoTitle = styled.p`
   font-size: 1.3rem;
   font-weight: 700;
   margin: auto 0;
   position: absolute;
   top: 30px;
-`;
-
-const MyList = styled.p`
-  font-size: 20px;
-  font-weight: 500;
-  text-align: left;
-  margin-top: 15px;
-  margin-left: 80px;
 `;
 
 const MyLogin = styled.span`
@@ -279,14 +257,6 @@ export default function Login() {
   const GITHUB_LOGIN = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${GITHUB_REDIRECT}`;
   return (
     <MyContainer>
-      <MyExplain>
-        <MyTitle>지금 무료로 시작하기</MyTitle>
-        <br />
-        <MyList>☑️워크플로우</MyList>
-        <MyList>☑️회의 기록</MyList>
-        <MyList>☑️보고서</MyList>
-        <MyList>☑️기획서</MyList>
-      </MyExplain>
       <MyLogin>
         <MyDivContainer>
           <MyLogo src={myLogo} alt="로고이미지" />

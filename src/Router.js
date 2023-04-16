@@ -29,7 +29,6 @@ const Router = () => {
         <Route path="/workflow" element={<Workflow />} />
         <Route path="/oauth/kakao/callback" element={<Kakao />} />
         <Route path="/oauth/github/callback" element={<GitHub />} />
-
         <Route path="*" element={<NotFound />} />
         <Route path="" />
       </Routes>
