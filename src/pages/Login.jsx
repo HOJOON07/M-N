@@ -9,7 +9,6 @@ import axios from 'axios';
 import Kakao from './components/Kakao';
 import Naver from './components/Naver';
 import GitHub from './components/GitHub';
-import Header from '../components/Header';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -41,22 +40,16 @@ const MyLogoTitle = styled.p`
 
 const MyCloseBtn = styled.button`
   position: absolute;
-  width: 10%;
+  background-color: white;
+  width: 20px;
   height: 20px;
-  margin-top: 10px;
-  box-sizing: border-box;
-  font-size: 1.2rem;
+  right: 25px;
+  font-size: 1rem;
   border-radius: 6px;
-  background-color: ${hoverMainColor};
   border: none;
   cursor: pointer;
   font-weight: 700;
   transition: 0.2s;
-
-  &:hover {
-    border-color: #11110d;
-    background-color: ${mainColor};
-  }
 `;
 
 const MyLogin = styled.span`
@@ -66,6 +59,7 @@ const MyLogin = styled.span`
   text-align: center;
   align-items: center;
   margin-left: 20px;
+  background-color: white;
   border-style: 2px solid black;
   box-shadow: 5px 5px 7px 0px #52525267;
   border-radius: 30px;
@@ -82,7 +76,7 @@ const MyLogo = styled.img`
 const MyDivContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin: 30px 0;
+  margin: 20px 0;
   position: relative;
 `;
 
@@ -206,8 +200,10 @@ const MySocialBackSec = styled.div`
 `;
 
 export default function Login() {
+  const [modalOpen, setModalOpen] = useState(false);
+
   const closeModal = () => {
-    setMoadalOpen(false);
+    setModalOpen(false);
   };
   const gotoWorkSpaceList = () => {
     navigate('/workspace');
@@ -290,7 +286,7 @@ export default function Login() {
           <MyLogo src={myLogo} alt="로고이미지" />
           <MyLogoTitle>지금 무료로 시작하기</MyLogoTitle>
           <MyCloseBtn type="button" onClick={closeModal}>
-            ❌
+            ✖️
           </MyCloseBtn>
         </MyDivContainer>
         <MyInputPart>
