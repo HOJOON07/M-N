@@ -1,4 +1,5 @@
 const initState = {
+  // 더미 데이터 ~
   workspaceList: [
     {
       id: 0,
@@ -10,7 +11,7 @@ const initState = {
       member: ['qkrtjdwo5662', 'psjj03'],
       bookmarked: false,
       workflow: {
-        todoList: [
+        requestList: [
           {
             id: '001',
             content: '내용1',
@@ -36,7 +37,7 @@ const initState = {
             importance: 'low',
           },
         ],
-        inprogressList: [
+        inProgressList: [
           {
             id: '011',
             content: '내용2',
@@ -54,7 +55,7 @@ const initState = {
             importance: 'low',
           },
         ],
-        inreviewList: [
+        inReviewList: [
           {
             id: '200',
             content: '3',
@@ -74,7 +75,7 @@ const initState = {
             importance: 'low',
           },
         ],
-        doneList: [
+        completedList: [
           {
             id: '040',
             content: '1',
@@ -87,6 +88,33 @@ const initState = {
       },
     },
   ],
+  // ~더미 데이터
+};
+
+///// 전역 함수
+// 프로그레스명으로 DB 데이터를 구분하는 함수
+const findProgress = progress => {
+  let list;
+  switch (progress) {
+    case 'Request':
+      list = 'requestList';
+      break;
+    case 'In Progress':
+      list = 'inProgressList';
+      break;
+    case 'In Review':
+      list = 'inReviewList';
+      break;
+    case 'Blocked':
+      list = 'blockedList';
+      break;
+    case 'Completed':
+      list = 'completedList';
+      break;
+    default:
+      break;
+  }
+  return list;
 };
 
 // 액션 타입 정의
@@ -95,6 +123,8 @@ const DELETE = 'workspace/DELETE';
 const DONE = 'workspace/DONE';
 const BOOKMARK = 'workspace/BOOKMARK';
 // NEW TASK 액션 타입 정의
+const INIT_LIST = 'workflow/INIT_LIST';
+
 const NEWTASK_TODO = 'workflow/NEWTASK_TODO';
 const NEWTASK_PROGRESS = 'workflow/NEWTASK_PROGRESS';
 const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
@@ -106,6 +136,12 @@ const MODIFY_TASK = 'workflow/MODIFY_TASK';
 const ADD_LIST = 'workflow/ADD_LIST';
 const SUBTRACT_LIST = 'workflow/SUBTRACT_LIST';
 
+export function initList(payload) {
+  return {
+    type: INIT_LIST,
+    payload,
+  };
+}
 export function subtractList(subListType, selectedDragItem, subList) {
   return {
     type: SUBTRACT_LIST,
@@ -226,12 +262,14 @@ export default function workspace(state = initState, action) {
           },
         ],
       };
+
     case DELETE:
       console.log(action.payload);
       return { ...state, ...action.payload };
+
     case MODIFY_TASK:
       let {
-        workspaceId,
+        // workspaceId,
         selectedItem,
         content,
         startDate,
@@ -240,27 +278,31 @@ export default function workspace(state = initState, action) {
         progress,
       } = action.payload;
 
-      switch (progress) {
-        case 'Request':
-          progress = 'todoList';
-          break;
-        case 'In Progress':
-          progress = 'inprogressList';
-          break;
-        case 'In Review':
-          progress = 'inreviewList';
-          break;
-        case 'Blocked':
-          progress = 'blockedList';
-          break;
-        case 'Completed':
-          progress = 'doneList';
-          break;
-        default:
-          break;
-      }
+      progress = findProgress(progress);
 
-      const copyList = [...state.workspaceList[workspaceId].workflow[progress]];
+      // switch (progress) {
+      //   case 'Request':
+      //     progress = 'todoList';
+      //     break;
+      //   case 'In Progress':
+      //     progress = 'inprogressList';
+      //     break;
+      //   case 'In Review':
+      //     progress = 'inreviewList';
+      //     break;
+      //   case 'Blocked':
+      //     progress = 'blockedList';
+      //     break;
+      //   case 'Completed':
+      //     progress = 'doneList';
+      //     break;
+      //   default:
+      //     break;
+      // }
+
+      // const copyList = [...state.workspaceList[workspaceId].workflow.progress];
+      const copyList = [...state.workspaceList[0].workflow[progress]];
+
       const findIndex = copyList.findIndex(el => el.id === selectedItem.id);
       const newTask = {
         content,
@@ -277,14 +319,28 @@ export default function workspace(state = initState, action) {
         ...state,
         workspaceList: [
           {
-            ...state.workspaceList[workspaceId],
+            ...state.workspaceList,
             workflow: {
-              ...state.workspaceList[workspaceId].workflow,
+              ...state.workspaceList.workflow,
               [progress]: copyList,
             },
           },
         ],
       };
+
+    // return {
+    //   ...state,
+    //   workspaceList: [
+    //     {
+    //       ...state.workspaceList[workspaceId],
+    //       workflow: {
+    //         ...state.workspaceList[workspaceId].workflow,
+    //         [progress]: copyList,
+    //       },
+    //     },
+    //   ],
+    // };
+
     case BOOKMARK:
       return {
         ...state,
@@ -299,18 +355,26 @@ export default function workspace(state = initState, action) {
           }
         }),
       };
+
+    case INIT_LIST:
+      console.log('초기화', action.payload);
+      // 받아온 정보를 초기화
+      return {
+        ...action.payload,
+      };
+
     case NEWTASK_TODO:
       const workspaceId_todo = action.payload.workspaceId;
       const newtask_todo = action.payload.newtask;
       const updatedTodoList = [
-        ...state.workspaceList[workspaceId_todo].workflow.todoList,
+        ...state.workspaceList[workspaceId_todo].workflow.requestList,
         newtask_todo,
       ];
       const updatedWsList_todo = state.workspaceList.map((workspace, idx) => {
         if (idx === workspaceId_todo) {
           const updatedWf_todo = {
             ...workspace.workflow,
-            todoList: updatedTodoList,
+            requestList: updatedTodoList,
           };
           return {
             ...workspace,
@@ -327,7 +391,7 @@ export default function workspace(state = initState, action) {
       const workspaceId_progress = action.payload.workspaceId;
       const newtask_progress = action.payload.newtask;
       const updatedProgressList = [
-        ...state.workspaceList[workspaceId_progress].workflow.inprogressList,
+        ...state.workspaceList[workspaceId_progress].workflow.inProgressList,
         newtask_progress,
       ];
       const updatedWsList_progress = state.workspaceList.map(
@@ -335,7 +399,7 @@ export default function workspace(state = initState, action) {
           if (idx === workspaceId_progress) {
             const updatedWf_progress = {
               ...workspace.workflow,
-              inprogressList: updatedProgressList,
+              inProgressList: updatedProgressList,
             };
             return {
               ...workspace,
@@ -353,14 +417,14 @@ export default function workspace(state = initState, action) {
       const workspaceId_review = action.payload.workspaceId;
       const newtask_review = action.payload.newtask;
       const updatedReviewList = [
-        ...state.workspaceList[workspaceId_review].workflow.inreviewList,
+        ...state.workspaceList[workspaceId_review].workflow.inReviewList,
         newtask_review,
       ];
       const updatedWsList_review = state.workspaceList.map((workspace, idx) => {
         if (idx === workspaceId_review) {
           const updatedWf_review = {
             ...workspace.workflow,
-            inreviewList: updatedReviewList,
+            inReviewList: updatedReviewList,
           };
           return {
             ...workspace,
@@ -399,18 +463,19 @@ export default function workspace(state = initState, action) {
         ...state,
         workspaceList: updatedWsList_blocked,
       };
+
     case NEWTASK_DONE:
       const workspaceId_done = action.payload.workspaceId;
       const newtask_done = action.payload.newtask;
       const updatedDoneList = [
-        ...state.workspaceList[workspaceId_done].workflow.doneList,
+        ...state.workspaceList[workspaceId_done].workflow.completedList,
         newtask_done,
       ];
       const updatedWsList_done = state.workspaceList.map((workspace, idx) => {
         if (idx === workspaceId_done) {
           const updatedWf_done = {
             ...workspace.workflow,
-            doneList: updatedDoneList,
+            completedList: updatedDoneList,
           };
           return {
             ...workspace,
@@ -426,26 +491,8 @@ export default function workspace(state = initState, action) {
 
     case SUBTRACT_LIST:
       let { subListType, selectedDragItem, subList } = action.payload;
-      switch (subListType) {
-        case 'Request':
-          subListType = 'todoList';
-          break;
-        case 'In Progress':
-          subListType = 'inprogressList';
-          break;
-        case 'In Review':
-          subListType = 'inreviewList';
-          break;
-        case 'Blocked':
-          subListType = 'blockedList';
-          break;
-        case 'Completed':
-          subListType = 'doneList';
-          break;
-        default:
-          break;
-      }
 
+      subListType = findProgress(subListType);
       const updatedList = state.workspaceList[0].workflow[subListType].filter(
         item => item.id !== selectedDragItem.id
       );
@@ -463,27 +510,9 @@ export default function workspace(state = initState, action) {
       };
 
     case ADD_LIST:
-      console.log('ADDLIST');
       let { addListType, item, dropIndex } = action.payload;
 
-      switch (addListType) {
-        case 'Request':
-          addListType = 'todoList';
-          break;
-        case 'In Progress':
-          addListType = 'inprogressList';
-          break;
-        case 'In Review':
-          addListType = 'inreviewList';
-          break;
-        case 'Blocked':
-          addListType = 'blockedList';
-          break;
-        case 'Completed':
-          addListType = 'doneList';
-          break;
-        default:
-      }
+      addListType = findProgress(addListType);
 
       // tetz, 배열을 직접 변경하면 mutation 에러가 뜨므로 해당 부분을 피하기 위해서
       // 배열을 카피해서 변경 후 직접 부여

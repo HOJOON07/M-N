@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import defaultProfile from '../../assets/images/default-profile.png';
+import defaultProfile from '../../../assets/images/default-profile.png';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import {
@@ -8,7 +8,8 @@ import {
   newInReview,
   newBlocked,
   newDone,
-} from '../../store/modules/workspace';
+} from '../../../store/modules/workspace';
+import ReactDatePicker from 'react-datepicker';
 
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
@@ -21,7 +22,7 @@ const greyColor = '#696969';
 // Styled Components
 const MyNewTask = styled.div`
   position: relative;
-  border: 1px solid ${subColor};
+  border: 2px solid ${mainColor};
   border-radius: 5px;
   background-color: ${contentColor};
   padding: 10px 10px 42px;
@@ -124,6 +125,9 @@ export default function NewTask({ progress }) {
   const startDateRef = useRef();
   const endDateRef = useRef();
   const [importance, setImportance] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date('2023/04/19'));
+
   const handleImportanceChange = e => {
     setImportance(e.target.value);
   };
@@ -134,11 +138,14 @@ export default function NewTask({ progress }) {
         id: Date(),
         content: contentRef.current.value,
         createDate: Date(),
-        startDate: startDateRef.current.value, // 시작날짜 추가
-        endDate: endDateRef.current.value,
+        // startDate: startDateRef.current.value, // 시작날짜 추가
+        // endDate: endDateRef.current.value,
+        startDate: startDate.toLocaleDateString(),
+        endDate: endDate.toLocaleDateString(),
         importance: importance ? importance : 'medium', // 중요도 기본값 추가
       },
     };
+
     if (progress === 'Request') {
       dispatch(newTodo(payload));
     } else if (progress === 'In Progress') {
@@ -162,11 +169,33 @@ export default function NewTask({ progress }) {
             alt="기본 프로필 이미지"
           />
           <MyCalendarContainer>
-            <MyCalenderSpan>시작일 : </MyCalenderSpan>
+            <>
+              <ReactDatePicker
+                dateFormat="yyyy.MM.dd"
+                selected={startDate}
+                onChange={date => setStartDate(date)}
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
+                ref={startDateRef}
+              />
+              <span> ~</span>
+              <ReactDatePicker
+                dateFormat="yyyy.MM.dd"
+                selected={endDate}
+                onChange={date => setEndDate(date)}
+                selectsEnd
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
+                ref={endDateRef}
+              />
+            </>
+            {/* <MyCalenderSpan>시작일 : </MyCalenderSpan>
             <MyCalendar required type="date" ref={startDateRef} />
             <br />
             <MyCalenderSpan>종료일 : </MyCalenderSpan>
-            <MyCalendar required type="date" ref={endDateRef} />
+            <MyCalendar required type="date" ref={endDateRef} /> */}
           </MyCalendarContainer>
         </MyTop>
 
@@ -178,6 +207,7 @@ export default function NewTask({ progress }) {
         />
 
         <MyBottom>
+          <span style={{ fontSize: '.7rem' }}>중요도</span>
           <MyRadio
             type="radio"
             value="high"
@@ -202,7 +232,7 @@ export default function NewTask({ progress }) {
           Low
         </MyBottom>
         <MySubmit>
-          <MySubmitButton onClick={handelClick}>submit</MySubmitButton>
+          <MySubmitButton onClick={handelClick}>Submit</MySubmitButton>
         </MySubmit>
       </MyNewTask>
     )

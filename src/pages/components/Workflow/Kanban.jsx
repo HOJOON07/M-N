@@ -1,19 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import menu from '../../assets/images/menu.png';
-import defaultProfile from '../../assets/images/default-profile.png';
 import KanbanProgress from './KanbanProgress';
-import NewTask from './NewTask';
-import { useDrop } from 'react-dnd';
-import { DropTarget } from 'react-dnd';
 
 // Color Variables
 const backColor = '#eef1f5';
 const mainColor = '#623ad6';
-const hoverMainColor = '#7855db';
-const subColor = '#d5cee8';
-const brightSubColor = '#e9e4f5';
 
 // Styled Components
 const MyTitle = styled.h2`
@@ -45,7 +37,7 @@ const MyTitleArea = styled.div`
 
 const MyProgressArea = styled.div`
   width: 100%;
-
+  margin: 20px 0 0 15px;
   background-color: ${backColor};
 
   display: flex;
@@ -63,44 +55,47 @@ const MyProgressArea = styled.div`
 
 export default function Kanban() {
   /** 임시로 특정 워크스페이스(id가 0) 지정 */
-  const workspaceList = useSelector(state => state.workspace.workspaceList)[0];
-  const workflowList = workspaceList.workflow;
+  // 프론트 더미 데이터
+  const workspace = useSelector(state => state.workspace.workspaceList)[0];
+
+  // 백 연동 시
+  // const workspace = useSelector(state => state.workspace);
+
+  const workflowList = workspace.workflow;
   const iconList = ['✉️', '🔨', '📌', '🔒', '🎉'];
 
   return (
     <div>
       <MyTitleArea>
-        <div>
+        <div style={{ marginLeft: '15px' }}>
           <MyTitle>Workflow</MyTitle>
           <MyBar />
         </div>
-        <MySubTitle fontSize="14px">
-          {workspaceList.name}워크스페이스명
-        </MySubTitle>
+        <MySubTitle fontSize="14px">{workspace?.name}워크스페이스명</MySubTitle>
       </MyTitleArea>
       <MyProgressArea>
         <KanbanProgress
-          workflowList={workflowList.todoList}
+          workflowList={workflowList?.requestList}
           progress="Request"
           icon={iconList[0]}
         />
         <KanbanProgress
-          workflowList={workflowList.inprogressList}
+          workflowList={workflowList?.inProgressList}
           progress="In Progress"
           icon={iconList[1]}
         />
         <KanbanProgress
-          workflowList={workflowList.inreviewList}
+          workflowList={workflowList?.inReviewList}
           progress="In Review"
           icon={iconList[2]}
         />
         <KanbanProgress
-          workflowList={workflowList.blockedList}
+          workflowList={workflowList?.blockedList}
           progress="Blocked"
           icon={iconList[3]}
         />
         <KanbanProgress
-          workflowList={workflowList.doneList}
+          workflowList={workflowList?.completedList}
           progress="Completed"
           icon={iconList[4]}
         />

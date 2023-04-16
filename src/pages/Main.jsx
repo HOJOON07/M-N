@@ -1,19 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
-import MainSec from './components/MainSec';
-import MainFir from './components/MainFir';
-
-// Color Variables
-const mainColor = '#623ad6';
-const hoverMainColor = '#7855db';
-const subColor = '#d5cee8';
-const brightSubColor = '#e9e4f5';
+import MainSec from '../pages/components/Main/MainSec';
+import MainFir from '../pages/components/Main/MainFir';
+import MainThir from './components/Main/MainThir';
+import MainLast from './components/Main/MainLast';
 
 export default function Main() {
   return (
     <>
       <MainFir />
       <MainSec />
+      <MainLast />
+      <MainThir />
     </>
   );
 }

@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+// Color Variables
+const mainColor = '#623ad6';
+const hoverMainColor = '#7855db';
+
+// Styled Components
 const MyDirectArea = styled.div``;
 
 const MyInfoArea = styled.div`
@@ -39,22 +44,29 @@ const MyInputArea = styled.span`
   }
 `;
 
-const MyInfoBtn = styled.div`
-  font-size: 14px;
-  text-align: center;
+const MyInfoBtn = styled.button`
+  padding: 10px 10px;
   width: 120px;
-  height: 39px;
-  line-height: 35px;
-  background-color: ${props => props.backgroundColor};
-  color: ${props => props.color};
+  box-sizing: border-box;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  background-color: ${mainColor};
+  color: white;
   cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: ${hoverMainColor};
+  }
 `;
 
 const MyErrArea = styled.div`
   height: 30px;
 `;
 
-export default function InfoArea() {
+export default function InfoArea(props) {
   const emailList = ['naver.com', 'kakao.com', 'github.com'];
   const [email, setEmail] = useState('');
 

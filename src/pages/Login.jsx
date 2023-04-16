@@ -6,8 +6,9 @@ import mySocialNaver from '../assets/images/naver-icon.png';
 import mySocialKakao from '../assets/images/kakao-icon.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-axios.defaults.withCredentials = true;
+import Kakao from './components/Kakao';
+import Naver from './components/Naver';
+import GitHub from './components/GitHub';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -16,29 +17,22 @@ const subColor = '#d5cee8';
 const brightSubColor = '#e9e4f5';
 
 const MyContainer = styled.section`
+  position: absolute;
+  z-index: 999;
   display: flex;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100%;
+  height: 100%;
   justify-content: space-between;
-  max-width: 1000px;
-
-  margin: auto;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  background: rgba(0, 0, 0, 0.8);
+  top: 50%;
+  left: 50%;
+  /* padding-top: 300px;
+  padding-bottom: 300px; */
+  transform: translate(-50%, -50%);
 `;
 
-const MyExplain = styled.span`
-  width: 600px;
-  height: 500px;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-`;
-
-const MyTitle = styled.p`
-  margin-top: 150px;
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
 const MyLogoTitle = styled.p`
   font-size: 1.3rem;
   font-weight: 700;
@@ -47,21 +41,29 @@ const MyLogoTitle = styled.p`
   top: 30px;
 `;
 
-const MyList = styled.p`
-  font-size: 20px;
-  font-weight: 500;
-  text-align: left;
-  margin-top: 15px;
-  margin-left: 80px;
+const MyCloseBtn = styled.button`
+  position: absolute;
+  background-color: white;
+  width: 20px;
+  height: 20px;
+  right: 25px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.2s;
 `;
 
 const MyLogin = styled.span`
+  position: absolute;
   width: 600px;
   height: 500px;
-  justify-content: center;
   text-align: center;
   align-items: center;
-  margin-left: 20px;
+  top: 15%;
+  left: 33%;
+  background-color: white;
   border-style: 2px solid black;
   box-shadow: 5px 5px 7px 0px #52525267;
   border-radius: 30px;
@@ -78,7 +80,7 @@ const MyLogo = styled.img`
 const MyDivContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin: 30px 0;
+  margin: 20px 0;
   position: relative;
 `;
 
@@ -202,6 +204,12 @@ const MySocialBackSec = styled.div`
 `;
 
 export default function Login() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   const gotoWorkSpaceList = () => {
     navigate('/workspace');
   };
@@ -288,25 +296,25 @@ export default function Login() {
 
   // 카카오
   const KAKAO_CLIENT_ID = 'c37163557aa622477d21aee2d6f6dbdc';
-  const KAKAO_REDIRECT_URI = 'http://localhost:3000/login';
+  const KAKAO_REDIRECT_URI = 'http://localhost:3000/oauth/kakao/callback';
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
   const KAKAO_LOGOUT_URI = 'http://localhost:3000';
   const KAKAO_LOGOUT_URL = `https://kauth.kakao.com/oauth/logout?client_id=${KAKAO_CLIENT_ID}&logout_redirect_uri=${KAKAO_LOGOUT_URI}`;
 
+  //깃헙
+  const GITHUB_CLIENT_ID = '052e16cc26d82c4a72dc';
+  const GITHUB_REDIRECT = `http://localhost:3000/oauth/github/callback`;
+  const GITHUB_LOGIN = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${GITHUB_REDIRECT}`;
   return (
     <MyContainer>
-      <MyExplain>
-        <MyTitle>지금 무료로 시작하기</MyTitle>
-        <br />
-        <MyList>☑️워크플로우</MyList>
-        <MyList>☑️회의 기록</MyList>
-        <MyList>☑️보고서</MyList>
-        <MyList>☑️기획서</MyList>
-      </MyExplain>
       <MyLogin>
         <MyDivContainer>
           <MyLogo src={myLogo} alt="로고이미지" />
           <MyLogoTitle>지금 무료로 시작하기</MyLogoTitle>
+
+          <MyCloseBtn type="button" onClick={closeModal}>
+            ✖️
+          </MyCloseBtn>
         </MyDivContainer>
         <MyInputPart>
           <MyInput
@@ -367,7 +375,7 @@ export default function Login() {
           <Link to="/" style={{ marginRight: '15px' }}>
             <MySocial src={mySocialNaver} alt="네이버이미지" />
           </Link>
-          <Link to="/">
+          <Link to={GITHUB_LOGIN}>
             <MySocial src={mySocialGit} alt="깃헙이미지" />
             <MySocialBackSec color="#000" />
           </Link>

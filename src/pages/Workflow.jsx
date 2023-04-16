@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import bookmarkIcon from '../assets/images/bookmark-icon.png';
-import Kanban from './components/Kanban';
+import Kanban from './components/Workflow/Kanban';
+import { initList } from '../store/modules/workspace';
+import Loading from '../pages/Loading';
 
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
@@ -11,13 +13,12 @@ const brightSubColor = '#e9e4f5';
 
 const MyWorkspaceArea = styled.div`
   display: flex;
-  width: 100%;
-  height: 100%;
+  width: 99%;
+  height: 90vh;
 
   & > div:nth-child(2) {
     width: 100%;
     height: 100%;
-    margin: 10px;
   }
 `;
 
@@ -76,40 +77,73 @@ const MyNoneBookmark = styled.img`
 `;
 
 export default function Workflow() {
-  const workspaceList = useSelector(
-    state => state.workspace.workspaceList
-  ).filter(el => el.bookmarked);
-  const bookmarkedList = useSelector(
-    state => state.workspace.workspaceList
-  ).filter(el => !el.bookmarked);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  // 백연동 시
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const resGetAllWS = await fetch(
+  //         'http://192.168.0.230:8001/workspace/643818de0a5dddd886bff311', // 임시 id값
+  //         {
+  //           method: 'GET',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //         }
+  //       );
+  //       if (resGetAllWS.status !== 200) return 'fail';
+  //       const data = await resGetAllWS.json();
+  //       dispatch(initList(data));
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //     setLoading(false);
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  // 프론트 더미 데이터
+  // const workspaceList = useSelector(
+  //   state => state.workspace.workspaceList
+  // ).filter(el => el.bookmarked);
+  // const bookmarkedList = useSelector(
+  //   state => state.workspace.workspaceList
+  // ).filter(el => !el.bookmarked);
+
   return (
     <MyWorkspaceArea>
-      <MyWorkspaceList>
-        <MyTitle>Workspace</MyTitle>
-        <MyList>
-          <p>Bookmark</p>
-          {bookmarkedList.map(el => {
-            return (
-              <div key={el.id}>
-                <MyBookmark alt="북마크 완료 아이콘" src={bookmarkIcon} />
-                <div>{el.workspace_name}</div>
-              </div>
-            );
-          })}
-        </MyList>
-        <MyList>
-          <p>List</p>
-          {workspaceList.map(el => {
-            return (
-              <div key={el.id}>
-                <MyNoneBookmark alt="북마크 미완료 아이콘" src={bookmarkIcon} />
-                <div>{el.workspace_name}</div>
-              </div>
-            );
-          })}
-        </MyList>
-      </MyWorkspaceList>
-      <Kanban />
+      {!loading ? (
+        <MyWorkspaceList>
+          <MyTitle>Workspace</MyTitle>
+          {/* <MyList>
+                <p>Bookmark</p>
+                {bookmarkedList.map(el => {
+                  return (
+                    <div key={el.id}>
+                      <MyBookmark alt="북마크 완료 아이콘" src={bookmarkIcon} />
+                      <div>{el.workspace_name}</div>
+                    </div>
+                  );
+                })}
+              </MyList>
+              <MyList>
+                <p>List</p>
+                {workspaceList.map(el => {
+                  return (
+                    <div key={el.id}>
+                      <MyNoneBookmark alt="북마크 미완료 아이콘" src={bookmarkIcon} />
+                      <div>{el.workspace_name}</div>
+                    </div>
+                  );
+                })}
+              </MyList> */}
+        </MyWorkspaceList>
+      ) : null}
+
+      {!loading ? <Kanban /> : <Loading />}
     </MyWorkspaceArea>
   );
 }
