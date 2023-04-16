@@ -209,6 +209,7 @@ export default function Login() {
   const closeModal = () => {
     setModalOpen(false);
   };
+
   const gotoWorkSpaceList = () => {
     navigate('/workspace');
   };
@@ -289,6 +290,7 @@ export default function Login() {
         <MyDivContainer>
           <MyLogo src={myLogo} alt="로고이미지" />
           <MyLogoTitle>지금 무료로 시작하기</MyLogoTitle>
+
           <MyCloseBtn type="button" onClick={closeModal}>
             ✖️
           </MyCloseBtn>
