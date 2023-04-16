@@ -5,6 +5,8 @@ import { useDrag } from 'react-dnd';
 import { addList, subtractList } from '../../../store/modules/workspace';
 import { deleteItem, modifyItem } from '../../../store/modules/workspace';
 import styled from 'styled-components';
+import './calendar.css';
+import ReactDatePicker from 'react-datepicker';
 
 // Color Variables
 const contentColor = '#fff';
@@ -65,10 +67,10 @@ const MyContent = styled.p`
 
 const MyCreateData = styled.p`
   position: absolute;
-  right: 35px;
-  bottom: 9px;
+  right: 8px;
+  bottom: 35px;
   color: ${subColor};
-  font-size: 10px;
+  font-size: 8px;
 `;
 
 const MyImportanceButton = styled.button`
@@ -111,11 +113,9 @@ const MyContentModify = styled.input`
   height: 60px;
 `;
 const MyDateMA = styled.div`
-  padding: 10px;
-  & > div {
-    display: flex;
-    align-items: center;
-  }
+  padding: 2px 0 9px 10px;
+  display: flex;
+  align-items: baseline;
 `;
 const MyImportantMA = styled.div`
   padding: 8px 10px;
@@ -123,9 +123,15 @@ const MyImportantMA = styled.div`
   align-items: center;
 `;
 
-const MyPMA = styled.p`
+const MyTitleMA = styled.p`
   font-family: 'LINESeedKR-Bd';
   font-size: 1rem;
+  margin-right: 10px;
+  font-weight: 700;
+`;
+
+const MyPMA = styled.p`
+  font-size: 0.7rem;
   margin-right: 10px;
   font-weight: 700;
 `;
@@ -147,6 +153,9 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   let contentInput, startDateInput, endDateInput, checkedImportance;
   const selectList = ['high', 'medium', 'low'];
   const [selected, setSelected] = useState(item.importance);
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date('2023/04/19'));
 
   const selectHandler = e => {
     setSelected(e.target.value);
@@ -288,8 +297,10 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       if (modify) {
         // useRef 값 받아오기
         contentInput = contentRef.current.value;
-        startDateInput = startDateRef.current.value;
-        endDateInput = endDateRef.current.value;
+        // startDateInput = startDateRef.current.value;
+        // endDateInput = endDateRef.current.value;
+        startDateInput = startDate.toLocaleDateString();
+        endDateInput = endDate.toLocaleDateString();
         checkedImportance = selected;
       }
       payload = {
@@ -319,13 +330,36 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   } else {
     contentSpace = (
       <MyContentMA>
-        <MyPMA style={{ margin: '7px 0' }}>Modify Task </MyPMA>
+        <MyTitleMA style={{ margin: '7px 0' }}>Modify Task </MyTitleMA>
         <MyContentModify defaultValue={item.content} ref={contentRef} />
       </MyContentMA>
     );
     dateSpace = (
       <MyDateMA>
-        <div>
+        <>
+          <div style={{ fontSize: '.7rem' }}>기간 </div>
+          <ReactDatePicker
+            dateFormat="yyyy.MM.dd"
+            selected={startDate}
+            onChange={date => setStartDate(date)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            ref={startDateRef}
+          />
+          <span style={{ marginLeft: '5px' }}> ~ </span>
+          <ReactDatePicker
+            dateFormat="yyyy.MM.dd"
+            selected={endDate}
+            onChange={date => setEndDate(date)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            ref={endDateRef}
+          />
+        </>
+        {/* <div>
           <MyPMA>시작일 : </MyPMA>
           <input type="date" defaultValue={item.startDate} ref={startDateRef} />
         </div>
@@ -333,13 +367,13 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
         <div>
           <MyPMA>종료일 : </MyPMA>
           <input type="date" defaultValue={item.endDate} ref={endDateRef} />
-        </div>
+        </div> */}
       </MyDateMA>
     );
 
     importantSpace = (
       <MyImportantMA>
-        <MyPMA>중요도 : </MyPMA>
+        <MyPMA>중요도</MyPMA>
         <select onChange={selectHandler} value={selected}>
           {selectList.map(item => (
             <option value={item} key={item}>
@@ -360,7 +394,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       key={id}
       onDragStart={() => findClickItem(id, progress)}
       onDrop={() => findDroppedItem(id, progress)}
-      style={modify ? { height: '230px' } : { height: '70px' }}
+      style={modify ? { height: '207px' } : { height: '85px' }}
       border={modify ? modifyBorder : defaultBorder}
     >
       <div key={id}>
@@ -383,7 +417,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
           </span>
         </div>
         {dateSpace}
-        <div>
+        <div style={{ marginBottom: '10px' }}>
           {importantSpace}
           {modify ? (
             <MyProfileImgMA src={defaultProfile} alt="기본 프로필 이미지" />
