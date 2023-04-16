@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
+import Login from '../pages/Login';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -123,6 +124,12 @@ export default function Header() {
 
   const navigation = useNavigate();
 
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const showModal = () => {
+    setModalOpen(true);
+  };
+
   return (
     <MyInnerContainer>
       <MyHeaderContainer>
@@ -138,9 +145,8 @@ export default function Header() {
           {!isLogin ? (
             <>
               <MyGreetingText>로그인이 필요합니다</MyGreetingText>
-              <MyLoginButton onClick={() => navigation('/login')}>
-                로그인
-              </MyLoginButton>
+              <MyLoginButton onClick={showModal}>로그인</MyLoginButton>
+              {modalOpen && <Login setModalOpen={setModalOpen} />}
               <MySignUpButton onClick={() => navigation('/signup')}>
                 회원가입
               </MySignUpButton>

@@ -17,13 +17,20 @@ const subColor = '#d5cee8';
 const brightSubColor = '#e9e4f5';
 
 const MyContainer = styled.section`
+  position: absolute;
+  z-index: 999;
   display: flex;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100%;
+  height: 100%;
   justify-content: space-between;
-  max-width: 1000px;
-
-  margin: auto;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  background: rgba(0, 0, 0, 0.8);
+  top: 50%;
+  left: 50%;
+  /* padding-top: 300px;
+  padding-bottom: 300px; */
+  transform: translate(-50%, -50%);
 `;
 
 const MyLogoTitle = styled.p`
@@ -34,13 +41,29 @@ const MyLogoTitle = styled.p`
   top: 30px;
 `;
 
+const MyCloseBtn = styled.button`
+  position: absolute;
+  background-color: white;
+  width: 20px;
+  height: 20px;
+  right: 25px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.2s;
+`;
+
 const MyLogin = styled.span`
+  position: absolute;
   width: 600px;
   height: 500px;
-  justify-content: center;
   text-align: center;
   align-items: center;
-  margin-left: 20px;
+  top: 15%;
+  left: 33%;
+  background-color: white;
   border-style: 2px solid black;
   box-shadow: 5px 5px 7px 0px #52525267;
   border-radius: 30px;
@@ -57,7 +80,7 @@ const MyLogo = styled.img`
 const MyDivContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin: 30px 0;
+  margin: 20px 0;
   position: relative;
 `;
 
@@ -181,6 +204,12 @@ const MySocialBackSec = styled.div`
 `;
 
 export default function Login() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   const gotoWorkSpaceList = () => {
     navigate('/workspace');
   };
@@ -261,6 +290,10 @@ export default function Login() {
         <MyDivContainer>
           <MyLogo src={myLogo} alt="로고이미지" />
           <MyLogoTitle>지금 무료로 시작하기</MyLogoTitle>
+
+          <MyCloseBtn type="button" onClick={closeModal}>
+            ✖️
+          </MyCloseBtn>
         </MyDivContainer>
         <MyInputPart>
           <MyInput
