@@ -125,11 +125,11 @@ const BOOKMARK = 'workspace/BOOKMARK';
 // NEW TASK 액션 타입 정의
 const INIT_LIST = 'workflow/INIT_LIST';
 
-const NEWTASK_TODO = 'workflow/NEWTASK_TODO';
+const NEWTASK_REQUEST = 'workflow/NEWTASK_REQUEST';
 const NEWTASK_PROGRESS = 'workflow/NEWTASK_PROGRESS';
 const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
 const NEWTASK_BLOCKED = 'workflow/NEWTASK_BLOCKED';
-const NEWTASK_DONE = 'workflow/NEWTASK_DONE';
+const NEWTASK_COMPLETED = 'workflow/NEWTASK_COMPLETED';
 // const DELETE_TASK = 'worfkflow/DELETE_TASK';
 const MODIFY_TASK = 'workflow/MODIFY_TASK';
 
@@ -190,10 +190,10 @@ export function bookmark(id) {
   };
 }
 
-export function newTodo(payload) {
+export function newRequest(payload) {
   const { workspaceId, newtask } = payload;
   return {
-    type: NEWTASK_TODO,
+    type: NEWTASK_REQUEST,
     payload: {
       workspaceId,
       newtask,
@@ -234,10 +234,10 @@ export function newBlocked(payload) {
   };
 }
 
-export function newDone(payload) {
+export function newCompleted(payload) {
   const { workspaceId, newtask } = payload;
   return {
-    type: NEWTASK_DONE,
+    type: NEWTASK_COMPLETED,
     payload: {
       workspaceId,
       newtask,
@@ -366,130 +366,101 @@ export default function workspace(state = initState, action) {
         ...action.payload,
       };
 
-    case NEWTASK_TODO:
-      const workspaceId_todo = action.payload.workspaceId;
-      const newtask_todo = action.payload.newtask;
-      const updatedTodoList = [
-        ...state.workspaceList[workspaceId_todo].workflow.requestList,
-        newtask_todo,
+    case NEWTASK_REQUEST:
+      const newtask_request = action.payload.newtask;
+      const updatedRequestList = [
+        ...state.workflow.requestList,
+        newtask_request,
       ];
-      const updatedWsList_todo = state.workspaceList.map((workspace, idx) => {
-        if (idx === workspaceId_todo) {
-          const updatedWf_todo = {
-            ...workspace.workflow,
-            requestList: updatedTodoList,
-          };
-          return {
-            ...workspace,
-            workflow: updatedWf_todo,
-          };
-        }
-        return workspace;
-      });
+      const updatedWf_request = {
+        ...state.workflow,
+        requestList: updatedRequestList,
+      };
       return {
-        ...state,
-        workspaceList: updatedWsList_todo,
+        ...workspace,
+        workflow: updatedWf_request,
       };
     case NEWTASK_PROGRESS:
-      const workspaceId_progress = action.payload.workspaceId;
+      // const workspaceId_progress = action.payload.workspaceId;
       const newtask_progress = action.payload.newtask;
       const updatedProgressList = [
-        ...state.workspaceList[workspaceId_progress].workflow.inProgressList,
+        // 프론트 (대표로 남김)
+        // ...state.workspaceList[workspaceId_progress].workflow.inProgressList,
+        // 백
+        ...state.workflow.inProgressList,
         newtask_progress,
       ];
-      const updatedWsList_progress = state.workspaceList.map(
-        (workspace, idx) => {
-          if (idx === workspaceId_progress) {
-            const updatedWf_progress = {
-              ...workspace.workflow,
-              inProgressList: updatedProgressList,
-            };
-            return {
-              ...workspace,
-              workflow: updatedWf_progress,
-            };
-          }
-          return workspace;
-        }
-      );
+      // 프론트 (대표로 남김)
+      // const updatedWsList_progress = state.workspaceList.map(
+      //   (workspace, idx) => {
+      //     if (idx === workspaceId_progress) {
+      //       const updatedWf_progress = {
+      //         ...workspace.workflow,
+      //         progressList: updatedBlockedList,
+      //       };
+      //       return {
+      //         ...workspace,
+      //         workflow: updatedWf_progress,
+      //       };
+      //     }
+      //     return workspace;
+      //   }
+      // );
+      // return {
+      //   ...state,
+      //   workspaceList: updatedWsList_progress,
+      // };
+      // 백
+      const updatedWf_progress = {
+        ...state.workflow,
+        inProgressList: updatedProgressList,
+      };
       return {
-        ...state,
-        workspaceList: updatedWsList_progress,
+        ...workspace,
+        workflow: updatedWf_progress,
       };
     case NEWTASK_REVIEW:
-      const workspaceId_review = action.payload.workspaceId;
       const newtask_review = action.payload.newtask;
       const updatedReviewList = [
-        ...state.workspaceList[workspaceId_review].workflow.inReviewList,
+        ...state.workflow.inReviewList,
         newtask_review,
       ];
-      const updatedWsList_review = state.workspaceList.map((workspace, idx) => {
-        if (idx === workspaceId_review) {
-          const updatedWf_review = {
-            ...workspace.workflow,
-            inReviewList: updatedReviewList,
-          };
-          return {
-            ...workspace,
-            workflow: updatedWf_review,
-          };
-        }
-        return workspace;
-      });
+      const updatedWf_review = {
+        ...state.workflow,
+        inReviewList: updatedReviewList,
+      };
       return {
-        ...state,
-        workspaceList: updatedWsList_review,
+        ...workspace,
+        workflow: updatedWf_review,
       };
     case NEWTASK_BLOCKED:
-      const workspaceId_blocked = action.payload.workspaceId;
       const newtask_blocked = action.payload.newtask;
       const updatedBlockedList = [
-        ...state.workspaceList[workspaceId_blocked].workflow.blockedList,
+        ...state.workflow.blockedList,
         newtask_blocked,
       ];
-      const updatedWsList_blocked = state.workspaceList.map(
-        (workspace, idx) => {
-          if (idx === workspaceId_blocked) {
-            const updatedWf_blocked = {
-              ...workspace.workflow,
-              blockedList: updatedBlockedList,
-            };
-            return {
-              ...workspace,
-              workflow: updatedWf_blocked,
-            };
-          }
-          return workspace;
-        }
-      );
+      const updatedWf_blocked = {
+        ...state.workflow,
+        blockedList: updatedBlockedList,
+      };
       return {
-        ...state,
-        workspaceList: updatedWsList_blocked,
+        ...workspace,
+        workflow: updatedWf_blocked,
       };
 
-    case NEWTASK_DONE:
-      const workspaceId_done = action.payload.workspaceId;
-      const newtask_done = action.payload.newtask;
-      const updatedDoneList = [
-        ...state.workspaceList[workspaceId_done].workflow.completedList,
-        newtask_done,
+    case NEWTASK_COMPLETED:
+      const newtask_completed = action.payload.newtask;
+      const updatedCompletedList = [
+        ...state.workflow.completedList,
+        newtask_completed,
       ];
-      const updatedWsList_done = state.workspaceList.map((workspace, idx) => {
-        if (idx === workspaceId_done) {
-          const updatedWf_done = {
-            ...workspace.workflow,
-            completedList: updatedDoneList,
-          };
-          return {
-            ...workspace,
-            workflow: updatedWf_done,
-          };
-        }
-        return workspace;
-      });
+      const updatedWf_completed = {
+        ...state.workflow,
+        completedList: updatedCompletedList,
+      };
       return {
-        ...state,
-        workspaceList: updatedWsList_done,
+        ...workspace,
+        workflow: updatedWf_completed,
       };
 
     case SUBTRACT_LIST:
