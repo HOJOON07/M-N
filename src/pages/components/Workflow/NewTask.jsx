@@ -62,6 +62,7 @@ const MyContent = styled.input`
   padding: 5px 10px;
   box-sizing: border-box;
 `;
+
 const MyBottom = styled.div`
   height: 15px;
   line-height: 19px;
@@ -127,6 +128,41 @@ export default function NewTask({ progress }) {
   const [importance, setImportance] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date('2023/04/19'));
+
+  // 텍스트 에리어 줄바꿈 기능 관련
+  // const [textareaHeight, setTextareaHeight] = useState({
+  //   row: 1,
+  //   lineBreak: {},
+  // });
+
+  // const resizeTextarea = e => {
+  //   const { scrollHeight, clientHeight, value } = e.target;
+
+  //   // 줄바꿈이 일어날 때
+  //   if (scrollHeight > clientHeight) {
+  //     setTextareaHeight(prev => ({
+  //       row: prev.row + 1,
+  //       lineBreak: { ...prev.lineBreak, [value.length - 1]: true },
+  //     }));
+  //   }
+
+  //   // 텍스트 지워서 줄바꿈 지점에 도달했을 때
+  //   if (textareaHeight.lineBreak[value.length]) {
+  //     setTextareaHeight(prev => ({
+  //       row: prev.row - 1,
+  //       lineBreak: { ...prev.lineBreak, [value.length]: false },
+  //     }));
+  //   }
+  // };
+
+  // const onKeyEnter = e => {
+  //   if (e.code === 'Enter') {
+  //     setTextareaHeight(prev => ({
+  //       row: prev.row + 1,
+  //       lineBreak: { ...prev.lineBreak, [e.target.value.length]: true },
+  //     }));
+  //   }
+  // };
 
   const handleImportanceChange = e => {
     setImportance(e.target.value);

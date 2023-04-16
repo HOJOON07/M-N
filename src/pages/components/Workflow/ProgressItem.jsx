@@ -28,9 +28,9 @@ const MyTaskContainer = styled.div`
 
   border-radius: 5px;
   background-color: ${contentColor};
-  height: 70px;
+  height: 85px;
   display: block;
-  cursor: pointer;
+  cursor: move;
   margin-bottom: 15px;
 
   & img {
@@ -59,10 +59,11 @@ const MyContent = styled.p`
   font-weight: 700;
   position: absolute;
   display: block;
-  width: 60%;
+  width: 68%;
 
   left: 8px;
   top: 8px;
+  overflow-wrap: anywhere;
 `;
 
 const MyCreateData = styled.p`
@@ -215,30 +216,6 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     }
   };
 
-  // 임시 주석
-  // const findDropItem = (id, progress) => {
-  //   let dropItem = null;
-  //   for (const ws of workspaceList) {
-  //     let specificProgress;
-  //     if (progress === 'Request') {
-  //       specificProgress = ws.workflow.todoList;
-  //     } else if (progress === 'In Progress') {
-  //       specificProgress = ws.workflow.inprogressList;
-  //     } else if (progress === 'In Review') {
-  //       specificProgress = ws.workflow.inreviewList;
-  //     } else if (progress === 'Blocked') {
-  //       specificProgress = ws.workflow.blockedList;
-  //     } else {
-  //       specificProgress = ws.workflow.doneList;
-  //     }
-
-  //     if (dropItem) {
-  //       droppedItem.current = dropItem;
-  //       console.log(droppedItem.current, 'dsds');
-  //     }
-  //   }
-  // };
-
   // tetz, 드랍 된 아이템의 배열 순서를 찾아내는 함수
   const findDroppedItem = (id, progress) => {
     const specificProgress = findProgress(progress);
@@ -317,8 +294,10 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   };
 
   let contentSpace, dateSpace, importantSpace;
+  let contentsCnt = 0;
   if (modify === false) {
     contentSpace = <MyContent>{item.content}</MyContent>;
+    contentsCnt = item.content.length;
     dateSpace = (
       <MyCreateData>
         {item.startDate} ~ {item.endDate}
@@ -394,7 +373,13 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       key={id}
       onDragStart={() => findClickItem(id, progress)}
       onDrop={() => findDroppedItem(id, progress)}
-      style={modify ? { height: '207px' } : { height: '85px' }}
+      style={
+        modify
+          ? { height: '207px' }
+          : contentsCnt > 11
+          ? { height: '110px' }
+          : {}
+      }
       border={modify ? modifyBorder : defaultBorder}
     >
       <div key={id}>
