@@ -129,6 +129,7 @@ export default function NewTask({ progress, handleRender }) {
   };
   const handelClick = async () => {
     let progressUrl;
+    let newData = {};
     const newId = Date.now();
     const payload = {
       workspaceId: 0, // 임시로 0번 워크스페이스 지정
@@ -143,29 +144,62 @@ export default function NewTask({ progress, handleRender }) {
       },
     };
     if (progress === 'Request') {
-      progressUrl = 'addinprogresslist';
-      // dispatch(newRequest(payload));
+      progressUrl = 'addrequestlist';
+      newData = {
+        requestList_content: payload.newtask.content,
+        requestList_endDate: payload.newtask.endDate,
+        requestList_importance: payload.newtask.importance,
+      };
     } else if (progress === 'In Progress') {
       progressUrl = 'addinprogresslist';
-      // dispatch(newInProgress(payload));
+      newData = {
+        inProgressList_content: payload.newtask.content,
+        inProgressList_endDate: payload.newtask.endDate,
+        inProgressList_importance: payload.newtask.importance,
+      };
     } else if (progress === 'In Review') {
       progressUrl = 'addinreviewlist';
-      // dispatch(newInReview(payload));
+      newData = {
+        inReviewList_content: payload.newtask.content,
+        inReviewList_endDate: payload.newtask.endDate,
+        inReviewList_importance: payload.newtask.importance,
+      };
     } else if (progress === 'Blocked') {
       progressUrl = 'addblockedlist';
-      // dispatch(newBlocked(payload));
+      newData = {
+        blockedList_content: payload.newtask.content,
+        blockedList_endDate: payload.newtask.endDate,
+        blockedList_importance: payload.newtask.importance,
+      };
     } else {
       progressUrl = 'addcompletedlist';
-      // dispatch(newCompleted(payload));
+      newData = {
+        completedList_content: payload.newtask.content,
+        completedList_endDate: payload.newtask.endDate,
+        completedList_importance: payload.newtask.importance,
+      };
     }
-
     setState(e => !e);
-    await fetchData(payload, progressUrl);
+    await fetchData(progressUrl, newData);
     handleRender();
   };
 
+  const selectDispatch = async (progress, data) => {
+    if (progress === 'Request') {
+      await dispatch(newRequest(data.newtask));
+    } else if (progress === 'In Progress') {
+      await dispatch(newInProgress(data.newtask));
+    } else if (progress === 'In Review') {
+      await dispatch(newInReview(data.newtask));
+    } else if (progress === 'Blocked') {
+      await dispatch(newBlocked(data.newtask));
+    } else {
+      await dispatch(newCompleted(data.newtask));
+    }
+  };
+
   const [loading, setLoading] = useState(false);
-  const fetchData = async (payload, progressUrl) => {
+  const fetchData = async (progressUrl, newData) => {
     try {
       setLoading(true);
       const resPost = await fetch(
@@ -173,17 +207,13 @@ export default function NewTask({ progress, handleRender }) {
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            inProgressList_content: payload.newtask.content,
-            inProgressList_endDate: payload.newtask.endDate,
-            inProgressList_importance: payload.newtask.importance,
-          }),
+          body: JSON.stringify(newData),
         }
       );
       if (resPost.status !== 200) return 'fail';
       const data = await resPost.json();
       if (data && data.newtask) {
-        dispatch(newInProgress(data));
+        selectDispatch(data.progress, data.newtask);
         handleRender();
       }
     } catch (err) {
