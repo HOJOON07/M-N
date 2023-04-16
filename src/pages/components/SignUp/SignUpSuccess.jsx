@@ -50,7 +50,7 @@ const MyPageBtn = styled.button`
 export default function SignUpSuccess() {
   return (
     <MySignUpFinish>
-      <h2>감사합니다!</h2>
+      <h2>환영합니다!</h2>
       <p>회원가입이 완료되었습니다.</p>
       <Link to="/">
         <MyPageBtn backgroundColor={mainColor} hoverColor={hoverMainColor}>
