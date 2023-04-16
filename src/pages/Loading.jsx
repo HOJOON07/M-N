@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import loading from '../assets/images/loading.gif';
 
@@ -12,6 +12,8 @@ const MyBackground = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  cursor: wait;
 `;
 
 const MyLoadingText = styled.div`

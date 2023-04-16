@@ -128,6 +128,7 @@ export default function Header() {
 
   const showModal = () => {
     setModalOpen(true);
+    document.body.style.overflow = 'hidden';
   };
 
   return (

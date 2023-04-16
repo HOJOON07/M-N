@@ -28,8 +28,6 @@ const MyContainer = styled.section`
   background: rgba(0, 0, 0, 0.8);
   top: 50%;
   left: 50%;
-  /* padding-top: 300px;
-  padding-bottom: 300px; */
   transform: translate(-50%, -50%);
 `;
 
@@ -44,20 +42,17 @@ const MyLogoTitle = styled.p`
 const MyCloseBtn = styled.button`
   position: absolute;
   background-color: white;
-  width: 20px;
-  height: 20px;
   right: 25px;
-  font-size: 1rem;
-  border-radius: 6px;
+  font-size: 1.6rem;
+  opacity: 0.5;
   border: none;
   cursor: pointer;
-  font-weight: 700;
   transition: 0.2s;
 `;
 
 const MyLogin = styled.span`
   position: absolute;
-  width: 600px;
+  width: 500px;
   height: 500px;
   text-align: center;
   align-items: center;
@@ -182,7 +177,6 @@ const MySocial = styled.img`
 
 const MySocialBack = styled.div`
   position: absolute;
-  z-index: -1;
   width: 55px;
   height: 55px;
   background-color: ${props => props.color};
@@ -203,11 +197,10 @@ const MySocialBackSec = styled.div`
   bottom: 0;
 `;
 
-export default function Login() {
-  const [modalOpen, setModalOpen] = useState(false);
-
+export default function Login({ setModalOpen }) {
   const closeModal = () => {
     setModalOpen(false);
+    document.body.style.overflow = 'unset';
   };
 
   const gotoWorkSpaceList = () => {
@@ -292,7 +285,7 @@ export default function Login() {
           <MyLogoTitle>지금 무료로 시작하기</MyLogoTitle>
 
           <MyCloseBtn type="button" onClick={closeModal}>
-            ✖️
+            ✕
           </MyCloseBtn>
         </MyDivContainer>
         <MyInputPart>
@@ -325,7 +318,11 @@ export default function Login() {
         <MyLinkList>
           <MyLink to="/">아이디 찾기</MyLink>
           <MyLink to="/">비밀번호 찾기</MyLink>
-          <MyLink to="/">회원가입 하기</MyLink>
+          <MyLink>
+            <Link to="/signup" onClick={closeModal}>
+              회원가입 하기
+            </Link>
+          </MyLink>
         </MyLinkList>
 
         <div style={{ position: 'relative' }}>
@@ -338,6 +335,7 @@ export default function Login() {
             <div
               style={{ position: 'relative', width: '55px', height: '55px' }}
             >
+              <MySocialBack color="#ffeb3b" />
               <MySocial
                 src={mySocialKakao}
                 alt="카카오톡이미지"
@@ -346,9 +344,9 @@ export default function Login() {
                   height: '40px',
                   display: 'inline-block',
                   marginTop: '7px',
+                  position: 'relative',
                 }}
               />
-              <MySocialBack color="#ffeb3b" />
             </div>
           </Link>
           <Link to="/" style={{ marginRight: '15px' }}>

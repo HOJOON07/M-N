@@ -51,7 +51,7 @@ const MyBackImg = styled.div`
 
 const MyBackImgSec = styled.div`
   position: absolute;
-  top: 71vh;
+  top: 70vh;
   left: 347px;
 
   width: 320px;
@@ -74,7 +74,7 @@ opacity: .9;
 
 const MyBackImgSecPlus = styled.img`
   position: absolute;
-  top: 25vh;
+  top: 132px;
   left: 48px;
 
   width: 450px;
