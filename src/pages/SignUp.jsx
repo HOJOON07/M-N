@@ -58,18 +58,34 @@ export default function SignUp() {
   };
   return (
     <div style={{ padding: '5% 25%' }}>
-      <h1>회원가입</h1>
-      <p>소셜 로그인 및 이메일로 가입할 수 있습니다.</p>
-      <hr />
       {num === 0 && (
-        <SocialInfo
-          show={show}
-          changeState={changeState}
-          nextChange={nextChange}
-        />
+        <>
+          <h1>회원가입</h1>
+          <p>소셜 로그인 및 이메일로 가입할 수 있습니다.</p>
+          <hr />
+          <SocialInfo
+            show={show}
+            changeState={changeState}
+            nextChange={nextChange}
+          />
+        </>
       )}
-      {num === 1 && <InfoArea />}
-      {num === 2 && <DetailInfoArea />}
+      {num === 1 && (
+        <>
+          <h1>회원가입</h1>
+          <p>소셜 로그인 및 이메일로 가입할 수 있습니다.</p>
+          <hr />
+          <InfoArea />
+        </>
+      )}
+      {num === 2 && (
+        <>
+          <h1>회원가입</h1>
+          <p>소셜 로그인 및 이메일로 가입할 수 있습니다.</p>
+          <hr />
+          <DetailInfoArea />
+        </>
+      )}
       {num === 3 && <SignUpSuccess />}
       {num !== 0 && num !== 3 && (
         <MyStageArea>
