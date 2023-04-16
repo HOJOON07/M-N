@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import defaultProfile from '../../../assets/images/default-profile.png';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
@@ -117,7 +117,7 @@ const MySubmitButton = styled.button`
   }
 `;
 
-export default function NewTask({ progress }) {
+export default function NewTask({ progress, handleRender }) {
   const [state, setState] = useState(true);
   const contentRef = useRef();
   const dispatch = useDispatch();
@@ -127,11 +127,14 @@ export default function NewTask({ progress }) {
   const handleImportanceChange = e => {
     setImportance(e.target.value);
   };
-  const handelClick = () => {
+  const handelClick = async () => {
+    let progressUrl;
+    const newId = Date.now();
     const payload = {
       workspaceId: 0, // 임시로 0번 워크스페이스 지정
+      progress: progress,
       newtask: {
-        id: Date(),
+        id: newId,
         content: contentRef.current.value,
         createDate: Date(),
         startDate: startDateRef.current.value, // 시작날짜 추가
@@ -140,16 +143,54 @@ export default function NewTask({ progress }) {
       },
     };
     if (progress === 'Request') {
-      dispatch(newRequest(payload));
+      progressUrl = 'addinprogresslist';
+      // dispatch(newRequest(payload));
     } else if (progress === 'In Progress') {
-      dispatch(newInProgress(payload));
+      progressUrl = 'addinprogresslist';
+      // dispatch(newInProgress(payload));
     } else if (progress === 'In Review') {
-      dispatch(newInReview(payload));
+      progressUrl = 'addinreviewlist';
+      // dispatch(newInReview(payload));
     } else if (progress === 'Blocked') {
-      dispatch(newBlocked(payload));
-    } else dispatch(newCompleted(payload));
+      progressUrl = 'addblockedlist';
+      // dispatch(newBlocked(payload));
+    } else {
+      progressUrl = 'addcompletedlist';
+      // dispatch(newCompleted(payload));
+    }
 
     setState(e => !e);
+    await fetchData(payload, progressUrl);
+    handleRender();
+  };
+
+  const [loading, setLoading] = useState(false);
+  const fetchData = async (payload, progressUrl) => {
+    try {
+      setLoading(true);
+      const resPost = await fetch(
+        `http://localhost:8001/workspace/643a2995b7f6810e3ce63447/${progressUrl}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            inProgressList_content: payload.newtask.content,
+            inProgressList_endDate: payload.newtask.endDate,
+            inProgressList_importance: payload.newtask.importance,
+          }),
+        }
+      );
+      if (resPost.status !== 200) return 'fail';
+      const data = await resPost.json();
+      if (data && data.newtask) {
+        dispatch(newInProgress(data));
+        handleRender();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

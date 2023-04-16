@@ -79,12 +79,18 @@ const MyNoneBookmark = styled.img`
 export default function Workflow() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const workspaceIdTest = '643a2995b7f6810e3ce63447';
+  const [render, setRender] = useState(false);
+
+  const handleRender = () => {
+    setRender(cur => !cur);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const resGetAllWS = await fetch(
-          'http://localhost:8001/workspace/643a2995b7f6810e3ce63447', // 임시 id값
+          `http://localhost:8001/workspace/${workspaceIdTest}`, // 임시 id값
           {
             method: 'GET',
             headers: {
@@ -102,11 +108,7 @@ export default function Workflow() {
     };
 
     fetchData();
-  }, []);
-
-  // useEffect(() => {
-  //   // test
-  // }, [state]);
+  }, [render]);
 
   // 프론트 더미 데이터
   // const workspaceList = useSelector(
@@ -146,7 +148,7 @@ export default function Workflow() {
         </MyWorkspaceList>
       ) : null}
 
-      {!loading ? <Kanban /> : <Loading />}
+      {!loading ? <Kanban handleRender={handleRender} /> : <Loading />}
     </MyWorkspaceArea>
   );
 }

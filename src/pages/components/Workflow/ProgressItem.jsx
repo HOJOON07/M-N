@@ -173,6 +173,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   let selectedItem = null;
   let workspace = null;
   // 프로그레스명으로 DB 데이터를 구분하는 함수
+  // console.log('workspaceList: ', workspaceList.workflow.requestList);
   const findProgress = progress => {
     // 백 연결용(구슬기)
     let specificProgress;
@@ -294,6 +295,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     let payload = {};
     // const workspace = findProgress(progress);
     const specificProgress = findProgress(progress);
+    console.log(specificProgress);
     selectedItem = specificProgress.find(item => item.id === id);
     if (selectedItem) {
       workspace = workspaceList;
@@ -367,6 +369,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     );
   }
 
+  // console.log('MyTaskContainer id: ', id);
   return (
     <MyTaskContainer
       id={id}

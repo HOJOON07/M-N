@@ -381,36 +381,11 @@ export default function workspace(state = initState, action) {
         workflow: updatedWf_request,
       };
     case NEWTASK_PROGRESS:
-      // const workspaceId_progress = action.payload.workspaceId;
       const newtask_progress = action.payload.newtask;
       const updatedProgressList = [
-        // 프론트 (대표로 남김)
-        // ...state.workspaceList[workspaceId_progress].workflow.inProgressList,
-        // 백
         ...state.workflow.inProgressList,
         newtask_progress,
       ];
-      // 프론트 (대표로 남김)
-      // const updatedWsList_progress = state.workspaceList.map(
-      //   (workspace, idx) => {
-      //     if (idx === workspaceId_progress) {
-      //       const updatedWf_progress = {
-      //         ...workspace.workflow,
-      //         progressList: updatedBlockedList,
-      //       };
-      //       return {
-      //         ...workspace,
-      //         workflow: updatedWf_progress,
-      //       };
-      //     }
-      //     return workspace;
-      //   }
-      // );
-      // return {
-      //   ...state,
-      //   workspaceList: updatedWsList_progress,
-      // };
-      // 백
       const updatedWf_progress = {
         ...state.workflow,
         inProgressList: updatedProgressList,

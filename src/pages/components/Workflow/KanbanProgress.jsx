@@ -52,7 +52,12 @@ const MyTask = styled.div`
   }
 `;
 
-export default function KanbanProgress({ workflowList, progress, icon }) {
+export default function KanbanProgress({
+  workflowList,
+  progress,
+  icon,
+  handleRender,
+}) {
   const [status, setStatus] = useState(false);
   const workspaceList = useSelector(state => state.workspace.workspaceList);
   const dispatch = useDispatch();
@@ -142,7 +147,7 @@ export default function KanbanProgress({ workflowList, progress, icon }) {
           ➕ Add New Task
         </MyTitle>
       </MyTask>
-      {status && <NewTask progress={progress} />}
+      {status && <NewTask progress={progress} handleRender={handleRender} />}
       {workflowList?.map((el, idx) => {
         return (
           <ProgressItem

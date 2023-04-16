@@ -53,7 +53,7 @@ const MyProgressArea = styled.div`
   }
 `;
 
-export default function Kanban() {
+export default function Kanban({ handleRender }) {
   /** 임시로 특정 워크스페이스(id가 0) 지정 */
   // 프론트 더미 데이터
   // const workspace = useSelector(state => state.workspace.workspaceList)[0];
@@ -78,26 +78,31 @@ export default function Kanban() {
           workflowList={workflowList?.requestList}
           progress="Request"
           icon={iconList[0]}
+          handleRender={handleRender}
         />
         <KanbanProgress
           workflowList={workflowList?.inProgressList}
           progress="In Progress"
           icon={iconList[1]}
+          handleRender={handleRender}
         />
         <KanbanProgress
           workflowList={workflowList?.inReviewList}
           progress="In Review"
           icon={iconList[2]}
+          handleRender={handleRender}
         />
         <KanbanProgress
           workflowList={workflowList?.blockedList}
           progress="Blocked"
           icon={iconList[3]}
+          handleRender={handleRender}
         />
         <KanbanProgress
           workflowList={workflowList?.completedList}
           progress="Completed"
           icon={iconList[4]}
+          handleRender={handleRender}
         />
       </MyProgressArea>
     </div>
