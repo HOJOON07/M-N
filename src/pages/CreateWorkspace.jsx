@@ -240,42 +240,42 @@ export default function CreateWorkspace() {
   const searchUserList = result();
 
   async function setData() {
-    createData.workspace_startDate = etcData.workspace_startDate;
-    createData.workspace_endDate = etcData.workspace_endDate;
-    createData.workspace_category = etcData.workspace_category;
-    createData.workspace_type = etcData.workspace_type;
-
-    createData.member = searchUserList;
-    createData.githubRepository = githubRepository.current.value;
-    createData.workspace_name = workspaceName.current.value;
-    if (!createData.workspace_category) {
-      createData.workspace_category = 'FrontEnd';
-    }
-    if (!createData.workspace_startDate) {
-      createData.workspace_startDate =
-        new Date().getFullYear() +
-        '-' +
-        (new Date().getMonth() + 1 < 10
-          ? '0' + (new Date().getMonth() + 1)
-          : new Date().getMonth() + 1) +
-        '-' +
-        (new Date().getDate() < 10
-          ? '0' + new Date().getDate()
-          : new Date().getDate());
-    }
-    if (!createData.workspace_endDate) {
-      createData.workspace_endDate =
-        new Date().getFullYear() +
-        '-' +
-        (new Date().getMonth() + 1 < 10
-          ? '0' + (new Date().getMonth() + 1)
-          : new Date().getMonth() + 1) +
-        '-' +
-        (new Date().getDate() < 10
-          ? '0' + new Date().getDate()
-          : new Date().getDate());
-    }
     try {
+      createData.workspace_startDate = etcData.workspace_startDate;
+      createData.workspace_endDate = etcData.workspace_endDate;
+      createData.workspace_category = etcData.workspace_category;
+      createData.workspace_type = etcData.workspace_type;
+
+      createData.member = searchUserList;
+      createData.githubRepository = githubRepository.current.value;
+      createData.workspace_name = workspaceName.current.value;
+      if (!createData.workspace_category) {
+        createData.workspace_category = 'FrontEnd';
+      }
+      if (!createData.workspace_startDate) {
+        createData.workspace_startDate =
+          new Date().getFullYear() +
+          '-' +
+          (new Date().getMonth() + 1 < 10
+            ? '0' + (new Date().getMonth() + 1)
+            : new Date().getMonth() + 1) +
+          '-' +
+          (new Date().getDate() < 10
+            ? '0' + new Date().getDate()
+            : new Date().getDate());
+      }
+      if (!createData.workspace_endDate) {
+        createData.workspace_endDate =
+          new Date().getFullYear() +
+          '-' +
+          (new Date().getMonth() + 1 < 10
+            ? '0' + (new Date().getMonth() + 1)
+            : new Date().getMonth() + 1) +
+          '-' +
+          (new Date().getDate() < 10
+            ? '0' + new Date().getDate()
+            : new Date().getDate());
+      }
       const isCreate = window.confirm(
         `새로운 워크스페이스 '${workspaceName.current.value}' 를 생성하시겠습니까?`
       );
@@ -290,7 +290,11 @@ export default function CreateWorkspace() {
             body: JSON.stringify(createData),
           }
         );
-        if (createWorkspace.status != 200) return alert('생성실패');
+        if (createWorkspace.status != 200) {
+          alert('생성 실패');
+          navigation('/create');
+        }
+        alert('생성 성공');
       }
     } catch (err) {
       console.error(err);
@@ -309,7 +313,6 @@ export default function CreateWorkspace() {
           <MyResetButton>Reset</MyResetButton>
           <MySignupButton
             onClick={() => {
-              console.log(createData);
               setData();
             }}
           >

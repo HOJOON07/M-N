@@ -197,10 +197,11 @@ export default function Workspace({
   githubRepository,
   member,
   progressPercent,
+  _id,
 }) {
   const navigation = useNavigate();
   return (
-    <MyWorkSpace onClick={() => navigation('/workflow')}>
+    <MyWorkSpace onClick={() => navigation('/workflow', { state: _id })}>
       <MySpaceContainer>
         <MySpaceLeft>
           <MySpaceStar src={mystar} alt="즐겨찾기 이미지" />
