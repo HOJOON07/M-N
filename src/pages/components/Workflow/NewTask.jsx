@@ -3,11 +3,11 @@ import defaultProfile from '../../../assets/images/default-profile.png';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import {
-  newTodo,
   newInProgress,
   newInReview,
   newBlocked,
-  newDone,
+  newCompleted,
+  newRequest,
 } from '../../../store/modules/workspace';
 import ReactDatePicker from 'react-datepicker';
 
@@ -183,14 +183,14 @@ export default function NewTask({ progress }) {
     };
 
     if (progress === 'Request') {
-      dispatch(newTodo(payload));
+      dispatch(newRequest(payload));
     } else if (progress === 'In Progress') {
       dispatch(newInProgress(payload));
     } else if (progress === 'In Review') {
       dispatch(newInReview(payload));
     } else if (progress === 'Blocked') {
       dispatch(newBlocked(payload));
-    } else dispatch(newDone(payload));
+    } else dispatch(newCompleted(payload));
 
     setState(e => !e);
   };

@@ -1,93 +1,93 @@
 const initState = {
   // 더미 데이터 ~
-  workspaceList: [
-    {
-      id: 0,
-      workspace_name: 'workspace1',
-      workspace_category: 'web',
-      workspace_startDate: '2023-04-01:0000',
-      workspace_endDate: '2023-04-01:1111',
-      githubRepository: 'https://github.com/0uizi0/test1',
-      member: ['qkrtjdwo5662', 'psjj03'],
-      bookmarked: false,
-      workflow: {
-        requestList: [
-          {
-            id: '001',
-            content: '내용1',
-            createDate: '2023-04-01:0001',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-          {
-            id: '002',
-            content: '내용2',
-            createDate: '2023-04-01:0001',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'high',
-          },
-          {
-            id: '003',
-            content: '내용3',
-            createDate: '2023-04-01:0001',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-        inProgressList: [
-          {
-            id: '011',
-            content: '내용2',
-            createDate: '2023-04-01:0002',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'medium',
-          },
-          {
-            id: '012',
-            content: '내용3',
-            createDate: '2023-04-01:0002',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-        inReviewList: [
-          {
-            id: '200',
-            content: '3',
-            createDate: '2023-04-01:0003',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-        blockedList: [
-          {
-            id: '300',
-            content: '666',
-            createDate: '2023-04-01:0004',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-        completedList: [
-          {
-            id: '040',
-            content: '1',
-            createDate: '2023-04-01:0005',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-      },
-    },
-  ],
+  // workspaceList: [
+  //   {
+  //     id: 0,
+  //     workspace_name: 'workspace1',
+  //     workspace_category: 'web',
+  //     workspace_startDate: '2023-04-01:0000',
+  //     workspace_endDate: '2023-04-01:1111',
+  //     githubRepository: 'https://github.com/0uizi0/test1',
+  //     member: ['qkrtjdwo5662', 'psjj03'],
+  //     bookmarked: false,
+  //     workflow: {
+  //       requestList: [
+  //         {
+  //           id: '001',
+  //           content: '내용1',
+  //           createDate: '2023-04-01:0001',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //         {
+  //           id: '002',
+  //           content: '내용2',
+  //           createDate: '2023-04-01:0001',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'high',
+  //         },
+  //         {
+  //           id: '003',
+  //           content: '내용3',
+  //           createDate: '2023-04-01:0001',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //       inProgressList: [
+  //         {
+  //           id: '011',
+  //           content: '내용2',
+  //           createDate: '2023-04-01:0002',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'medium',
+  //         },
+  //         {
+  //           id: '012',
+  //           content: '내용3',
+  //           createDate: '2023-04-01:0002',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //       inReviewList: [
+  //         {
+  //           id: '200',
+  //           content: '3',
+  //           createDate: '2023-04-01:0003',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //       blockedList: [
+  //         {
+  //           id: '300',
+  //           content: '666',
+  //           createDate: '2023-04-01:0004',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //       completedList: [
+  //         {
+  //           id: '040',
+  //           content: '1',
+  //           createDate: '2023-04-01:0005',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //     },
+  //   },
+  // ],
   // ~더미 데이터
 };
 
@@ -125,11 +125,11 @@ const BOOKMARK = 'workspace/BOOKMARK';
 // NEW TASK 액션 타입 정의
 const INIT_LIST = 'workflow/INIT_LIST';
 
-const NEWTASK_TODO = 'workflow/NEWTASK_TODO';
+const NEWTASK_REQUEST = 'workflow/NEWTASK_REQUEST';
 const NEWTASK_PROGRESS = 'workflow/NEWTASK_PROGRESS';
 const NEWTASK_REVIEW = 'workflow/NEWTASK_REVIEW';
 const NEWTASK_BLOCKED = 'workflow/NEWTASK_BLOCKED';
-const NEWTASK_DONE = 'workflow/NEWTASK_DONE';
+const NEWTASK_COMPLETED = 'workflow/NEWTASK_COMPLETED';
 // const DELETE_TASK = 'worfkflow/DELETE_TASK';
 const MODIFY_TASK = 'workflow/MODIFY_TASK';
 
@@ -149,8 +149,11 @@ export function subtractList(subListType, selectedDragItem, subList) {
   };
 }
 
-export function addList(addListType, item, dropIndex) {
-  return { type: ADD_LIST, payload: { addListType, item, dropIndex } };
+export function addList(addListType, item, dropIndex, addLists) {
+  return {
+    type: ADD_LIST,
+    payload: { addListType, item, dropIndex, addLists },
+  };
 }
 
 // 액션 생성 함수 작성
@@ -190,10 +193,10 @@ export function bookmark(id) {
   };
 }
 
-export function newTodo(payload) {
+export function newRequest(payload) {
   const { workspaceId, newtask } = payload;
   return {
-    type: NEWTASK_TODO,
+    type: NEWTASK_REQUEST,
     payload: {
       workspaceId,
       newtask,
@@ -234,10 +237,10 @@ export function newBlocked(payload) {
   };
 }
 
-export function newDone(payload) {
+export function newCompleted(payload) {
   const { workspaceId, newtask } = payload;
   return {
-    type: NEWTASK_DONE,
+    type: NEWTASK_COMPLETED,
     payload: {
       workspaceId,
       newtask,
@@ -301,7 +304,8 @@ export default function workspace(state = initState, action) {
       // }
 
       // const copyList = [...state.workspaceList[workspaceId].workflow.progress];
-      const copyList = [...state.workspaceList[0].workflow[progress]];
+      // 백엔드
+      const copyList = [...state.workspaceList.workflow[progress]];
 
       const findIndex = copyList.findIndex(el => el.id === selectedItem.id);
       const newTask = {
@@ -315,19 +319,21 @@ export default function workspace(state = initState, action) {
 
       copyList.splice(findIndex, 1, newTask);
 
+      // 백엔드
       return {
         ...state,
         workspaceList: [
           {
             ...state.workspaceList,
             workflow: {
-              ...state.workspaceList.workflow,
+              ...state.workspaceList[0].workflow,
               [progress]: copyList,
             },
           },
         ],
       };
 
+    // 프론트
     // return {
     //   ...state,
     //   workspaceList: [
@@ -363,160 +369,98 @@ export default function workspace(state = initState, action) {
         ...action.payload,
       };
 
-    case NEWTASK_TODO:
-      const workspaceId_todo = action.payload.workspaceId;
-      const newtask_todo = action.payload.newtask;
-      const updatedTodoList = [
-        ...state.workspaceList[workspaceId_todo].workflow.requestList,
-        newtask_todo,
+    case NEWTASK_REQUEST:
+      const newtask_request = action.payload.newtask;
+      const updatedRequestList = [
+        ...state.workflow.requestList,
+        newtask_request,
       ];
-      const updatedWsList_todo = state.workspaceList.map((workspace, idx) => {
-        if (idx === workspaceId_todo) {
-          const updatedWf_todo = {
-            ...workspace.workflow,
-            requestList: updatedTodoList,
-          };
-          return {
-            ...workspace,
-            workflow: updatedWf_todo,
-          };
-        }
-        return workspace;
-      });
+      const updatedWf_request = {
+        ...state.workflow,
+        requestList: updatedRequestList,
+      };
       return {
-        ...state,
-        workspaceList: updatedWsList_todo,
+        ...workspace,
+        workflow: updatedWf_request,
       };
     case NEWTASK_PROGRESS:
-      const workspaceId_progress = action.payload.workspaceId;
       const newtask_progress = action.payload.newtask;
       const updatedProgressList = [
-        ...state.workspaceList[workspaceId_progress].workflow.inProgressList,
+        ...state.workflow.inProgressList,
         newtask_progress,
       ];
-      const updatedWsList_progress = state.workspaceList.map(
-        (workspace, idx) => {
-          if (idx === workspaceId_progress) {
-            const updatedWf_progress = {
-              ...workspace.workflow,
-              inProgressList: updatedProgressList,
-            };
-            return {
-              ...workspace,
-              workflow: updatedWf_progress,
-            };
-          }
-          return workspace;
-        }
-      );
+      const updatedWf_progress = {
+        ...state.workflow,
+        inProgressList: updatedProgressList,
+      };
       return {
-        ...state,
-        workspaceList: updatedWsList_progress,
+        ...workspace,
+        workflow: updatedWf_progress,
       };
     case NEWTASK_REVIEW:
-      const workspaceId_review = action.payload.workspaceId;
       const newtask_review = action.payload.newtask;
       const updatedReviewList = [
-        ...state.workspaceList[workspaceId_review].workflow.inReviewList,
+        ...state.workflow.inReviewList,
         newtask_review,
       ];
-      const updatedWsList_review = state.workspaceList.map((workspace, idx) => {
-        if (idx === workspaceId_review) {
-          const updatedWf_review = {
-            ...workspace.workflow,
-            inReviewList: updatedReviewList,
-          };
-          return {
-            ...workspace,
-            workflow: updatedWf_review,
-          };
-        }
-        return workspace;
-      });
+      const updatedWf_review = {
+        ...state.workflow,
+        inReviewList: updatedReviewList,
+      };
       return {
-        ...state,
-        workspaceList: updatedWsList_review,
+        ...workspace,
+        workflow: updatedWf_review,
       };
     case NEWTASK_BLOCKED:
-      const workspaceId_blocked = action.payload.workspaceId;
       const newtask_blocked = action.payload.newtask;
       const updatedBlockedList = [
-        ...state.workspaceList[workspaceId_blocked].workflow.blockedList,
+        ...state.workflow.blockedList,
         newtask_blocked,
       ];
-      const updatedWsList_blocked = state.workspaceList.map(
-        (workspace, idx) => {
-          if (idx === workspaceId_blocked) {
-            const updatedWf_blocked = {
-              ...workspace.workflow,
-              blockedList: updatedBlockedList,
-            };
-            return {
-              ...workspace,
-              workflow: updatedWf_blocked,
-            };
-          }
-          return workspace;
-        }
-      );
+      const updatedWf_blocked = {
+        ...state.workflow,
+        blockedList: updatedBlockedList,
+      };
       return {
-        ...state,
-        workspaceList: updatedWsList_blocked,
+        ...workspace,
+        workflow: updatedWf_blocked,
       };
 
-    case NEWTASK_DONE:
-      const workspaceId_done = action.payload.workspaceId;
-      const newtask_done = action.payload.newtask;
-      const updatedDoneList = [
-        ...state.workspaceList[workspaceId_done].workflow.completedList,
-        newtask_done,
+    case NEWTASK_COMPLETED:
+      const newtask_completed = action.payload.newtask;
+      const updatedCompletedList = [
+        ...state.workflow.completedList,
+        newtask_completed,
       ];
-      const updatedWsList_done = state.workspaceList.map((workspace, idx) => {
-        if (idx === workspaceId_done) {
-          const updatedWf_done = {
-            ...workspace.workflow,
-            completedList: updatedDoneList,
-          };
-          return {
-            ...workspace,
-            workflow: updatedWf_done,
-          };
-        }
-        return workspace;
-      });
+      const updatedWf_completed = {
+        ...state.workflow,
+        completedList: updatedCompletedList,
+      };
       return {
-        ...state,
-        workspaceList: updatedWsList_done,
+        ...workspace,
+        workflow: updatedWf_completed,
       };
 
     case SUBTRACT_LIST:
       let { subListType, selectedDragItem, subList } = action.payload;
-
       subListType = findProgress(subListType);
-      const updatedList = state.workspaceList[0].workflow[subListType].filter(
-        item => item.id !== selectedDragItem.id
-      );
+
+      const updatedList = state.workflow[subListType].filter(item => {
+        return item.id !== selectedDragItem.id;
+      });
       return {
         ...state,
-        workspaceList: [
-          {
-            ...state.workspaceList[0],
-            workflow: {
-              ...state.workspaceList[0].workflow,
-              [subListType]: updatedList ? updatedList : null,
-            },
-          },
-        ],
+        workflow: {
+          ...state.workflow,
+          [subListType]: updatedList ? updatedList : null,
+        },
       };
 
     case ADD_LIST:
-      let { addListType, item, dropIndex } = action.payload;
+      let { addListType, item, dropIndex, addLists } = action.payload;
 
       addListType = findProgress(addListType);
-
-      // tetz, 배열을 직접 변경하면 mutation 에러가 뜨므로 해당 부분을 피하기 위해서
-      // 배열을 카피해서 변경 후 직접 부여
-      let updateAddList = [...state.workspaceList[0].workflow[addListType]];
+      let updateAddList = [...state.workflow[addListType]];
 
       // dropIndex 가 null 이 아니면 특정 task 위에 드롭이 되었다는 것이므로, 해당 위치에 가져온 item 을 추가
       if (dropIndex !== null) {
@@ -528,15 +472,10 @@ export default function workspace(state = initState, action) {
 
       return {
         ...state,
-        workspaceList: [
-          {
-            ...state.workspaceList[0],
-            workflow: {
-              ...state.workspaceList[0].workflow,
-              [addListType]: [...updateAddList],
-            },
-          },
-        ],
+        workflow: {
+          ...state.workflow,
+          [addListType]: [...updateAddList],
+        },
       };
 
     default:

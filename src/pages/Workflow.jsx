@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import bookmarkIcon from '../assets/images/bookmark-icon.png';
 import Kanban from './components/Workflow/Kanban';
-import { initList } from '../store/modules/workspace';
+import workspace, { initList } from '../store/modules/workspace';
 import Loading from '../pages/Loading';
 
 const mainColor = '#623ad6';
@@ -77,33 +77,59 @@ const MyNoneBookmark = styled.img`
 `;
 
 export default function Workflow() {
+  const workspace = useSelector(state => state.workspace);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   // 백연동 시
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const resGetAllWS = await fetch(
+          'http://localhost:4000/workspace/643cd7ad2b88be1d07a4f46d', // 임시 id값
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        if (resGetAllWS.status !== 200) return 'fail';
+        const data = await resGetAllWS.json();
+        dispatch(initList(data));
+      } catch (err) {
+        console.error(err);
+      }
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  // 드래그앤드롭 백연동 성공 코드 (임시 주석)
   // useEffect(() => {
-  //   const fetchData = async () => {
+  //   const updateWF = async () => {
   //     try {
-  //       setLoading(true);
-  //       const resGetAllWS = await fetch(
-  //         'http://192.168.0.230:8001/workspace/643818de0a5dddd886bff311', // 임시 id값
+  //       const resUpdateWF = await fetch(
+  //         'http://localhost:4000/workspace/643cd7ad2b88be1d07a4f46d/updatewf',
   //         {
-  //           method: 'GET',
+  //           method: 'POST',
   //           headers: {
   //             'Content-Type': 'application/json',
   //           },
+  //           body: JSON.stringify({
+  //             workflow: workspace.workflow,
+  //           }),
   //         }
   //       );
-  //       if (resGetAllWS.status !== 200) return 'fail';
-  //       const data = await resGetAllWS.json();
-  //       dispatch(initList(data));
+  //       if (resUpdateWF.status !== 200) return 'fail';
+  //       console.log('sdfasfaafafsassssss', resUpdateWF);
   //     } catch (err) {
   //       console.error(err);
   //     }
-  //     setLoading(false);
   //   };
-
-  //   fetchData();
-  // }, []);
+  //   updateWF();
+  // }, [workspace]);
 
   // 프론트 더미 데이터
   // const workspaceList = useSelector(

@@ -143,10 +143,11 @@ let dropItem = null;
 export default function ProgressItem({ workflowList, item, id, progress }) {
   const [modify, setModify] = useState(false);
   // 프론트 더미 데이터
-  const workspaceList = useSelector(state => state.workspace.workspaceList);
+  // const workspaceList = useSelector(state => state.workspace.workspaceList);
 
   // 백연동시
-  // const workspaceList = useSelector(state => state.workspace);
+  const workspaceList = useSelector(state => state.workspace);
+
   const dispatch = useDispatch();
   const contentRef = useRef();
   const startDateRef = useRef();
@@ -180,27 +181,51 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
           dispatch(
             subtractList(item.progress, selectedDragItem.current, subtractLists)
           );
+
           dispatch(
-            addList(dropResult.name, selectedDragItem.current, dropItem)
+            addList(
+              dropResult.name,
+              selectedDragItem.current,
+              dropItem,
+              addLists
+            )
           );
         }
       }
     },
   }));
 
-  // 프로그레스명으로 DB 데이터를 구분하는 함수
+  // 프로그레스명으로 DB 데이터를 구분하는 함수(프론트)
+  // const findProgress = progress => {
+  //   let specificProgress;
+  //   if (progress === 'Request') {
+  //     specificProgress = workspaceList[0].workflow.requestList;
+  //   } else if (progress === 'In Progress') {
+  //     specificProgress = workspaceList[0].workflow.inProgressList;
+  //   } else if (progress === 'In Review') {
+  //     specificProgress = workspaceList[0].workflow.inReviewList;
+  //   } else if (progress === 'Blocked') {
+  //     specificProgress = workspaceList[0].workflow.blockedList;
+  //   } else {
+  //     specificProgress = workspaceList[0].workflow.completedList;
+  //   }
+
+  //   return specificProgress;
+  // };
+
+  // 백 연동
   const findProgress = progress => {
     let specificProgress;
     if (progress === 'Request') {
-      specificProgress = workspaceList[0].workflow.requestList;
+      specificProgress = workspaceList.workflow.requestList;
     } else if (progress === 'In Progress') {
-      specificProgress = workspaceList[0].workflow.inProgressList;
+      specificProgress = workspaceList.workflow.inProgressList;
     } else if (progress === 'In Review') {
-      specificProgress = workspaceList[0].workflow.inReviewList;
+      specificProgress = workspaceList.workflow.inReviewList;
     } else if (progress === 'Blocked') {
-      specificProgress = workspaceList[0].workflow.blockedList;
+      specificProgress = workspaceList.workflow.blockedList;
     } else {
-      specificProgress = workspaceList[0].workflow.completedList;
+      specificProgress = workspaceList.workflow.completedList;
     }
 
     return specificProgress;
@@ -219,7 +244,6 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   // tetz, 드랍 된 아이템의 배열 순서를 찾아내는 함수
   const findDroppedItem = (id, progress) => {
     const specificProgress = findProgress(progress);
-
     // tetz, 아무도 없는 바닥에 올려 놓았을 경우 id 가 null 이 뜨므로, null 이 아닌 경우에만
     // index 값을 찾아서 dropItem 전역 변수에 업데이트
     if (id !== null) {
@@ -274,8 +298,6 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
       if (modify) {
         // useRef 값 받아오기
         contentInput = contentRef.current.value;
-        // startDateInput = startDateRef.current.value;
-        // endDateInput = endDateRef.current.value;
         startDateInput = startDate.toLocaleDateString();
         endDateInput = endDate.toLocaleDateString();
         checkedImportance = selected;
