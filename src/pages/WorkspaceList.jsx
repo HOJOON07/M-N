@@ -155,7 +155,12 @@ export default function Workspacelist() {
       </MySpaceList>
       {dataArr ? (
         dataArr
-          .filter(e => e.workspace_name.toLowerCase().includes(inputs))
+          .filter(e =>
+            e.workspace_name
+              ? e.workspace_name.toLowerCase().includes(inputs)
+              : ''
+          )
+          .reverse()
           .map((el, idx) => (
             <Workspace
               workspace_name={el.workspace_name}
@@ -172,6 +177,7 @@ export default function Workspacelist() {
                   el.workflow.inProgressList.length +
                   el.workflow.completedList.length)
               }
+              _id={el._id}
             />
           ))
       ) : (
