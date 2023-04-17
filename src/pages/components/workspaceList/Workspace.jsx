@@ -130,6 +130,12 @@ const MyProgressBar = styled.div`
   margin-left: 5px;
 `;
 
+const MyProgressPercent = styled.p`
+  font-size: 0.8rem;
+  padding-top: 6px;
+  text-align: center;
+`;
+
 const MySpaceRight = styled.div`
   position: relative;
   width: 30%;
@@ -237,7 +243,9 @@ export default function Workspace({
                   width: `${progressPercent ? progressPercent * 640 : 0}px`,
                 }}
               >
-                <span>{progressPercent ? progressPercent * 100 : 0}%</span>
+                <MyProgressPercent>
+                  {progressPercent ? progressPercent * 100 : 0}%
+                </MyProgressPercent>
               </MyProgressBar>
             </MySpaceProgress>
           </MyWorkBar>
