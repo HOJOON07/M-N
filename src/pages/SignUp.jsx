@@ -11,6 +11,7 @@ const hoverMainColor = '#7855DB';
 const prevColor = '#333333';
 const hoverPrevColor = '#6E6E6E';
 const btnFontColor = '#fff';
+const inActiveColor = '#977de4';
 // Styled Components
 const MyStageArea = styled.div`
   width: 100%;
@@ -31,7 +32,8 @@ const MyPageBtn = styled.button`
   font-weight: 700;
   border-radius: 10px;
   border: none;
-  background-color: ${props => props.backgroundColor};
+  background-color: ${props =>
+    !!props.disabled ? inActiveColor : props.backgroundColor};
   color: white;
   cursor: pointer;
   transition: 0.2s;
@@ -102,7 +104,7 @@ export default function SignUp() {
   };
 
   useEffect(() => {
-    if (checkNum === 6) btnActive();
+    if (checkNum === 6 && confirmPW) btnActive();
   }, [checkNum]);
 
   const add = () => {
