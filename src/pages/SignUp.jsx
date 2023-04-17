@@ -56,6 +56,7 @@ export default function SignUp() {
   const nextChange = () => {
     setNum(prev => prev + 1);
   };
+
   return (
     <div style={{ padding: '5% 25%' }}>
       {num === 0 && (
@@ -78,16 +79,16 @@ export default function SignUp() {
           <InfoArea />
         </>
       )}
-      {num === 2 && (
+      {/* {num === 2 && (
         <>
           <h1>회원가입</h1>
           <p>소셜 로그인 및 이메일로 가입할 수 있습니다.</p>
           <hr />
           <DetailInfoArea />
         </>
-      )}
-      {num === 3 && <SignUpSuccess />}
-      {num !== 0 && num !== 3 && (
+      )} */}
+      {num === 2 && <SignUpSuccess />}
+      {num !== 0 && num !== 2 && (
         <MyStageArea>
           <MyPageBtn
             backgroundColor={prevColor}

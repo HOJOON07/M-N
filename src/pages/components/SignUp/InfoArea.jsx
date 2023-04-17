@@ -68,11 +68,58 @@ const MyErrArea = styled.div`
 
 export default function InfoArea(props) {
   const emailList = ['naver.com', 'kakao.com', 'github.com'];
-  const [email, setEmail] = useState('');
+  const [userInfo, setUserInfo] = useState({
+    user_id: '',
+    user_password: '',
+    user_comfirmpassword: '',
+    user_name: '',
+    user_email: '',
+    tel: '',
+  });
 
-  const onChnageEmail = e => {
-    setEmail(e.target.value);
+  const onChangeID = e => {
+    setUserInfo({
+      user_id: e.target.value,
+    });
+    console.log(userInfo);
   };
+
+  const onChangePassword = e => {
+    setUserInfo({
+      user_password: e.target.value,
+    });
+    console.log(userInfo);
+  };
+
+  const onConfirmPasswordHandler = e => {
+    setConfirmPassword(e.currentTarget.value);
+  };
+
+  const onChangeName = e => {
+    setUserInfo({
+      user_name: e.target.value,
+    });
+    console.log(userInfo);
+  };
+
+  const onChangeEmail = e => {
+    setUserInfo({
+      user_email: e.target.value,
+    });
+    console.log(userInfo);
+  };
+
+  if (Password !== ConfirmPassword) {
+    return alert('비밀번호와 비밀번호 확인이 같지 않습니다.');
+  }
+
+  dispatch(registerUser(body)).then(response => {
+    if (response.payload.success) {
+      props.history.push('/loginPage');
+    } else {
+      alert('Error');
+    }
+  });
 
   return (
     <div style={{ padding: '50px' }}>
@@ -130,14 +177,18 @@ export default function InfoArea(props) {
             <p>이메일*</p>
           </MyReqArea>
           <MyInputArea>
-            <MyInput type="text" style={{ width: '100px' }} />
+            <MyInput
+              type="text"
+              style={{ width: '100px' }}
+              onChange={onChangeEmail}
+            />
             <p style={{ textAlign: 'center', margin: 'auto 0' }}>@</p>
             <MyInput
               type="text"
-              defaultValue={email}
+              // defaultValue={email}
               style={{ width: '100px' }}
             />
-            <select onChange={onChnageEmail} value={email}>
+            <select onChange={onChangeEmail}>
               {emailList.map(el => {
                 return (
                   <option value={el} key={el}>
