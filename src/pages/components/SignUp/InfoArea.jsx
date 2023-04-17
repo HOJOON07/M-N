@@ -54,6 +54,26 @@ const MyInfoBtn = styled.button`
     background-color: ${hoverMainColor};
   }
 `;
+
+const MyConfirmBtn = styled.button`
+  position: absolute;
+  padding: 10px 10px;
+  width: 120px;
+  box-sizing: border-box;
+  right: 240px;
+  top: 370px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  background-color: ${mainColor};
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    background-color: ${hoverMainColor};
+  }
+`;
 const MyErrArea = styled.div`
   height: 30px;
 `;
@@ -63,12 +83,18 @@ export default function InfoArea(props) {
     userData,
     idOnChage,
     PWOnchange,
+    PWCFOnchange,
     nameOnchage,
     telOnChage,
     onChageEmail1,
     onChnageEmail2,
     emailList,
+    PW2,
+    handleCheck,
   } = props;
+
+  const firstPassword = useRef('');
+  const secondPassword = useRef('');
 
   return (
     <div style={{ padding: '50px' }}>
@@ -98,6 +124,8 @@ export default function InfoArea(props) {
               type="password"
               placeholder="비밀번호를 입력해주세요"
               onChange={PWOnchange}
+              // value={PWOnchange}
+              ref={firstPassword}
             />
           </MyInputArea>
         </MyInfoArea>
@@ -107,7 +135,25 @@ export default function InfoArea(props) {
             <p>비밀번호 확인*</p>
           </MyReqArea>
           <MyInputArea>
-            <MyInput type="password" placeholder="비밀번호를 입력해주세요" />
+            <MyInput
+              type="password"
+              placeholder="비밀번호를 입력해주세요"
+              onChange={PW2}
+              ref={secondPassword}
+            />
+            <MyConfirmBtn
+              type="button"
+              onClick={() =>
+                handleCheck(
+                  firstPassword.current.value,
+                  secondPassword.current.value
+                )
+              }
+              backgroundColor="#333333"
+              color="#fff"
+            >
+              비밀번호 확인
+            </MyConfirmBtn>
           </MyInputArea>
         </MyInfoArea>
         <MyErrArea />

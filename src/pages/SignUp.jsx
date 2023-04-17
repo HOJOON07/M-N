@@ -41,6 +41,7 @@ const MyPageBtn = styled.button`
 export default function SignUp() {
   const [show, setShow] = useState(false);
   const [num, setNum] = useState(0);
+
   const changeState = () => {
     setShow(prev => !prev);
   };
@@ -62,7 +63,7 @@ export default function SignUp() {
     user_emaail_2: '',
     tel: '',
   });
-
+  const [confirmPW, setConfirmPW] = useState('');
   const idOnChage = e => {
     setUserData({ ...userData, user_id: e.target.value });
     // userData.user_id = e.target.value;
@@ -84,7 +85,7 @@ export default function SignUp() {
     // userData.tel = e.target.value;
   };
   const onChnageEmail2 = e => {
-    setUserData({ ...userData, user_emaail_2: e.target.value });
+    setUserData({ ...userData, user_email_2: e.target.value });
     // userData.useremail[1] = e.target.value;
   };
   const onChageEmail1 = e => {
@@ -92,7 +93,7 @@ export default function SignUp() {
     // userData.useremail[0] = e.target.value;
   };
   const add = () => {
-    userData.useremail = `${userData.user_email_1}@${userData.user_emaail_2}`;
+    userData.useremail = `${userData.user_email_1}@${userData.user_email_2}`;
   };
   add();
   console.log(userData);
@@ -121,14 +122,19 @@ export default function SignUp() {
         });
     }
   };
-  // handleCheck = () => {
-  //   const { user_password1, user_password2 } = this.state;
-  //   if (user_password1 === user_password2) {
-  //     this.setState({
-  //       alert,
-  //     });
-  //   }
-  // };
+  const PW2 = e => {
+    setConfirmPW(e.target.value);
+  };
+  const handleCheck = (password1, password2) => {
+    if (password1 === '' || password2 === '') {
+      alert('비밀 번호를 입력해 주세요.');
+    } else if (password1 === password2) {
+      alert('비밀번호가 일치합니다');
+      setConfirmPW(true);
+    } else {
+      alert('비밀번호가 서로 다릅니다');
+    }
+  };
 
   const signUpSign = () => {
     add();
@@ -147,6 +153,7 @@ export default function SignUp() {
         console.log(err.response.data, err);
       });
   };
+
   return (
     <div style={{ padding: '5% 25%' }}>
       {num === 0 && (
@@ -170,11 +177,14 @@ export default function SignUp() {
             userData={userData}
             idOnChage={idOnChage}
             PWOnchange={PWOnchange}
+            PWCFOnchange={PWCFOnchange}
             nameOnchage={nameOnchage}
             telOnChage={telOnChage}
             onChnageEmail2={onChnageEmail2}
             onChageEmail1={onChageEmail1}
             emailList={emailList}
+            PW2={PW2}
+            handleCheck={handleCheck}
           />
         </>
       )}
