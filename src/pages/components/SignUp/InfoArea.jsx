@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { id } from 'date-fns/locale';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import SignUpSuccess from './SignUpSuccess';
@@ -91,6 +91,7 @@ export default function InfoArea(props) {
     emailList,
     PW2,
     handleCheck,
+    idCheck,
   } = props;
 
   const firstPassword = useRef('');
@@ -109,7 +110,7 @@ export default function InfoArea(props) {
               placeholder="아이디를 입력해주세요"
               onChange={idOnChage}
             />
-            <MyInfoBtn backgroundColor="#333333" color="#fff">
+            <MyInfoBtn backgroundColor="#333333" color="#fff" onClick={idCheck}>
               중복 확인
             </MyInfoBtn>
           </MyInputArea>
@@ -171,6 +172,7 @@ export default function InfoArea(props) {
             <p>전화번호*</p>
           </MyReqArea>
           <MyInputArea>
+            <MyInputArea />
             <MyInput
               type="text"
               placeholder="'-' 제외하고 입력"
@@ -193,10 +195,12 @@ export default function InfoArea(props) {
             <MyInput
               type="text"
               style={{ width: '100px' }}
-              value={userData.user_emaail_2}
+              value={userData.user_email_2}
             />
             <select
-              onChange={onChnageEmail2}
+              onChange={e => {
+                onChnageEmail2(e);
+              }}
               // value={email}
             >
               {emailList.map(el => {
