@@ -149,7 +149,7 @@ export default function KanbanProgress({
 
       {status && <NewTask progress={progress} handleRender={handleRender} />}
       {workflowList?.map((el, idx) => {
-        console.log('el: ', el);
+        // console.log('el: ', el);
         return (
           <ProgressItem
             key={el.id}

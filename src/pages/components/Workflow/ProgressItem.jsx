@@ -333,7 +333,7 @@ export default function ProgressItem({
       completedId = payload.selectedItem.id;
       setState(e => !e);
       await fetchData(progressUrl, payload, completedId);
-      // if (modify) handleRender();
+      if (modify) handleRender();
     }
   };
 
@@ -368,7 +368,7 @@ export default function ProgressItem({
   };
 
   let contentSpace, dateSpace, importantSpace;
-  console.log(item);
+  // console.log(item);
   if (modify === false) {
     contentSpace = <MyContent>{item.content}</MyContent>;
     dateSpace = (
