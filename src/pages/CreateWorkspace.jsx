@@ -281,7 +281,7 @@ export default function CreateWorkspace() {
       );
       if (isCreate) {
         const createWorkspace = await fetch(
-          'http://localhost:4000/workspace/addws',
+          'http://localhost:8001/workspace/addws',
           {
             method: 'POST',
             headers: {

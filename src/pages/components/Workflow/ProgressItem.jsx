@@ -283,8 +283,8 @@ export default function ProgressItem({
         // useRef 값 받아오기
         modifyContent = {
           content: contentRef.current.value,
-          startDate: startDate.toLocaleDateString();
-          endDate: endDate.toLocaleDateString();
+          startDate: startDate.toLocaleDateString(),
+          endDate: endDate.toLocaleDateString(),
           importance: selected,
         };
       }

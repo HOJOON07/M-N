@@ -103,7 +103,7 @@ export default function Workspacelist() {
   const [inputs, setInputs] = useState(''); //검색 기능을 위한 state
   const getAllWS = async () => {
     try {
-      const resGetAllWS = await fetch('http://localhost:4000/workspace', {
+      const resGetAllWS = await fetch('http://localhost:8001/workspace', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
