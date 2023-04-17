@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import mymagnify from '../assets/images/search.png';
 import Workspace from './components/workspaceList/Workspace';
+import { useNavigate } from 'react-router-dom';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -97,10 +98,11 @@ const MySpaceNewBtn = styled.button`
 `;
 
 export default function Workspacelist() {
+  const navigation = useNavigate();
   const [dataArr, setDataArr] = useState([]);
   const getAllWS = async () => {
     try {
-      const resGetAllWS = await fetch('http://localhost:8001/workspace', {
+      const resGetAllWS = await fetch('http://localhost:4000/workspace', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -134,7 +136,9 @@ export default function Workspacelist() {
             <MySpaceInput type="text" placeholder="Search by Workspace" />
             <MySpaceMagify src={mymagnify} alt="돋보기" />
           </div>
-          <MySpaceNewBtn> New Workspace</MySpaceNewBtn>
+          <MySpaceNewBtn onClick={() => navigation('/create')}>
+            New Workspace
+          </MySpaceNewBtn>
         </MySpaceContent>
       </MySpaceList>
       {dataArr ? (

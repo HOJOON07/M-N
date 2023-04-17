@@ -21,6 +21,14 @@ const MyHeaderContainer = styled.div`
   margin: auto;
   padding: 12px;
 `;
+
+const MyMainLogo = styled.div`
+  height: 100%;
+  margin: auto 10px;
+  display: flex;
+  cursor: pointer;
+`;
+
 const MyLogoImg = styled.img`
   width: 50px;
   height: 50px;
@@ -123,7 +131,6 @@ export default function Header() {
   console.log('로그인 여부', isLogin);
 
   const navigation = useNavigate();
-
   const [modalOpen, setModalOpen] = useState(false);
 
   const showModal = () => {
@@ -134,13 +141,13 @@ export default function Header() {
   return (
     <MyInnerContainer>
       <MyHeaderContainer>
-        <MyDiv>
+        <MyMainLogo onClick={() => navigation('/')}>
           <MyLogoImg src="/images/logo.png" />
           <div>
             <MyLogoTxt>Meet</MyLogoTxt>
             <MyLogoTxtSec>Notes</MyLogoTxtSec>
           </div>
-        </MyDiv>
+        </MyMainLogo>
 
         <MyDiv>
           {!isLogin ? (

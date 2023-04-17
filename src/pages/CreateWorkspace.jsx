@@ -272,22 +272,28 @@ export default function CreateWorkspace() {
             ? '0' + new Date().getDate()
             : new Date().getDate() + 1);
       }
-      const createWorkspace = await fetch(
-        'http://localhost:8001/workspace/addws',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(createData),
-        }
+      const isCreate = window.confirm(
+        `새로운 워크스페이스 '${workspaceName.current.value}' 를 생성하시겠습니까?`
       );
-      if (createWorkspace.status != 200) return alert('생성실패');
-      alert('생성성공');
-      navigation('/workspace');
+
+      if (isCreate) {
+        const createWorkspace = await fetch(
+          'http://localhost:4000/workspace/addws',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(createData),
+          }
+        );
+        if (createWorkspace.status != 200) return alert('생성실패');
+      }
     } catch (err) {
       console.error(err);
     }
+
+    navigation('/workspace');
   }
   return (
     <MySectionContainer>
