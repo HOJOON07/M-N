@@ -41,6 +41,15 @@ const MyPageBtn = styled.button`
     background-color: ${props => props.hoverColor};
   }
 `;
+const MyH1 = styled.h1`
+  font-size: 2.5rem;
+  font-weight: 700;
+`;
+const MyP = styled.p`
+  font-size: 1.3rem;
+  margin: 25px 0;
+`;
+
 export default function SignUp() {
   const [show, setShow] = useState(false);
   const [num, setNum] = useState(0);
@@ -187,8 +196,8 @@ export default function SignUp() {
     <div style={{ padding: '5% 25%' }}>
       {num === 0 && (
         <>
-          <h1>회원가입</h1>
-          <p>소셜 로그인 및 이메일로 가입할 수 있습니다.</p>
+          <MyH1>회원가입</MyH1>
+          <MyP>소셜 로그인 및 이메일로 가입할 수 있습니다.</MyP>
           <hr />
           <SocialInfo
             show={show}
@@ -199,8 +208,8 @@ export default function SignUp() {
       )}
       {num === 1 && (
         <>
-          <h1>회원가입</h1>
-          <p>소셜 로그인 및 이메일로 가입할 수 있습니다.</p>
+          <MyH1>회원가입</MyH1>
+          <MyP>소셜 로그인 및 이메일로 가입할 수 있습니다.</MyP>
           <hr />
           <InfoArea
             userData={userData}
