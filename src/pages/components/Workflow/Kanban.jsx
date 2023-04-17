@@ -63,7 +63,6 @@ export default function Kanban() {
 
   const workflowList = workspace.workflow;
   const iconList = ['✉️', '🔨', '📌', '🔒', '🎉'];
-
   return (
     <div>
       <MyTitleArea>
@@ -71,7 +70,9 @@ export default function Kanban() {
           <MyTitle>Workflow</MyTitle>
           <MyBar />
         </div>
-        <MySubTitle fontSize="14px">{workspace?.name}워크스페이스명</MySubTitle>
+        <MySubTitle fontSize="14px">
+          {workflowList?.name}워크스페이스명
+        </MySubTitle>
       </MyTitleArea>
       <MyProgressArea>
         <KanbanProgress

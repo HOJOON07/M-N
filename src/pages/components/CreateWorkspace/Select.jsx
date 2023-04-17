@@ -30,7 +30,7 @@ const MyJobSelect = styled.select`
 `;
 
 export default function Select(props) {
-  const { categoryOnChange, createData } = props;
+  const { categoryOnChange } = props;
 
   const JOBLIST = [
     'FrontEnd',

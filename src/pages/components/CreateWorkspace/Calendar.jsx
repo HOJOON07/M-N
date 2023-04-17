@@ -27,6 +27,7 @@ const MyProjectDateTextWrap = styled.div`
 const StyledDatePicker = styled(ReactDatePicker)`
   margin-top: 1.5rem;
   max-width: 300px;
+  /* width: 200px; */
   height: 42px;
   box-sizing: border-box;
   padding: 8px 20px;
@@ -73,11 +74,18 @@ export default function Calendar(props) {
             selected={startDate}
             onChange={(date, startDate) => {
               setStartDate(date);
-              startDateOnChange(startDate);
+              startDateOnChange(
+                date.getFullYear() +
+                  '-' +
+                  (date.getMonth() + 1 < 10
+                    ? '0' + (date.getMonth() + 1)
+                    : date.getMonth() + 1) +
+                  '-' +
+                  (date.getDate() < 10
+                    ? '0' + date.getDate()
+                    : date.getDate() + 1)
+              );
             }}
-            // onChange={startDate => {
-            //   startDateOnChange(startDate);
-            // }}
             selectsStart
             startDate={startDate}
             endDate={endDate}
@@ -92,7 +100,17 @@ export default function Calendar(props) {
             selected={endDate}
             onChange={(date, endDate) => {
               setEndDate(date);
-              endDateOnChange(endDate);
+              endDateOnChange(
+                date.getFullYear() +
+                  '-' +
+                  (date.getMonth() + 1 < 10
+                    ? '0' + (date.getMonth() + 1)
+                    : date.getMonth() + 1) +
+                  '-' +
+                  (date.getDate() < 10
+                    ? '0' + date.getDate()
+                    : date.getDate() + 1)
+              );
             }}
             selectsEnd
             startDate={startDate}

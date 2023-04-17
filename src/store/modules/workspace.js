@@ -443,28 +443,15 @@ export default function workspace(state = initState, action) {
 
     case SUBTRACT_LIST:
       let { subListType, selectedDragItem, subList } = action.payload;
-
       subListType = findProgress(subListType);
-      // const updatedList = state.workspace.workflow[subListType].filter(
-      //   item => item.id !== selectedDragItem.id
-      // );
+
       const updatedList = state.workflow[subListType].filter(item => {
         return item.id !== selectedDragItem.id;
       });
       return {
-        // ...state,
-        // workspaceList: [
-        //   {
-        //     ...state.workspace,
-        //     workflow: {
-        //       ...state.workspace.workflow,
-        //       [subListType]: updatedList ? updatedList : null,
-        //     },
-        //   },
-        // ],
-        ...workspace,
+        ...state,
         workflow: {
-          ...workspace.workflow,
+          ...state.workflow,
           [subListType]: updatedList ? updatedList : null,
         },
       };
@@ -473,17 +460,7 @@ export default function workspace(state = initState, action) {
       let { addListType, item, dropIndex, addLists } = action.payload;
 
       addListType = findProgress(addListType);
-      console.log(addLists, '.r.gs..d');
-      // let updateAddList = [...state.workflow[addListType]];
-      // let updateAddList = [workspace.workflow, ...addLists];
-
-      console.log(state.workflow, 'console.log(state.workflow);');
-      let updateAddList = state.workflow[addListType].find(
-        item => addLists.id === item.id
-      );
-
-      // let updateAddList = [...state.workflow[addListType]];
-      console.log(updateAddList);
+      let updateAddList = [...state.workflow[addListType]];
 
       // dropIndex 가 null 이 아니면 특정 task 위에 드롭이 되었다는 것이므로, 해당 위치에 가져온 item 을 추가
       if (dropIndex !== null) {
@@ -494,19 +471,9 @@ export default function workspace(state = initState, action) {
       }
 
       return {
-        // ...state,
-        // workspaceList: [
-        //   {
-        //     ...state.workspace,
-        //     workflow: {
-        //       ...state.workspace.workflow,
-        //       [addListType]: [...updateAddList],
-        //     },
-        //   },
-        // ],
-        ...workspace,
+        ...state,
         workflow: {
-          ...workspace.workflow,
+          ...state.workflow,
           [addListType]: [...updateAddList],
         },
       };

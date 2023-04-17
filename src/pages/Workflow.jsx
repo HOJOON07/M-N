@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import bookmarkIcon from '../assets/images/bookmark-icon.png';
 import Kanban from './components/Workflow/Kanban';
-import { initList } from '../store/modules/workspace';
+import workspace, { initList } from '../store/modules/workspace';
 import Loading from '../pages/Loading';
 
 const mainColor = '#623ad6';
@@ -77,6 +77,7 @@ const MyNoneBookmark = styled.img`
 `;
 
 export default function Workflow() {
+  const workspace = useSelector(state => state.workspace);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   // 백연동 시
@@ -85,7 +86,7 @@ export default function Workflow() {
       try {
         setLoading(true);
         const resGetAllWS = await fetch(
-          'http://localhost:4000/workspace/643c9356c44c62fe19d1abd2', // 임시 id값
+          'http://localhost:4000/workspace/643cd7ad2b88be1d07a4f46d', // 임시 id값
           {
             method: 'GET',
             headers: {
@@ -104,6 +105,31 @@ export default function Workflow() {
 
     fetchData();
   }, []);
+
+  // 드래그앤드롭 백연동 성공 코드 (임시 주석)
+  // useEffect(() => {
+  //   const updateWF = async () => {
+  //     try {
+  //       const resUpdateWF = await fetch(
+  //         'http://localhost:4000/workspace/643cd7ad2b88be1d07a4f46d/updatewf',
+  //         {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify({
+  //             workflow: workspace.workflow,
+  //           }),
+  //         }
+  //       );
+  //       if (resUpdateWF.status !== 200) return 'fail';
+  //       console.log('sdfasfaafafsassssss', resUpdateWF);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+  //   updateWF();
+  // }, [workspace]);
 
   // 프론트 더미 데이터
   // const workspaceList = useSelector(

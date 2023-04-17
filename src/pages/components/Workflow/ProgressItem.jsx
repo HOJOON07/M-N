@@ -178,31 +178,10 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
         const subtractLists = item.workflowList; // 빼줄 리스트
         const addLists = dropResult.list; // 더해줄 리스트
         if (selectedDragItem.current) {
-          const updateWF = async () => {
-            try {
-              const resUpdateWF = await fetch(
-                'http://localhost:4000/workspace/643c9356c44c62fe19d1abd2/updatewf',
-                {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                }
-              );
-              if (resUpdateWF.status !== 200) return 'fail';
-              console.log(resUpdateWF.status);
-            } catch (err) {
-              console.error(err);
-            }
-          };
-          updateWF();
-
           dispatch(
             subtractList(item.progress, selectedDragItem.current, subtractLists)
           );
-          console.log('디스패치 subtractList', item);
-          updateWF();
-          const dropProgressInfo = dropResult.item.workflowList[0];
+
           dispatch(
             addList(
               dropResult.name,
@@ -211,9 +190,6 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
               addLists
             )
           );
-          updateWF();
-          console.log('디스패치 dropProgressInfo', dropProgressInfo);
-          console.log('디스패치 addList dropResult.item', dropResult.item);
         }
       }
     },
@@ -257,20 +233,17 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
 
   const findClickItem = (id, progress) => {
     let selectedItem = null;
-    console.log('findClickItem', id);
     const specificProgress = findProgress(progress);
 
     selectedItem = specificProgress.find(item => item.id === id);
     if (selectedItem) {
       selectedDragItem.current = selectedItem;
     }
-    console.log('selectedItem', selectedItem);
   };
 
   // tetz, 드랍 된 아이템의 배열 순서를 찾아내는 함수
   const findDroppedItem = (id, progress) => {
     const specificProgress = findProgress(progress);
-    console.log('findDroppedItem', id);
     // tetz, 아무도 없는 바닥에 올려 놓았을 경우 id 가 null 이 뜨므로, null 이 아닌 경우에만
     // index 값을 찾아서 dropItem 전역 변수에 업데이트
     if (id !== null) {
