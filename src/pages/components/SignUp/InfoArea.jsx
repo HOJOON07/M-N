@@ -69,35 +69,7 @@ export default function InfoArea(props) {
     onChnageEmail2,
     emailList,
   } = props;
-  // const [userData, setUserData] = useState({
-  //   user_id: '',
-  //   user_password: '',
-  //   user_name: '',
-  //   user_email_1: '',
-  //   user_emaail_2: '',
-  //   tel: '',
-  // });
-  // const WorkSpaceNameOnChange = e => {
-  //   setCreateData({ ...createData, workspace_name: e.target.value });
-  // };
-  // const idOnChage = e => {
-  //   setUserData({ ...userData, user_id: idRef.current.value });
-  // };
-  // const PWOnchange = e => {
-  //   setUserData({ ...userData, user_password: pwRef.current.value });
-  // };
-  // const nameOnchage = e => {
-  //   setUserData({ ...userData, user_name: e.target.value });
-  // };
-  // const telOnChage = e => {
-  //   setUserData({ ...userData, tel: e.target.value });
-  // };
-  // const onChnageEmail2 = e => {
-  //   setUserData({ ...userData, user_emaail_2: e.target.value });
-  // };
-  // const onChageEmail1 = e => {
-  //   setUserData({ ...userData, user_email_1: e.target.value });
-  // };
+
   return (
     <div style={{ padding: '50px' }}>
       <MyDirectArea>
