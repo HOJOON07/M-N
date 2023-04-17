@@ -251,7 +251,7 @@ export default function NewTask({ progress, handleRender }) {
     try {
       setLoading(true);
       const resPost = await fetch(
-        `http://localhost:8001/workspace/643a2995b7f6810e3ce63447/${progressUrl}`,
+        `http://localhost:8001/workspace/643d124367f11568276fbfee/${progressUrl}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -283,6 +283,7 @@ export default function NewTask({ progress, handleRender }) {
           <MyCalendarContainer>
             <>
               <ReactDatePicker
+                className="addDate"
                 dateFormat="yyyy.MM.dd"
                 selected={startDate}
                 onChange={date => setStartDate(date)}
@@ -293,6 +294,7 @@ export default function NewTask({ progress, handleRender }) {
               />
               <span> ~</span>
               <ReactDatePicker
+                className="addDate"
                 dateFormat="yyyy.MM.dd"
                 selected={endDate}
                 onChange={date => setEndDate(date)}
@@ -303,11 +305,6 @@ export default function NewTask({ progress, handleRender }) {
                 ref={endDateRef}
               />
             </>
-            {/* <MyCalenderSpan>시작일 : </MyCalenderSpan>
-            <MyCalendar required type="date" ref={startDateRef} />
-            <br />
-            <MyCalenderSpan>종료일 : </MyCalenderSpan>
-            <MyCalendar required type="date" ref={endDateRef} /> */}
           </MyCalendarContainer>
         </MyTop>
 
