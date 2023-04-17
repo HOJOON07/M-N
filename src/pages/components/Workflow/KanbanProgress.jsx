@@ -156,6 +156,7 @@ export default function KanbanProgress({
             item={el} //각각의 아이템 정보를 객체로 전달
             workflowList={workflowList}
             progress={progress}
+            handleRender={handleRender}
           />
         );
       })}

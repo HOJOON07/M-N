@@ -124,7 +124,13 @@ const MyImportantMA = styled.div`
 // 드롭 된 아이템 구분용 전역 변수
 let dropItem = null;
 
-export default function ProgressItem({ workflowList, item, id, progress }) {
+export default function ProgressItem({
+  workflowList,
+  item,
+  id,
+  progress,
+  handleRender,
+}) {
   const [modify, setModify] = useState(false);
   // 프론트 더미 데이터
   // const workspaceList = useSelector(state => state.workspace.workspaceList);
@@ -138,6 +144,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
   let contentInput, startDateInput, endDateInput, checkedImportance;
   const selectList = ['high', 'medium', 'low'];
   const [selected, setSelected] = useState(item.importance);
+  const [state, setState] = useState(true);
 
   const selectHandler = e => {
     setSelected(e.target.value);
@@ -261,9 +268,6 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     }
   };
 
-  // useEffect(() => {
-  // }, []);
-
   /** 버튼 클릭 시 특정 id에 해당하는 배열 찾기 함수 */
   const createDateClickHandler = (id, progress) => {
     buttonClickHandler(id, progress);
@@ -291,34 +295,80 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
     updateHandler(id, progress);
   };
 
-  const updateHandler = (id, progress) => {
+  const updateHandler = async (id, progress) => {
+    let progressUrl, completedId;
     let payload = {};
+    let modifyContent = {};
     // const workspace = findProgress(progress);
     const specificProgress = findProgress(progress);
-    console.log(specificProgress);
     selectedItem = specificProgress.find(item => item.id === id);
+    // console.log('selectedItem: ', selectedItem); // ; => 받아짐.
     if (selectedItem) {
       workspace = workspaceList;
     }
-
+    // console.log('workspace: ', workspace); => 받아짐.
     if (workspace && selectedItem) {
+      console.log(modify);
       if (modify) {
         // useRef 값 받아오기
-        contentInput = contentRef.current.value;
-        startDateInput = startDateRef.current.value;
-        endDateInput = endDateRef.current.value;
-        checkedImportance = selected;
+        modifyContent = {
+          contentInput: contentRef.current.value,
+          startDateInput: startDateRef.current.value,
+          endDateInput: endDateRef.current.value,
+          checkedImportance: selected,
+        };
       }
+      // 현재, 수정 버튼 클릭 시, 입력 창이 뜨지 않음 => payload를 당연히 받을 수 없음.
       payload = {
-        workspaceId: workspace.id,
         selectedItem: selectedItem,
-        content: contentInput,
-        startDate: startDateInput,
-        endDate: endDateInput,
-        importance: checkedImportance,
         progress,
+        modifyContent: modifyContent,
       };
-      if (modify) dispatch(modifyItem(payload));
+      console.log(payload);
+      if (progress === 'Request') {
+        progressUrl = 'updaterequestlist';
+      } else if (progress === 'In Progress') {
+        progressUrl = 'updateinprogresslist';
+      } else if (progress === 'In Review') {
+        progressUrl = 'updateinreviewlist';
+      } else if (progress === 'Blocked') {
+        progressUrl = 'updateblockedlist';
+      } else {
+        progressUrl = 'updatecompletedlist';
+      }
+      // if (modify) dispatch(modifyItem(payload));
+      completedId = payload.selectedItem.id;
+      setState(e => !e);
+      await fetchData(progressUrl, payload, completedId);
+      // if (modify) handleRender();
+    }
+  };
+
+  const [loading, setLoading] = useState(false);
+  const fetchData = async (progressUrl, payload, completedId) => {
+    try {
+      setLoading(true);
+      const resUpdatedPost = await fetch(
+        `http://localhost:8001/workspace/643a2995b7f6810e3ce63447/${completedId}/${progressUrl}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }
+      );
+      console.log('resUpdatedPost: ', resUpdatedPost);
+      if (resUpdatedPost.status !== 200) return 'fail';
+      const data = await resUpdatedPost.json();
+      console.log('data: ', data); // 값이 날라가면서 content를 못받아오는 상태.
+      if (data && data.modifyContent) {
+        // selectDispatch(data.progress, data.newtask);
+        await dispatch(modifyItem(data.modifyContent));
+        handleRender();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -386,8 +436,8 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
         <div>
           <span
             onClick={() => {
-              updateContentClickHandler(id, progress);
               setModify(state => !state);
+              updateContentClickHandler(id, progress);
             }}
           >
             ✏️
