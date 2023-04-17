@@ -80,13 +80,18 @@ export default function Workflow() {
   const workspace = useSelector(state => state.workspace);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  // 백연동 시
+  const workspaceIdTest = '643a2995b7f6810e3ce63447';
+  const [render, setRender] = useState(false);
+
+  const handleRender = () => {
+    setRender(cur => !cur);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const resGetAllWS = await fetch(
-          'http://localhost:4000/workspace/643cd7ad2b88be1d07a4f46d', // 임시 id값
+          `http://localhost:8001/workspace/${workspaceIdTest}`, // 임시 id값
           {
             method: 'GET',
             headers: {
@@ -104,40 +109,7 @@ export default function Workflow() {
     };
 
     fetchData();
-  }, []);
-
-  // 드래그앤드롭 백연동 성공 코드 (임시 주석)
-  // useEffect(() => {
-  //   const updateWF = async () => {
-  //     try {
-  //       const resUpdateWF = await fetch(
-  //         'http://localhost:4000/workspace/643cd7ad2b88be1d07a4f46d/updatewf',
-  //         {
-  //           method: 'POST',
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //           body: JSON.stringify({
-  //             workflow: workspace.workflow,
-  //           }),
-  //         }
-  //       );
-  //       if (resUpdateWF.status !== 200) return 'fail';
-  //       console.log('sdfasfaafafsassssss', resUpdateWF);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
-  //   updateWF();
-  // }, [workspace]);
-
-  // 프론트 더미 데이터
-  // const workspaceList = useSelector(
-  //   state => state.workspace.workspaceList
-  // ).filter(el => el.bookmarked);
-  // const bookmarkedList = useSelector(
-  //   state => state.workspace.workspaceList
-  // ).filter(el => !el.bookmarked);
+  }, [render]);
 
   return (
     <MyWorkspaceArea>
@@ -169,7 +141,7 @@ export default function Workflow() {
         </MyWorkspaceList>
       ) : null}
 
-      {!loading ? <Kanban /> : <Loading />}
+      {!loading ? <Kanban handleRender={handleRender} /> : <Loading />}
     </MyWorkspaceArea>
   );
 }
