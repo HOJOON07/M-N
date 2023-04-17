@@ -26,7 +26,7 @@ const MyProjectDateTextWrap = styled.div`
 
 const StyledDatePicker = styled(ReactDatePicker)`
   margin-top: 1.5rem;
-  max-width: 300px;
+  width: 200px;
   height: 42px;
   box-sizing: border-box;
   padding: 8px 20px;
