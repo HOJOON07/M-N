@@ -84,7 +84,6 @@ export default function Workflow() {
   const dispatch = useDispatch();
   const { state } = useLocation();
 
-  const workspaceIdTest = '643d124367f11568276fbfee';
   const [render, setRender] = useState(false);
   const [dataArr, setDataArr] = useState([]);
 
@@ -112,7 +111,7 @@ export default function Workflow() {
       try {
         setLoading(true);
         const resGetAllWS = await fetch(
-          `http://localhost:4000/workspace/${state}`,
+          `http://localhost:8001/workspace/${state}`,
           {
             method: 'GET',
             headers: {
@@ -137,7 +136,7 @@ export default function Workflow() {
     const updateWF = async () => {
       try {
         const resUpdateWF = await fetch(
-          'http://localhost:8001/workspace/643d124367f11568276fbfee/updatewf',
+          `http://localhost:8001/workspace/${state}/updatewf`,
           {
             method: 'POST',
             headers: {
@@ -164,10 +163,6 @@ export default function Workflow() {
           <MyList>
             <p>List</p>
             {dataArr.map(el => {
-              console.log(el._id);
-              // console.log(workspace.workspace_name === el.workspace_name);
-              // if (workspace.workspace_name === el.workspace_name)
-              // el.style.backgroundColor = 'black';
               return (
                 <div key={el.id}>
                   <MyNoneBookmark
