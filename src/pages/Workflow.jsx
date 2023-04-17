@@ -82,6 +82,23 @@ export default function Workflow() {
   const dispatch = useDispatch();
   const workspaceIdTest = '643d124367f11568276fbfee';
   const [render, setRender] = useState(false);
+  const [dataArr, setDataArr] = useState([]);
+
+  const getAllWS = async () => {
+    try {
+      const resGetAllWS = await fetch('http://localhost:8001/workspace', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (resGetAllWS.status !== 200) return 'fail';
+      const data = await resGetAllWS.json();
+      setDataArr(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleRender = () => {
     setRender(cur => !cur);
@@ -107,11 +124,11 @@ export default function Workflow() {
       }
       setLoading(false);
     };
-
+    getAllWS();
     fetchData();
   }, [render]);
 
-  // 드래그앤드롭 백연동 성공 코드 (임시 주석)
+  // dnd
   useEffect(() => {
     const updateWF = async () => {
       try {
@@ -140,28 +157,20 @@ export default function Workflow() {
       {!loading ? (
         <MyWorkspaceList>
           <MyTitle>Workspace</MyTitle>
-          {/* <MyList>
-                <p>Bookmark</p>
-                {bookmarkedList.map(el => {
-                  return (
-                    <div key={el.id}>
-                      <MyBookmark alt="북마크 완료 아이콘" src={bookmarkIcon} />
-                      <div>{el.workspace_name}</div>
-                    </div>
-                  );
-                })}
-              </MyList>
-              <MyList>
-                <p>List</p>
-                {workspaceList.map(el => {
-                  return (
-                    <div key={el.id}>
-                      <MyNoneBookmark alt="북마크 미완료 아이콘" src={bookmarkIcon} />
-                      <div>{el.workspace_name}</div>
-                    </div>
-                  );
-                })}
-              </MyList> */}
+          <MyList>
+            <p>List</p>
+            {dataArr.map(el => {
+              return (
+                <div key={el.id}>
+                  <MyNoneBookmark
+                    alt="북마크 미완료 아이콘"
+                    src={bookmarkIcon}
+                  />
+                  <div>{el.workspace_name}</div>
+                </div>
+              );
+            })}
+          </MyList>
         </MyWorkspaceList>
       ) : null}
 
