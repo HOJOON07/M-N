@@ -80,7 +80,7 @@ export default function Workflow() {
   const workspace = useSelector(state => state.workspace);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const workspaceIdTest = '643a2995b7f6810e3ce63447';
+  const workspaceIdTest = '643d124367f11568276fbfee';
   const [render, setRender] = useState(false);
 
   const handleRender = () => {
@@ -110,6 +110,30 @@ export default function Workflow() {
 
     fetchData();
   }, [render]);
+
+  // 드래그앤드롭 백연동 성공 코드 (임시 주석)
+  useEffect(() => {
+    const updateWF = async () => {
+      try {
+        const resUpdateWF = await fetch(
+          'http://localhost:8001/workspace/643d124367f11568276fbfee/updatewf',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              workflow: workspace.workflow,
+            }),
+          }
+        );
+        if (resUpdateWF.status !== 200) return 'fail';
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    updateWF();
+  }, [workspace]);
 
   return (
     <MyWorkspaceArea>

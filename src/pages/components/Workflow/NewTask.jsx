@@ -251,7 +251,7 @@ export default function NewTask({ progress, handleRender }) {
     try {
       setLoading(true);
       const resPost = await fetch(
-        `http://localhost:8001/workspace/643a2995b7f6810e3ce63447/${progressUrl}`,
+        `http://localhost:8001/workspace/643d124367f11568276fbfee/${progressUrl}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
