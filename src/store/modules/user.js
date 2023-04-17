@@ -1,22 +1,10 @@
 //초기상태
-const initState = [
-  {
-    id: 0,
-    userId: 'test',
-    userPw: '1111',
-    isLogin: false,
-  },
-  {
-    id: 1,
-    userId: 'admin',
-    userPw: '1111',
-    isLogin: false,
-  },
-];
+const initState = [];
 
 // 액션타입설정
 const LOGIN = 'user/LOGIN';
-const SINGUP = 'user/SIGNUP';
+const ISLOGIN = 'user/ISLOGIN';
+const SIGNUP = 'user/SIGNUP';
 const LOGOUT = 'user/LOGOUT';
 
 //액션 생성함수
@@ -27,9 +15,16 @@ export function login(userInfo) {
   };
 }
 
+export function isLogin(isLogin) {
+  return {
+    type: ISLOGIN,
+    payload: isLogin,
+  };
+}
+
 export function signup(userInfo) {
   return {
-    type: SINGUP,
+    type: SIGNUP,
     payload: userInfo,
   };
 }
@@ -43,30 +38,18 @@ export function logout(userInfo) {
 // Reducer
 export default function user(state = initState, action) {
   switch (action.type) {
+    case ISLOGIN:
+      return {
+        ...state,
+        isLogin: action.payload.isLogin,
+      };
     case LOGIN:
       return state.filter(e => e.userId === action.payload.userId);
     case LOGOUT: {
-      return [
-        ...state,
-        {
-          ...action.payload,
-          userId: '',
-          userPw: '',
-          isLogin: false,
-        },
-      ];
+      return [...state];
     }
-    case SINGUP:
-      return [
-        ...state,
-        {
-          ...action.payload,
-          id: state.length,
-          userId: action.payload.userId,
-          userPw: action.payload.userPw,
-          isLogin: true,
-        },
-      ];
+    case SIGNUP:
+      return [...state];
     default:
       return state;
   }

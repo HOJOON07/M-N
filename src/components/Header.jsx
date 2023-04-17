@@ -119,16 +119,23 @@ const MyGreetingText = styled.p`
 `;
 
 export default function Header() {
-  const isLogin = useSelector(state => state.user.isLogin);
-  console.log('로그인 여부', isLogin);
-
   const navigation = useNavigate();
-
+  const [state, setState] = useState();
+  let isLogin = true;
+  isLogin = localStorage.getItem('accessToken') !== undefined;
+  console.log(localStorage.getItem('accessToken'));
   const [modalOpen, setModalOpen] = useState(false);
 
   const showModal = () => {
     setModalOpen(true);
     document.body.style.overflow = 'hidden';
+  };
+  const logout = () => {
+    if (isLogin) {
+      localStorage.clear();
+      isLogin = false;
+      setState([]);
+    }
   };
 
   return (
@@ -155,6 +162,7 @@ export default function Header() {
           ) : (
             <MyDiv>
               <MyGreetingText>[아이디] 님 안녕하세요!</MyGreetingText>
+              <MyLoginButton onClick={logout}>로그아웃</MyLoginButton>
               <MyAlarmIcon src="/images/icon/alarm.png" />
               <MyProfileIcon src="/images/icon/user.png" />
             </MyDiv>
