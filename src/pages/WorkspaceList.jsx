@@ -137,7 +137,7 @@ export default function Workspacelist() {
           <MySpaceNewBtn> New Workspace</MySpaceNewBtn>
         </MySpaceContent>
       </MySpaceList>
-      {!dataArr ? (
+      {dataArr ? (
         dataArr.map((el, idx) => (
           <Workspace
             workspace_name={el.workspace_name}
@@ -149,10 +149,10 @@ export default function Workspacelist() {
             member={el.member}
             key={idx}
             progressPercent={
-              el.workflow.doneList.length /
-              (el.workflow.todoList.length +
-                el.workflow.inprogressList.length +
-                el.workflow.doneList.length)
+              el.workflow.completedList.length /
+              (el.workflow.requestList.length +
+                el.workflow.inProgressList.length +
+                el.workflow.completedList.length)
             }
           />
         ))

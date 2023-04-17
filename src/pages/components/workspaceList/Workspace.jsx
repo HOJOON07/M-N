@@ -222,10 +222,10 @@ export default function Workspace({
             <MySpaceProgress>
               <MyProgressBar
                 style={{
-                  width: `${progressPercent * 640}px`,
+                  width: `${progressPercent ? progressPercent * 640 : 0}px`,
                 }}
               >
-                <span>{progressPercent * 100}%</span>
+                <span>{progressPercent ? progressPercent * 100 : 0}%</span>
               </MyProgressBar>
             </MySpaceProgress>
           </MyWorkBar>
