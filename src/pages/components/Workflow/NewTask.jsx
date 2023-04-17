@@ -10,6 +10,7 @@ import {
   newCompleted,
 } from '../../../store/modules/workspace';
 import ReactDatePicker from 'react-datepicker';
+import { useLocation } from 'react-router-dom';
 
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
@@ -120,7 +121,7 @@ const MySubmitButton = styled.button`
 `;
 
 export default function NewTask({ progress, handleRender }) {
-  const [state, setState] = useState(true);
+  const [booleanState, setState] = useState(true);
   const contentRef = useRef();
   const dispatch = useDispatch();
   const startDateRef = useRef();
@@ -128,7 +129,7 @@ export default function NewTask({ progress, handleRender }) {
   const [importance, setImportance] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date('2023/04/19'));
-
+  const { state } = useLocation;
   // 텍스트 에리어 줄바꿈 기능 관련
   // const [textareaHeight, setTextareaHeight] = useState({
   //   row: 1,
@@ -251,7 +252,7 @@ export default function NewTask({ progress, handleRender }) {
     try {
       setLoading(true);
       const resPost = await fetch(
-        `http://localhost:8001/workspace/643d124367f11568276fbfee/${progressUrl}`,
+        `http://localhost:8001/workspace/${state}/${progressUrl}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -272,7 +273,7 @@ export default function NewTask({ progress, handleRender }) {
   };
 
   return (
-    state && (
+    booleanState && (
       <MyNewTask>
         <MyTop>
           <img
