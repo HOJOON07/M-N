@@ -17,11 +17,9 @@ const MyTitle = styled.h2`
   margin-top: 80px;
   color: ${titleColor};
   font-family: 'LINESeedKR-Bd';
-  font-size: 4rem;
+  font-size: 3rem;
   text-align: center;
   font-weight: 700;
-
-  text-shadow: 2px 2px 3px #a9a9a992;
 `;
 
 const MyImg = styled.img`
@@ -59,7 +57,7 @@ export default function NotFound() {
   const navigation = useNavigate();
   return (
     <MyDivContainer>
-      <MyTitle>Page NotFound</MyTitle>
+      <MyTitle>🚫 Page NotFound 🚫</MyTitle>
       <MyImg src={page404} />
       <MySubTitle>페이지를 찾을 수 없습니다.</MySubTitle>
       <MyMainBtn onClick={() => navigation('/')}>홈으로</MyMainBtn>

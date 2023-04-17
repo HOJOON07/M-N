@@ -152,9 +152,6 @@ export default function ProgressItem({
   handleRender,
 }) {
   const [modify, setModify] = useState(false);
-  // 프론트 더미 데이터
-  // const workspaceList = useSelector(state => state.workspace.workspaceList);
-
   // 백연동시
   const workspaceList = useSelector(state => state.workspace);
   const dispatch = useDispatch();
@@ -166,7 +163,7 @@ export default function ProgressItem({
   const [state, setState] = useState(true);
 
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date('2023/04/19'));
+  const [endDate, setEndDate] = useState(new Date('2023/04/21'));
 
   const selectHandler = e => {
     setSelected(e.target.value);
