@@ -49,20 +49,6 @@ export default function Calendar(props) {
   const { startDateOnChange, endDateOnChange } = props;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  // const formatStart = () => {
-  //   const year = startDate.getFullYear();
-  //   const month = startDate.getMonth() + 1;
-  //   const date = startDate.getDate();
-  //   return `${year}년 ${month}월 ${date}일`;
-  // };
-  // const formatEnd = () => {
-  //   const year = endDate.getFullYear();
-  //   const month = endDate.getMonth() + 1;
-  //   const date = endDate.getDate();
-  //   return `${year}년 ${month}월 ${date}일`;
-  // };
-  // console.log(startDate, endDate);
-  // console.log(formatStart(startDate), formatEnd(endDate));
   return (
     <>
       <MyDateTitle>Period of Development</MyDateTitle>
