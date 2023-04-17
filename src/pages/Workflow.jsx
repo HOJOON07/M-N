@@ -78,6 +78,7 @@ const MyNoneBookmark = styled.img`
 
 export default function Workflow() {
   const workspace = useSelector(state => state.workspace);
+
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const workspaceIdTest = '643d124367f11568276fbfee';
@@ -160,6 +161,10 @@ export default function Workflow() {
           <MyList>
             <p>List</p>
             {dataArr.map(el => {
+              console.log(el._id);
+              // console.log(workspace.workspace_name === el.workspace_name);
+              // if (workspace.workspace_name === el.workspace_name)
+              // el.style.backgroundColor = 'black';
               return (
                 <div key={el.id}>
                   <MyNoneBookmark
