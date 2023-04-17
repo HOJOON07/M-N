@@ -141,7 +141,6 @@ export default function ProgressItem({
   const contentRef = useRef();
   const startDateRef = useRef();
   const endDateRef = useRef();
-  let contentInput, startDateInput, endDateInput, checkedImportance;
   const selectList = ['high', 'medium', 'low'];
   const [selected, setSelected] = useState(item.importance);
   const [state, setState] = useState(true);
@@ -269,7 +268,7 @@ export default function ProgressItem({
   };
 
   /** 버튼 클릭 시 특정 id에 해당하는 배열 찾기 함수 */
-  const createDateClickHandler = (id, progress) => {
+  const ClickHandler = (id, progress) => {
     buttonClickHandler(id, progress);
   };
 
@@ -298,7 +297,7 @@ export default function ProgressItem({
   const updateHandler = async (id, progress) => {
     let progressUrl, completedId;
     let payload = {};
-    let modifyContent = {};
+    let modifyContent;
     // const workspace = findProgress(progress);
     const specificProgress = findProgress(progress);
     selectedItem = specificProgress.find(item => item.id === id);
@@ -311,20 +310,14 @@ export default function ProgressItem({
       console.log(modify);
       if (modify) {
         // useRef 값 받아오기
-        modifyContent = {
-          contentInput: contentRef.current.value,
-          startDateInput: startDateRef.current.value,
-          endDateInput: endDateRef.current.value,
-          checkedImportance: selected,
-        };
+        modifyContent = contentRef.current.value;
       }
       // 현재, 수정 버튼 클릭 시, 입력 창이 뜨지 않음 => payload를 당연히 받을 수 없음.
       payload = {
         selectedItem: selectedItem,
         progress,
-        modifyContent: modifyContent,
+        modifyContent,
       };
-      console.log(payload);
       if (progress === 'Request') {
         progressUrl = 'updaterequestlist';
       } else if (progress === 'In Progress') {
@@ -353,7 +346,8 @@ export default function ProgressItem({
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ modifyContent: payload.modifyContent }),
+          // body: payload.modifyContent,
         }
       );
       console.log('resUpdatedPost: ', resUpdatedPost);
@@ -363,6 +357,7 @@ export default function ProgressItem({
       if (data && data.modifyContent) {
         // selectDispatch(data.progress, data.newtask);
         await dispatch(modifyItem(data.modifyContent));
+        // await dispatch(modifyItem(data));
         handleRender();
       }
     } catch (err) {
@@ -373,6 +368,7 @@ export default function ProgressItem({
   };
 
   let contentSpace, dateSpace, importantSpace;
+  console.log(item);
   if (modify === false) {
     contentSpace = <MyContent>{item.content}</MyContent>;
     dateSpace = (
@@ -444,7 +440,7 @@ export default function ProgressItem({
           </span>
           <span
             onClick={() => {
-              createDateClickHandler(id, progress);
+              // createDateClickHandler(id, progress);
             }}
           >
             ❌

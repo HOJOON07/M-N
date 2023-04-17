@@ -147,6 +147,7 @@ export default function NewTask({ progress, handleRender }) {
       progressUrl = 'addrequestlist';
       newData = {
         requestList_content: payload.newtask.content,
+        requestList_startDate: payload.newtask.startDate,
         requestList_endDate: payload.newtask.endDate,
         requestList_importance: payload.newtask.importance,
       };
@@ -154,6 +155,7 @@ export default function NewTask({ progress, handleRender }) {
       progressUrl = 'addinprogresslist';
       newData = {
         inProgressList_content: payload.newtask.content,
+        inProgressList_startDate: payload.newtask.startDate,
         inProgressList_endDate: payload.newtask.endDate,
         inProgressList_importance: payload.newtask.importance,
       };
@@ -161,6 +163,7 @@ export default function NewTask({ progress, handleRender }) {
       progressUrl = 'addinreviewlist';
       newData = {
         inReviewList_content: payload.newtask.content,
+        inReviewList_startDate: payload.newtask.startDate,
         inReviewList_endDate: payload.newtask.endDate,
         inReviewList_importance: payload.newtask.importance,
       };
@@ -168,6 +171,7 @@ export default function NewTask({ progress, handleRender }) {
       progressUrl = 'addblockedlist';
       newData = {
         blockedList_content: payload.newtask.content,
+        blockedList_startDate: payload.newtask.startDate,
         blockedList_endDate: payload.newtask.endDate,
         blockedList_importance: payload.newtask.importance,
       };
@@ -175,6 +179,7 @@ export default function NewTask({ progress, handleRender }) {
       progressUrl = 'addcompletedlist';
       newData = {
         completedList_content: payload.newtask.content,
+        completedList_startDate: payload.newtask.startDate,
         completedList_endDate: payload.newtask.endDate,
         completedList_importance: payload.newtask.importance,
       };

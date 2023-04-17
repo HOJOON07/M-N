@@ -120,7 +120,6 @@ export default function KanbanProgress({
   };
   const brightSubColor = '#e9e4f5';
   let backColor = isOver ? `${brightSubColor}` : '';
-
   return (
     <div
       ref={drop}
@@ -147,8 +146,10 @@ export default function KanbanProgress({
           ➕ Add New Task
         </MyTitle>
       </MyTask>
+
       {status && <NewTask progress={progress} handleRender={handleRender} />}
       {workflowList?.map((el, idx) => {
+        console.log('el: ', el);
         return (
           <ProgressItem
             key={el.id}
