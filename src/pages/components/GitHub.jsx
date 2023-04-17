@@ -16,7 +16,7 @@ export default function GitHub() {
     const gitHubLogin = async () => {
       try {
         const resGitLogin = await axios.post(
-          'http://192.168.0.222:5500/user/githublogin',
+          'http://192.168.30.155:5500/user/githublogin',
           {
             token: CODE,
           }
@@ -29,24 +29,24 @@ export default function GitHub() {
 
         if (resGitLogin.status === 200) {
           axios
-            .post('http://192.168.0.222:5500/user/gitloginsuccess', {
+            .post('http://192.168.30.155:5500/user/gitloginsuccess', {
               user_id: resGitLogin.data.login,
               bio: resGitLogin.data.bio,
               user_email: resGitLogin.data.blog,
               user_name: resGitLogin.data.name,
             })
+
             .then(res => {
-              navigate('/workspace');
               console.log(res);
+              navigate('/workspace');
             })
             .catch(err => {
               console.log(err);
             });
-          // navigate('/workspace');
         }
       } catch (err) {
         console.log('깃헙 로그인 에러 발생', err);
-        navigate('/login');
+        navigate('/');
       }
     };
 

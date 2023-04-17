@@ -5,6 +5,7 @@ import bookmarkIcon from '../assets/images/bookmark-icon.png';
 import Kanban from './components/Workflow/Kanban';
 import workspace, { initList } from '../store/modules/workspace';
 import Loading from '../pages/Loading';
+import { useLocation } from 'react-router-dom';
 
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
@@ -78,9 +79,11 @@ const MyNoneBookmark = styled.img`
 
 export default function Workflow() {
   const workspace = useSelector(state => state.workspace);
+
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const workspaceIdTest = '643d124367f11568276fbfee';
+  const { state } = useLocation();
+
   const [render, setRender] = useState(false);
   const [dataArr, setDataArr] = useState([]);
 
@@ -108,7 +111,7 @@ export default function Workflow() {
       try {
         setLoading(true);
         const resGetAllWS = await fetch(
-          `http://localhost:8001/workspace/${workspaceIdTest}`, // 임시 id값
+          `http://localhost:8001/workspace/${state}`,
           {
             method: 'GET',
             headers: {
@@ -133,7 +136,7 @@ export default function Workflow() {
     const updateWF = async () => {
       try {
         const resUpdateWF = await fetch(
-          'http://localhost:8001/workspace/643d124367f11568276fbfee/updatewf',
+          `http://localhost:8001/workspace/${state}/updatewf`,
           {
             method: 'POST',
             headers: {

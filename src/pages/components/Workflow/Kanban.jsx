@@ -60,8 +60,8 @@ export default function Kanban({ handleRender }) {
 
   // 백 연동 시
   const workspace = useSelector(state => state.workspace);
-
   const workflowList = workspace.workflow;
+
   const iconList = ['✉️', '🔨', '📌', '🔒', '🎉'];
   return (
     <div>
@@ -70,8 +70,8 @@ export default function Kanban({ handleRender }) {
           <MyTitle>Workflow</MyTitle>
           <MyBar />
         </div>
-        <MySubTitle fontSize="14px">
-          {workflowList?.name}워크스페이스명
+        <MySubTitle fontSize="16px">
+          📌 워크스페이스: {workspace?.workspace_name}
         </MySubTitle>
       </MyTitleArea>
       <MyProgressArea>
