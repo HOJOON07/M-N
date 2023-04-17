@@ -129,7 +129,7 @@ export default function NewTask({ progress, handleRender }) {
   const [importance, setImportance] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date('2023/04/19'));
-  const { state } = useLocation;
+  const { state } = useLocation();
   // 텍스트 에리어 줄바꿈 기능 관련
   // const [textareaHeight, setTextareaHeight] = useState({
   //   row: 1,
