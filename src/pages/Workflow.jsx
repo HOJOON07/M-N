@@ -79,17 +79,40 @@ const MyNoneBookmark = styled.img`
 
 export default function Workflow() {
   const workspace = useSelector(state => state.workspace);
+
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { state } = useLocation();
-  // const workspaceId = location.state.id;
-  // 백연동 시
+
+  const workspaceIdTest = '643d124367f11568276fbfee';
+  const [render, setRender] = useState(false);
+  const [dataArr, setDataArr] = useState([]);
+
+  const getAllWS = async () => {
+    try {
+      const resGetAllWS = await fetch('http://localhost:8001/workspace', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (resGetAllWS.status !== 200) return 'fail';
+      const data = await resGetAllWS.json();
+      setDataArr(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleRender = () => {
+    setRender(cur => !cur);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const resGetAllWS = await fetch(
-          `http://localhost:4000/workspace/${state}`, // 임시 id값
+          `http://localhost:4000/workspace/${state}`,
           {
             method: 'GET',
             headers: {
@@ -105,74 +128,61 @@ export default function Workflow() {
       }
       setLoading(false);
     };
-
+    getAllWS();
     fetchData();
-  }, []);
+  }, [render]);
 
-  // 드래그앤드롭 백연동 성공 코드 (임시 주석)
-  // useEffect(() => {
-  //   const updateWF = async () => {
-  //     try {
-  //       const resUpdateWF = await fetch(
-  //         'http://localhost:4000/workspace/643cd7ad2b88be1d07a4f46d/updatewf',
-  //         {
-  //           method: 'POST',
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //           body: JSON.stringify({
-  //             workflow: workspace.workflow,
-  //           }),
-  //         }
-  //       );
-  //       if (resUpdateWF.status !== 200) return 'fail';
-  //       console.log('sdfasfaafafsassssss', resUpdateWF);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
-  //   updateWF();
-  // }, [workspace]);
-
-  // 프론트 더미 데이터
-  // const workspaceList = useSelector(
-  //   state => state.workspace.workspaceList
-  // ).filter(el => el.bookmarked);
-  // const bookmarkedList = useSelector(
-  //   state => state.workspace.workspaceList
-  // ).filter(el => !el.bookmarked);
+  // dnd
+  useEffect(() => {
+    const updateWF = async () => {
+      try {
+        const resUpdateWF = await fetch(
+          'http://localhost:8001/workspace/643d124367f11568276fbfee/updatewf',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              workflow: workspace.workflow,
+            }),
+          }
+        );
+        if (resUpdateWF.status !== 200) return 'fail';
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    updateWF();
+  }, [workspace]);
 
   return (
     <MyWorkspaceArea>
       {!loading ? (
         <MyWorkspaceList>
           <MyTitle>Workspace</MyTitle>
-          {/* <MyList>
-                <p>Bookmark</p>
-                {bookmarkedList.map(el => {
-                  return (
-                    <div key={el.id}>
-                      <MyBookmark alt="북마크 완료 아이콘" src={bookmarkIcon} />
-                      <div>{el.workspace_name}</div>
-                    </div>
-                  );
-                })}
-              </MyList>
-              <MyList>
-                <p>List</p>
-                {workspaceList.map(el => {
-                  return (
-                    <div key={el.id}>
-                      <MyNoneBookmark alt="북마크 미완료 아이콘" src={bookmarkIcon} />
-                      <div>{el.workspace_name}</div>
-                    </div>
-                  );
-                })}
-              </MyList> */}
+          <MyList>
+            <p>List</p>
+            {dataArr.map(el => {
+              console.log(el._id);
+              // console.log(workspace.workspace_name === el.workspace_name);
+              // if (workspace.workspace_name === el.workspace_name)
+              // el.style.backgroundColor = 'black';
+              return (
+                <div key={el.id}>
+                  <MyNoneBookmark
+                    alt="북마크 미완료 아이콘"
+                    src={bookmarkIcon}
+                  />
+                  <div>{el.workspace_name}</div>
+                </div>
+              );
+            })}
+          </MyList>
         </MyWorkspaceList>
       ) : null}
 
-      {!loading ? <Kanban /> : <Loading />}
+      {!loading ? <Kanban handleRender={handleRender} /> : <Loading />}
     </MyWorkspaceArea>
   );
 }

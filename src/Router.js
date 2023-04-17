@@ -15,6 +15,7 @@ import NotFound from './pages/NotFound';
 import Kakao from './pages/components/Kakao';
 import GitHub from './pages/components/GitHub';
 import Calendar from './pages/Calendar';
+import LoginNeeded from './pages/components/LoginNeeded';
 
 const Router = () => {
   return (
@@ -31,6 +32,7 @@ const Router = () => {
         <Route path="/oauth/github/callback" element={<GitHub />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/calendar" element={<Calendar />} />
+        <Route path="/plzlogin" element={<LoginNeeded />} />
       </Routes>
       <Footer />
     </BrowserRouter>
