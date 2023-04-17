@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
+import Login from '../pages/Login';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -20,6 +21,14 @@ const MyHeaderContainer = styled.div`
   margin: auto;
   padding: 12px;
 `;
+
+const MyMainLogo = styled.div`
+  height: 100%;
+  margin: auto 10px;
+  display: flex;
+  cursor: pointer;
+`;
+
 const MyLogoImg = styled.img`
   width: 50px;
   height: 50px;
@@ -122,25 +131,30 @@ export default function Header() {
   console.log('로그인 여부', isLogin);
 
   const navigation = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const showModal = () => {
+    setModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
 
   return (
     <MyInnerContainer>
       <MyHeaderContainer>
-        <MyDiv>
+        <MyMainLogo onClick={() => navigation('/')}>
           <MyLogoImg src="/images/logo.png" />
           <div>
             <MyLogoTxt>Meet</MyLogoTxt>
             <MyLogoTxtSec>Notes</MyLogoTxtSec>
           </div>
-        </MyDiv>
+        </MyMainLogo>
 
         <MyDiv>
           {!isLogin ? (
             <>
               <MyGreetingText>로그인이 필요합니다</MyGreetingText>
-              <MyLoginButton onClick={() => navigation('/login')}>
-                로그인
-              </MyLoginButton>
+              <MyLoginButton onClick={showModal}>로그인</MyLoginButton>
+              {modalOpen && <Login setModalOpen={setModalOpen} />}
               <MySignUpButton onClick={() => navigation('/signup')}>
                 회원가입
               </MySignUpButton>

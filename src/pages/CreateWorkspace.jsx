@@ -179,72 +179,51 @@ export default function CreateWorkspace() {
 
   const [userlist, setUserList] = useState([]); // 유저리스트
   const [checkedUserList, setCheckedUserList] = useState([]);
+  const [etcData, setEtcData] = useState([]);
+
+  const workspaceName = useRef();
+  const githubRepository = useRef();
 
   const checkOnChange = (checked, user_id) => {
-    // const idArr = checkedUserList.map(el => {
-    //   return setCheckedUserList(prev => [...prev, el.user_id]);
-    // });
-    // console.log(idArr);
-    // console.log(user_id);
     if (checked) {
-      // checkedUserList.map(el => {
-      //   console.log('el', el);
-      //   setCheckedUserList(prev => [...prev, el.user_id]);
-      // });
       setCheckedUserList(prev => [...prev, user_id]);
     } else {
       setCheckedUserList(checkedUserList.filter(el => el !== user_id));
     }
   };
-  // 생성하는 프로젝트에 대한 데이터
-  // console.log(userlist);
-  // console.log(checkedUserList);
-  const [createData, setCreateData] = useState({
-    workspace_leader: 'ghwns1007',
-    workspace_name: '',
-    workspace_category: '',
-    github_email: '',
-    workspace_start: '',
-    workspace_end: '',
-    workspace_member: [],
-    userlist,
-  });
-  //   const createWorkSpace = () =>{
-  //     axios.post("http://192.168.0.7:8001/addws",{
-  // setCreateData({...createData,})
-  //     }).
-  //   }
+
+  const createData = {};
+
   //유저리스트 불러오기
-  const getUserList = () => {
+  const getUserList = async () => {
     axios.get('/data/userList.json').then(res => {
       setUserList(res.data);
     });
+    // const getUser = await fetch('http://localhost:8001/workspace/users', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
+    // if (!getUser) return alert('fail');
+    // return console.log(getUser.json());
   };
-  //프로젝트 초기 데이터 불러오기
-  const getCreateData = () => {
-    axios.get('/data/createData.json').then(res => {
-      setCreateData(res.data);
-    });
-  };
+
   useEffect(() => {
     getUserList();
-    getCreateData();
   }, []);
 
-  const WorkSpaceNameOnChange = e => {
-    setCreateData({ ...createData, workspace_name: e.target.value });
-  };
-  const gitOnChage = e => {
-    setCreateData({ ...createData, github_email: e.target.value });
-  };
   const categoryOnChange = e => {
-    setCreateData({ ...createData, workspace_category: e.target.value });
+    setEtcData({ ...etcData, workspace_category: e.target.value });
   };
   const startDateOnChange = startDate => {
-    setCreateData({ ...createData, workspace_start: startDate });
+    setEtcData({ ...etcData, workspace_startDate: startDate });
   };
   const endDateOnChange = endDate => {
-    setCreateData({ ...createData, workspace_end: endDate });
+    setEtcData({ ...etcData, workspace_endDate: endDate });
+  };
+  const typeOnChange = e => {
+    setEtcData({ ...etcData, workspace_type: e.target.value });
   };
 
   const result = () => {
@@ -260,6 +239,65 @@ export default function CreateWorkspace() {
   };
   const searchUserList = result();
 
+  async function setData() {
+    createData.workspace_startDate = etcData.workspace_startDate;
+    createData.workspace_endDate = etcData.workspace_endDate;
+    createData.workspace_category = etcData.workspace_category;
+    createData.workspace_type = etcData.workspace_type;
+
+    createData.member = searchUserList;
+    createData.githubRepository = githubRepository.current.value;
+    createData.workspace_name = workspaceName.current.value;
+    if (!createData.workspace_category) {
+      createData.workspace_category = 'FrontEnd';
+    }
+    if (!createData.workspace_startDate) {
+      createData.workspace_startDate =
+        new Date().getFullYear() +
+        '-' +
+        (new Date().getMonth() + 1 < 10
+          ? '0' + (new Date().getMonth() + 1)
+          : new Date().getMonth() + 1) +
+        '-' +
+        (new Date().getDate() < 10
+          ? '0' + new Date().getDate()
+          : new Date().getDate());
+    }
+    if (!createData.workspace_endDate) {
+      createData.workspace_endDate =
+        new Date().getFullYear() +
+        '-' +
+        (new Date().getMonth() + 1 < 10
+          ? '0' + (new Date().getMonth() + 1)
+          : new Date().getMonth() + 1) +
+        '-' +
+        (new Date().getDate() < 10
+          ? '0' + new Date().getDate()
+          : new Date().getDate());
+    }
+    try {
+      const isCreate = window.confirm(
+        `새로운 워크스페이스 '${workspaceName.current.value}' 를 생성하시겠습니까?`
+      );
+      if (isCreate) {
+        const createWorkspace = await fetch(
+          'http://localhost:4000/workspace/addws',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(createData),
+          }
+        );
+        if (createWorkspace.status != 200) return alert('생성실패');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
+    navigation('/workspace');
+  }
   return (
     <MySectionContainer>
       <MyTitleWrap>
@@ -269,7 +307,12 @@ export default function CreateWorkspace() {
         </div>
         <div>
           <MyResetButton>Reset</MyResetButton>
-          <MySignupButton onClick={() => navigation('/workspace')}>
+          <MySignupButton
+            onClick={() => {
+              console.log(createData);
+              setData();
+            }}
+          >
             Submit
           </MySignupButton>
         </div>
@@ -277,20 +320,28 @@ export default function CreateWorkspace() {
       <MyContentCotainer>
         <MyLeftContent>
           <MyContentNameWrap>
-            <MyProjectName
-              type="text"
-              placeholder="Name"
-              onChange={e => {
-                WorkSpaceNameOnChange(e);
-              }}
-            />
+            <MyProjectName type="text" placeholder="Name" ref={workspaceName} />
             <MyP>
               Private
-              <input type="radio" name="sort" />
+              <input
+                type="radio"
+                name="sort"
+                onChange={e => {
+                  typeOnChange(e);
+                }}
+                value="private"
+              />
             </MyP>
             <MyP>
               Company
-              <input type="radio" name="sort" />
+              <input
+                type="radio"
+                name="sort"
+                onChange={e => {
+                  typeOnChange(e);
+                }}
+                value="company"
+              />
             </MyP>
           </MyContentNameWrap>
           <MyDivRelative>
@@ -298,19 +349,14 @@ export default function CreateWorkspace() {
             <MyGithubInput
               type="text"
               placeholder="Github Repository Address"
-              onChange={e => {
-                gitOnChage(e);
-              }}
+              ref={githubRepository}
             />
             <MyConnectBtn>Connect</MyConnectBtn>
           </MyDivRelative>
           {/* 깃허브 주소 밑에 부분시작 */}
           <MyProjectInfoWrap>
             <MyInfoLeftWrap>
-              <Select
-                categoryOnChange={categoryOnChange}
-                createData={createData}
-              />
+              <Select categoryOnChange={categoryOnChange} />
               <Calendar
                 startDateOnChange={startDateOnChange}
                 endDateOnChange={endDateOnChange}
@@ -320,6 +366,7 @@ export default function CreateWorkspace() {
               userlist={userlist}
               checkOnChange={checkOnChange}
               checkedUserList={checkedUserList}
+              createData={createData}
             />
           </MyProjectInfoWrap>
         </MyLeftContent>

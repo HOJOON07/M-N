@@ -14,6 +14,7 @@ import Workflow from './pages/Workflow';
 import NotFound from './pages/NotFound';
 import Kakao from './pages/components/Kakao';
 import GitHub from './pages/components/GitHub';
+import Calendar from './pages/Calendar';
 
 const Router = () => {
   return (
@@ -22,16 +23,14 @@ const Router = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/workspace" element={<WorkspaceList />} />
         <Route path="/create" element={<CreateWorkspace />} />
         <Route path="/workflow" element={<Workflow />} />
         <Route path="/oauth/kakao/callback" element={<Kakao />} />
         <Route path="/oauth/github/callback" element={<GitHub />} />
-
         <Route path="*" element={<NotFound />} />
-        <Route path="" />
+        <Route path="/calendar" element={<Calendar />} />
       </Routes>
       <Footer />
     </BrowserRouter>

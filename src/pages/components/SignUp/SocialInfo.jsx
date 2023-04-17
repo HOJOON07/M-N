@@ -39,7 +39,7 @@ const MyJoinBox = styled.div`
   border: 1px solid ${props => props.border};
   position: relative;
   display: flex;
-  padding: 10px 0;
+  padding: 20px 0;
   cursor: pointer;
 
   &:nth-child(2) {

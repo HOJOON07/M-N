@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { keyframes } from 'styled-components';
+import teamWork from '../../../assets/images/team-work.png';
 
 // Color Variables
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
-const subColor = '#d5cee8';
 const brightSubColor = '#e9e4f5';
 
 //keyframes
@@ -50,13 +50,36 @@ const MyBackImg = styled.div`
 
 const MyBackImgSec = styled.div`
   position: absolute;
-  top: 51vh;
-  left: 287px;
+  top: 70vh;
+  left: 347px;
 
   width: 320px;
   height: 320px;
   border-radius: 50%;
-  background-color: ${subColor};
+  background-color: ${brightSubColor};
+  box-shadow: 3px 3px 5px #a4a4a474;
+
+  opacity: 0.7;
+`;
+
+const fadeIn = keyframes`
+from {
+  opacity: 0;
+}
+to {
+opacity: .9;
+}
+`;
+
+const MyBackImgSecPlus = styled.img`
+  position: absolute;
+  top: 132px;
+  left: 48px;
+
+  width: 450px;
+  height: 450px;
+
+  animation: ${fadeIn} 2.5s ease-in-out;
 `;
 
 const MyBackImgThr = styled.div`
@@ -95,7 +118,7 @@ const MyFreeButton = styled.button`
   padding: 15px 40px;
   font-size: 1rem;
   font-weight: 700;
-  border-radius: 10px;
+  border-radius: 50px;
   border: none;
   cursor: pointer;
   background-color: ${mainColor};
@@ -105,23 +128,28 @@ const MyFreeButton = styled.button`
     background-color: ${hoverMainColor};
   }
 `;
+
 export default function MainFir() {
+  const isOpen = useRef(false);
+  useEffect(() => {
+    isOpen.current = true;
+  }, []);
   const navigation = useNavigate();
   return (
     <MyMainContainer>
       <MyBackImgContainer>
+        <MyBackImgSec />
         <div>
           <MyBackImg />
-          {/* <MyBackImgRotate /> */}
+          {isOpen ? <MyBackImgSecPlus src={teamWork} /> : null}
         </div>
 
-        <MyBackImgSec />
         <MyBackImgThr />
       </MyBackImgContainer>
       <MyDivContainer>
         <MyH3>MeetNotes로 스마트하게 프로젝트를 관리해보세요!</MyH3>
         <MyP>개발자가 개발에만 집중할 수 있도록</MyP>
-        <MyFreeButton onClick={() => navigation('/login')}>
+        <MyFreeButton onClick={() => navigation('/signup')}>
           무료로 시작
         </MyFreeButton>
       </MyDivContainer>

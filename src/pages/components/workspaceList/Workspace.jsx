@@ -5,6 +5,7 @@ import mystar from '../../../assets/images/bookmark-icon.png';
 import mybar from '../../../assets/images/menu.png';
 import myrepo from '../../../assets/images/gitcat.png';
 import myface_a from '../../../assets/images/default-profile.png';
+import { useNavigate } from 'react-router-dom';
 
 const progressColor = '#9781dd';
 const mainColor = '#623ad6';
@@ -14,12 +15,20 @@ const subColor = '#cbcbcb';
 
 const MyWorkSpace = styled.section`
   justify-content: space-between;
+  cursor: pointer;
 `;
 
 const MySpaceContainer = styled.div`
   display: flex;
   margin: 30px 0;
   max-width: 1200px;
+
+  transition: 0.3s;
+
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: 2px 2px 3px #acacac9c;
+  }
 `;
 
 const MySpaceLeft = styled.div`
@@ -28,6 +37,7 @@ const MySpaceLeft = styled.div`
   background-color: ${brightSubColor};
   border-top-left-radius: 7px;
   border-bottom-left-radius: 7px;
+  box-shadow: 2px 2px 3px #acacac9c;
 `;
 const MySpaceStar = styled.img`
   position: absolute;
@@ -120,13 +130,20 @@ const MyProgressBar = styled.div`
   margin-left: 5px;
 `;
 
+const MyProgressPercent = styled.p`
+  font-size: 0.8rem;
+  padding-top: 6px;
+  text-align: center;
+`;
+
 const MySpaceRight = styled.div`
   position: relative;
   width: 30%;
-  background-color: ${progressColor};
+  background-color: #2a2f4f;
 
   border-top-right-radius: 7px;
   border-bottom-right-radius: 7px;
+  box-shadow: 2px 2px 3px #acacac9c;
 `;
 
 const MyPrivateBtn = styled.button`
@@ -155,7 +172,7 @@ const MyCategoryBtn = styled.button`
   box-sizing: border-box;
   font-size: 1.1rem;
   border-radius: 6px;
-  background-color: #726b87;
+  background-color: #917fb3;
   border: none;
   cursor: pointer;
   font-weight: 700;
@@ -181,8 +198,9 @@ export default function Workspace({
   member,
   progressPercent,
 }) {
+  const navigation = useNavigate();
   return (
-    <MyWorkSpace>
+    <MyWorkSpace onClick={() => navigation('/workflow')}>
       <MySpaceContainer>
         <MySpaceLeft>
           <MySpaceStar src={mystar} alt="즐겨찾기 이미지" />
@@ -222,10 +240,12 @@ export default function Workspace({
             <MySpaceProgress>
               <MyProgressBar
                 style={{
-                  width: `${progressPercent * 640}px`,
+                  width: `${progressPercent ? progressPercent * 640 : 0}px`,
                 }}
               >
-                <span>{progressPercent * 100}%</span>
+                <MyProgressPercent>
+                  {progressPercent ? progressPercent * 100 : 0}%
+                </MyProgressPercent>
               </MyProgressBar>
             </MySpaceProgress>
           </MyWorkBar>
@@ -237,7 +257,7 @@ export default function Workspace({
           <MyCategoryBtn>
             {workspace_category ? workspace_category : 'workspace_category'}
           </MyCategoryBtn>
-          <MyMenuBar src={mybar} alt="메뉴바" />
+          {/* <MyMenuBar src={mybar} alt="메뉴바" /> */}
         </MySpaceRight>
       </MySpaceContainer>
     </MyWorkSpace>

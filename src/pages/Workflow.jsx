@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import bookmarkIcon from '../assets/images/bookmark-icon.png';
 import Kanban from './components/Workflow/Kanban';
-import { initList } from '../store/modules/workspace';
+import workspace, { initList } from '../store/modules/workspace';
 import Loading from '../pages/Loading';
 
 const mainColor = '#623ad6';
@@ -13,7 +13,7 @@ const brightSubColor = '#e9e4f5';
 
 const MyWorkspaceArea = styled.div`
   display: flex;
-  width: 100%;
+  width: 99%;
   height: 90vh;
 
   & > div:nth-child(2) {
@@ -77,6 +77,7 @@ const MyNoneBookmark = styled.img`
 `;
 
 export default function Workflow() {
+  const workspace = useSelector(state => state.workspace);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const workspaceIdTest = '643a2995b7f6810e3ce63447';
@@ -109,14 +110,6 @@ export default function Workflow() {
 
     fetchData();
   }, [render]);
-
-  // 프론트 더미 데이터
-  // const workspaceList = useSelector(
-  //   state => state.workspace.workspaceList
-  // ).filter(el => el.bookmarked);
-  // const bookmarkedList = useSelector(
-  //   state => state.workspace.workspaceList
-  // ).filter(el => !el.bookmarked);
 
   return (
     <MyWorkspaceArea>

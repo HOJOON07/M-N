@@ -9,6 +9,7 @@ import axios from 'axios';
 import Kakao from './components/Kakao';
 import Naver from './components/Naver';
 import GitHub from './components/GitHub';
+import KakaoLogout from './components/KakaoLogout';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -17,29 +18,20 @@ const subColor = '#d5cee8';
 const brightSubColor = '#e9e4f5';
 
 const MyContainer = styled.section`
+  position: absolute;
+  z-index: 999;
   display: flex;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100%;
+  height: 100%;
   justify-content: space-between;
-  max-width: 1000px;
-
-  margin: auto;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  background: rgba(0, 0, 0, 0.8);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
-const MyExplain = styled.span`
-  width: 600px;
-  height: 500px;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-`;
-
-const MyTitle = styled.p`
-  margin-top: 150px;
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
 const MyLogoTitle = styled.p`
   font-size: 1.3rem;
   font-weight: 700;
@@ -48,21 +40,26 @@ const MyLogoTitle = styled.p`
   top: 30px;
 `;
 
-const MyList = styled.p`
-  font-size: 20px;
-  font-weight: 500;
-  text-align: left;
-  margin-top: 15px;
-  margin-left: 80px;
+const MyCloseBtn = styled.button`
+  position: absolute;
+  background-color: white;
+  right: 25px;
+  font-size: 1.6rem;
+  opacity: 0.5;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
 `;
 
 const MyLogin = styled.span`
-  width: 600px;
+  position: absolute;
+  width: 500px;
   height: 500px;
-  justify-content: center;
   text-align: center;
   align-items: center;
-  margin-left: 20px;
+  top: 15%;
+  left: 33%;
+  background-color: white;
   border-style: 2px solid black;
   box-shadow: 5px 5px 7px 0px #52525267;
   border-radius: 30px;
@@ -79,7 +76,7 @@ const MyLogo = styled.img`
 const MyDivContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin: 30px 0;
+  margin: 20px 0;
   position: relative;
 `;
 
@@ -181,7 +178,6 @@ const MySocial = styled.img`
 
 const MySocialBack = styled.div`
   position: absolute;
-  z-index: -1;
   width: 55px;
   height: 55px;
   background-color: ${props => props.color};
@@ -202,7 +198,14 @@ const MySocialBackSec = styled.div`
   bottom: 0;
 `;
 
-export default function Login() {
+export default function Login({ setModalOpen }) {
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('accessToken');
+  const closeModal = () => {
+    setModalOpen(false);
+    document.body.style.overflow = 'unset';
+  };
+
   const gotoWorkSpaceList = () => {
     navigate('/workspace');
   };
@@ -218,9 +221,25 @@ export default function Login() {
       user_password: inputs.password,
     };
     axios
-      .post('http://192.168.0.222:5500/user/login', userData)
+      .post(
+        'http://192.168.0.222:5500/user/login',
+        userData,
+        {
+          withCredentials: true,
+        },
+        {
+          header: {
+            cookie: { refreshToken, accessToken },
+          },
+        }
+      )
       .then(res => {
+        console.log(res.cookies);
         if (res.status === 200) {
+          localStorage.setItem('accessToken', res.data.accessToken);
+          localStorage.setItem('refreshToken', res.data.refreshToken);
+          setModalOpen(false);
+          console.log(res);
           gotoWorkSpaceList();
           setMsg('');
         }
@@ -279,18 +298,14 @@ export default function Login() {
   const GITHUB_LOGIN = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${GITHUB_REDIRECT}`;
   return (
     <MyContainer>
-      <MyExplain>
-        <MyTitle>지금 무료로 시작하기</MyTitle>
-        <br />
-        <MyList>☑️워크플로우</MyList>
-        <MyList>☑️회의 기록</MyList>
-        <MyList>☑️보고서</MyList>
-        <MyList>☑️기획서</MyList>
-      </MyExplain>
       <MyLogin>
         <MyDivContainer>
           <MyLogo src={myLogo} alt="로고이미지" />
           <MyLogoTitle>지금 무료로 시작하기</MyLogoTitle>
+
+          <MyCloseBtn type="button" onClick={closeModal}>
+            ✕
+          </MyCloseBtn>
         </MyDivContainer>
         <MyInputPart>
           <MyInput
@@ -322,7 +337,11 @@ export default function Login() {
         <MyLinkList>
           <MyLink to="/">아이디 찾기</MyLink>
           <MyLink to="/">비밀번호 찾기</MyLink>
-          <MyLink to="/">회원가입 하기</MyLink>
+          <MyLink>
+            <Link to="/signup" onClick={closeModal}>
+              회원가입 하기
+            </Link>
+          </MyLink>
         </MyLinkList>
 
         <div style={{ position: 'relative' }}>
@@ -335,6 +354,7 @@ export default function Login() {
             <div
               style={{ position: 'relative', width: '55px', height: '55px' }}
             >
+              <MySocialBack color="#ffeb3b" />
               <MySocial
                 src={mySocialKakao}
                 alt="카카오톡이미지"
@@ -343,9 +363,9 @@ export default function Login() {
                   height: '40px',
                   display: 'inline-block',
                   marginTop: '7px',
+                  position: 'relative',
                 }}
               />
-              <MySocialBack color="#ffeb3b" />
             </div>
           </Link>
           <Link to="/" style={{ marginRight: '15px' }}>

@@ -1,93 +1,93 @@
 const initState = {
   // 더미 데이터 ~
-  workspaceList: [
-    {
-      id: 0,
-      workspace_name: 'workspace1',
-      workspace_category: 'web',
-      workspace_startDate: '2023-04-01:0000',
-      workspace_endDate: '2023-04-01:1111',
-      githubRepository: 'https://github.com/0uizi0/test1',
-      member: ['qkrtjdwo5662', 'psjj03'],
-      bookmarked: false,
-      workflow: {
-        requestList: [
-          {
-            id: '001',
-            content: '내용1',
-            createDate: '2023-04-01:0001',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-          {
-            id: '002',
-            content: '내용2',
-            createDate: '2023-04-01:0001',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'high',
-          },
-          {
-            id: '003',
-            content: '내용3',
-            createDate: '2023-04-01:0001',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-        inProgressList: [
-          {
-            id: '011',
-            content: '내용2',
-            createDate: '2023-04-01:0002',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'medium',
-          },
-          {
-            id: '012',
-            content: '내용3',
-            createDate: '2023-04-01:0002',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-        inReviewList: [
-          {
-            id: '200',
-            content: '3',
-            createDate: '2023-04-01:0003',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-        blockedList: [
-          {
-            id: '300',
-            content: '666',
-            createDate: '2023-04-01:0004',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-        completedList: [
-          {
-            id: '040',
-            content: '1',
-            createDate: '2023-04-01:0005',
-            startDate: '2023-04-11',
-            endDate: '2023-04-12',
-            importance: 'low',
-          },
-        ],
-      },
-    },
-  ],
+  // workspaceList: [
+  //   {
+  //     id: 0,
+  //     workspace_name: 'workspace1',
+  //     workspace_category: 'web',
+  //     workspace_startDate: '2023-04-01:0000',
+  //     workspace_endDate: '2023-04-01:1111',
+  //     githubRepository: 'https://github.com/0uizi0/test1',
+  //     member: ['qkrtjdwo5662', 'psjj03'],
+  //     bookmarked: false,
+  //     workflow: {
+  //       requestList: [
+  //         {
+  //           id: '001',
+  //           content: '내용1',
+  //           createDate: '2023-04-01:0001',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //         {
+  //           id: '002',
+  //           content: '내용2',
+  //           createDate: '2023-04-01:0001',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'high',
+  //         },
+  //         {
+  //           id: '003',
+  //           content: '내용3',
+  //           createDate: '2023-04-01:0001',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //       inProgressList: [
+  //         {
+  //           id: '011',
+  //           content: '내용2',
+  //           createDate: '2023-04-01:0002',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'medium',
+  //         },
+  //         {
+  //           id: '012',
+  //           content: '내용3',
+  //           createDate: '2023-04-01:0002',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //       inReviewList: [
+  //         {
+  //           id: '200',
+  //           content: '3',
+  //           createDate: '2023-04-01:0003',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //       blockedList: [
+  //         {
+  //           id: '300',
+  //           content: '666',
+  //           createDate: '2023-04-01:0004',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //       completedList: [
+  //         {
+  //           id: '040',
+  //           content: '1',
+  //           createDate: '2023-04-01:0005',
+  //           startDate: '2023-04-11',
+  //           endDate: '2023-04-12',
+  //           importance: 'low',
+  //         },
+  //       ],
+  //     },
+  //   },
+  // ],
   // ~더미 데이터
 };
 
@@ -149,8 +149,11 @@ export function subtractList(subListType, selectedDragItem, subList) {
   };
 }
 
-export function addList(addListType, item, dropIndex) {
-  return { type: ADD_LIST, payload: { addListType, item, dropIndex } };
+export function addList(addListType, item, dropIndex, addLists) {
+  return {
+    type: ADD_LIST,
+    payload: { addListType, item, dropIndex, addLists },
+  };
 }
 
 // 액션 생성 함수 작성
@@ -440,32 +443,24 @@ export default function workspace(state = initState, action) {
 
     case SUBTRACT_LIST:
       let { subListType, selectedDragItem, subList } = action.payload;
-
       subListType = findProgress(subListType);
-      const updatedList = state.workspaceList[0].workflow[subListType].filter(
-        item => item.id !== selectedDragItem.id
-      );
+
+      const updatedList = state.workflow[subListType].filter(item => {
+        return item.id !== selectedDragItem.id;
+      });
       return {
         ...state,
-        workspaceList: [
-          {
-            ...state.workspaceList[0],
-            workflow: {
-              ...state.workspaceList[0].workflow,
-              [subListType]: updatedList ? updatedList : null,
-            },
-          },
-        ],
+        workflow: {
+          ...state.workflow,
+          [subListType]: updatedList ? updatedList : null,
+        },
       };
 
     case ADD_LIST:
-      let { addListType, item, dropIndex } = action.payload;
+      let { addListType, item, dropIndex, addLists } = action.payload;
 
       addListType = findProgress(addListType);
-
-      // tetz, 배열을 직접 변경하면 mutation 에러가 뜨므로 해당 부분을 피하기 위해서
-      // 배열을 카피해서 변경 후 직접 부여
-      let updateAddList = [...state.workspaceList[0].workflow[addListType]];
+      let updateAddList = [...state.workflow[addListType]];
 
       // dropIndex 가 null 이 아니면 특정 task 위에 드롭이 되었다는 것이므로, 해당 위치에 가져온 item 을 추가
       if (dropIndex !== null) {
@@ -477,15 +472,10 @@ export default function workspace(state = initState, action) {
 
       return {
         ...state,
-        workspaceList: [
-          {
-            ...state.workspaceList[0],
-            workflow: {
-              ...state.workspaceList[0].workflow,
-              [addListType]: [...updateAddList],
-            },
-          },
-        ],
+        workflow: {
+          ...state.workflow,
+          [addListType]: [...updateAddList],
+        },
       };
 
     default:

@@ -9,6 +9,7 @@ import {
   newBlocked,
   newCompleted,
 } from '../../../store/modules/workspace';
+import ReactDatePicker from 'react-datepicker';
 
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
@@ -21,7 +22,7 @@ const greyColor = '#696969';
 // Styled Components
 const MyNewTask = styled.div`
   position: relative;
-  border: 1px solid ${subColor};
+  border: 2px solid ${mainColor};
   border-radius: 5px;
   background-color: ${contentColor};
   padding: 10px 10px 42px;
@@ -61,6 +62,7 @@ const MyContent = styled.input`
   padding: 5px 10px;
   box-sizing: border-box;
 `;
+
 const MyBottom = styled.div`
   height: 15px;
   line-height: 19px;
@@ -124,6 +126,44 @@ export default function NewTask({ progress, handleRender }) {
   const startDateRef = useRef();
   const endDateRef = useRef();
   const [importance, setImportance] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date('2023/04/19'));
+
+  // 텍스트 에리어 줄바꿈 기능 관련
+  // const [textareaHeight, setTextareaHeight] = useState({
+  //   row: 1,
+  //   lineBreak: {},
+  // });
+
+  // const resizeTextarea = e => {
+  //   const { scrollHeight, clientHeight, value } = e.target;
+
+  //   // 줄바꿈이 일어날 때
+  //   if (scrollHeight > clientHeight) {
+  //     setTextareaHeight(prev => ({
+  //       row: prev.row + 1,
+  //       lineBreak: { ...prev.lineBreak, [value.length - 1]: true },
+  //     }));
+  //   }
+
+  //   // 텍스트 지워서 줄바꿈 지점에 도달했을 때
+  //   if (textareaHeight.lineBreak[value.length]) {
+  //     setTextareaHeight(prev => ({
+  //       row: prev.row - 1,
+  //       lineBreak: { ...prev.lineBreak, [value.length]: false },
+  //     }));
+  //   }
+  // };
+
+  // const onKeyEnter = e => {
+  //   if (e.code === 'Enter') {
+  //     setTextareaHeight(prev => ({
+  //       row: prev.row + 1,
+  //       lineBreak: { ...prev.lineBreak, [e.target.value.length]: true },
+  //     }));
+  //   }
+  // };
+
   const handleImportanceChange = e => {
     setImportance(e.target.value);
   };
@@ -138,11 +178,14 @@ export default function NewTask({ progress, handleRender }) {
         id: newId,
         content: contentRef.current.value,
         createDate: Date(),
-        startDate: startDateRef.current.value, // 시작날짜 추가
-        endDate: endDateRef.current.value,
+        // startDate: startDateRef.current.value, // 시작날짜 추가
+        // endDate: endDateRef.current.value,
+        startDate: startDate.toLocaleDateString(),
+        endDate: endDate.toLocaleDateString(),
         importance: importance ? importance : 'medium', // 중요도 기본값 추가
       },
     };
+
     if (progress === 'Request') {
       progressUrl = 'addrequestlist';
       newData = {
@@ -238,11 +281,33 @@ export default function NewTask({ progress, handleRender }) {
             alt="기본 프로필 이미지"
           />
           <MyCalendarContainer>
-            <MyCalenderSpan>시작일 : </MyCalenderSpan>
+            <>
+              <ReactDatePicker
+                dateFormat="yyyy.MM.dd"
+                selected={startDate}
+                onChange={date => setStartDate(date)}
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
+                ref={startDateRef}
+              />
+              <span> ~</span>
+              <ReactDatePicker
+                dateFormat="yyyy.MM.dd"
+                selected={endDate}
+                onChange={date => setEndDate(date)}
+                selectsEnd
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
+                ref={endDateRef}
+              />
+            </>
+            {/* <MyCalenderSpan>시작일 : </MyCalenderSpan>
             <MyCalendar required type="date" ref={startDateRef} />
             <br />
             <MyCalenderSpan>종료일 : </MyCalenderSpan>
-            <MyCalendar required type="date" ref={endDateRef} />
+            <MyCalendar required type="date" ref={endDateRef} /> */}
           </MyCalendarContainer>
         </MyTop>
 
@@ -254,6 +319,7 @@ export default function NewTask({ progress, handleRender }) {
         />
 
         <MyBottom>
+          <span style={{ fontSize: '.7rem' }}>중요도</span>
           <MyRadio
             type="radio"
             value="high"
@@ -278,7 +344,7 @@ export default function NewTask({ progress, handleRender }) {
           Low
         </MyBottom>
         <MySubmit>
-          <MySubmitButton onClick={handelClick}>submit</MySubmitButton>
+          <MySubmitButton onClick={handelClick}>Submit</MySubmitButton>
         </MySubmit>
       </MyNewTask>
     )

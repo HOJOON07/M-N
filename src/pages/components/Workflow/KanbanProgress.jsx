@@ -59,28 +59,46 @@ export default function KanbanProgress({
   handleRender,
 }) {
   const [status, setStatus] = useState(false);
-  const workspaceList = useSelector(state => state.workspace.workspaceList);
+  // const workspaceList = useSelector(state => state.workspace.workspaceList);
+  const workspaceList = useSelector(state => state.workspace);
   const dispatch = useDispatch();
 
   // 프로그레스명으로 DB 데이터를 구분하는 함수
+  // const findProgress = progress => {
+  //   let specificProgress;
+  //   if (progress === 'Request') {
+  //     specificProgress = workspaceList[0].workflow.requestList;
+  //   } else if (progress === 'In Progress') {
+  //     specificProgress = workspaceList[0].workflow.inProgressList;
+  //   } else if (progress === 'In Review') {
+  //     specificProgress = workspaceList[0].workflow.inReviewList;
+  //   } else if (progress === 'Blocked') {
+  //     specificProgress = workspaceList[0].workflow.blockedList;
+  //   } else {
+  //     specificProgress = workspaceList[0].workflow.completedList;
+  //   }
+
+  //   return specificProgress;
+  // };
+
+  // react dnd
   const findProgress = progress => {
     let specificProgress;
     if (progress === 'Request') {
-      specificProgress = workspaceList[0].workflow.requestList;
+      specificProgress = workspaceList.workflow.requestList;
     } else if (progress === 'In Progress') {
-      specificProgress = workspaceList[0].workflow.inProgressList;
+      specificProgress = workspaceList.workflow.inProgressList;
     } else if (progress === 'In Review') {
-      specificProgress = workspaceList[0].workflow.inReviewList;
+      specificProgress = workspaceList.workflow.inReviewList;
     } else if (progress === 'Blocked') {
-      specificProgress = workspaceList[0].workflow.blockedList;
+      specificProgress = workspaceList.workflow.blockedList;
     } else {
-      specificProgress = workspaceList[0].workflow.completedList;
+      specificProgress = workspaceList.workflow.completedList;
     }
 
     return specificProgress;
   };
 
-  // react dnd
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: '1',
     drop: item => {

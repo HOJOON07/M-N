@@ -5,28 +5,38 @@ import { useDrag } from 'react-dnd';
 import { addList, subtractList } from '../../../store/modules/workspace';
 import { deleteItem, modifyItem } from '../../../store/modules/workspace';
 import styled from 'styled-components';
+import './calendar.css';
+import ReactDatePicker from 'react-datepicker';
 
 // Color Variables
 const contentColor = '#fff';
 const subColor = '#cbcbcb';
 
 // Styled Components
+const MyProfileImg = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+const mainColor = '#623ad6';
+const defaultBorder = '1px solid #cfd4e0';
+const modifyBorder = `2px solid ${mainColor}`;
+
 const MyTaskContainer = styled.div`
   position: relative;
-  border: 1px solid #bcc2d1;
+  border: ${props => props.border};
+  box-shadow: 2px 1px 3px #cfd4e0;
+
   border-radius: 5px;
   background-color: ${contentColor};
-  height: 70px;
+  height: 85px;
   display: block;
-  cursor: pointer;
+  cursor: move;
   margin-bottom: 15px;
 
   & img {
     position: absolute;
     right: 8px;
     bottom: 8px;
-    width: 20px;
-    height: 20px;
   }
 
   & span:first-child {
@@ -49,18 +59,19 @@ const MyContent = styled.p`
   font-weight: 700;
   position: absolute;
   display: block;
-  width: 60%;
+  width: 68%;
 
   left: 8px;
   top: 8px;
+  overflow-wrap: anywhere;
 `;
 
 const MyCreateData = styled.p`
   position: absolute;
-  right: 35px;
-  bottom: 9px;
+  right: 8px;
+  bottom: 35px;
   color: ${subColor};
-  font-size: 10px;
+  font-size: 8px;
 `;
 
 const MyImportanceButton = styled.button`
@@ -90,35 +101,40 @@ const MyImportanceButton = styled.button`
 `;
 
 // 콘텐츠 수정 시, 적용되는 Styled
+const MyProfileImgMA = styled.img`
+  width: 35px;
+  height: 35px;
+`;
+
 const MyContentMA = styled.div`
   padding: 10px;
-  & > p {
-    margin-bottom: 10px;
-  }
 `;
 const MyContentModify = styled.input`
   width: 80%;
   height: 60px;
 `;
 const MyDateMA = styled.div`
-  padding: 10px;
-  & > div {
-    display: flex;
-    align-items: center;
-
-    & > p {
-      margin: 0 10px 10px 0;
-    }
-  }
+  padding: 2px 0 9px 10px;
+  display: flex;
+  align-items: baseline;
 `;
 const MyImportantMA = styled.div`
-  padding: 0 10px;
+  padding: 8px 10px;
   display: flex;
   align-items: center;
+`;
 
-  & > p {
-    margin-right: 10px;
-  }
+const MyTitleMA = styled.p`
+  font-family: 'LINESeedKR-Bd';
+  font-size: 1rem;
+  margin-right: 10px;
+  font-weight: 700;
+`;
+
+const MyPMA = styled.p`
+  font-size: 0.7rem;
+  margin-right: 10px;
+  font-weight: 700;
 `;
 
 // 드롭 된 아이템 구분용 전역 변수
@@ -145,6 +161,9 @@ export default function ProgressItem({
   const [selected, setSelected] = useState(item.importance);
   const [state, setState] = useState(true);
 
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date('2023/04/19'));
+
   const selectHandler = e => {
     setSelected(e.target.value);
   };
@@ -167,21 +186,24 @@ export default function ProgressItem({
           dispatch(
             subtractList(item.progress, selectedDragItem.current, subtractLists)
           );
+
           dispatch(
-            addList(dropResult.name, selectedDragItem.current, dropItem)
+            addList(
+              dropResult.name,
+              selectedDragItem.current,
+              dropItem,
+              addLists
+            )
           );
         }
       }
     },
   }));
 
-  // let specificProgress;
   let selectedItem = null;
   let workspace = null;
-  // 프로그레스명으로 DB 데이터를 구분하는 함수
-  // console.log('workspaceList: ', workspaceList.workflow.requestList);
+
   const findProgress = progress => {
-    // 백 연결용(구슬기)
     let specificProgress;
     if (progress === 'Request') {
       specificProgress = workspaceList.workflow.requestList;
@@ -207,34 +229,9 @@ export default function ProgressItem({
     }
   };
 
-  // 임시 주석
-  // const findDropItem = (id, progress) => {
-  //   let dropItem = null;
-  //   for (const ws of workspaceList) {
-  //     let specificProgress;
-  //     if (progress === 'Request') {
-  //       specificProgress = ws.workflow.todoList;
-  //     } else if (progress === 'In Progress') {
-  //       specificProgress = ws.workflow.inprogressList;
-  //     } else if (progress === 'In Review') {
-  //       specificProgress = ws.workflow.inreviewList;
-  //     } else if (progress === 'Blocked') {
-  //       specificProgress = ws.workflow.blockedList;
-  //     } else {
-  //       specificProgress = ws.workflow.doneList;
-  //     }
-
-  //     if (dropItem) {
-  //       droppedItem.current = dropItem;
-  //       console.log(droppedItem.current, 'dsds');
-  //     }
-  //   }
-  // };
-
   // tetz, 드랍 된 아이템의 배열 순서를 찾아내는 함수
   const findDroppedItem = (id, progress) => {
     const specificProgress = findProgress(progress);
-
     // tetz, 아무도 없는 바닥에 올려 놓았을 경우 id 가 null 이 뜨므로, null 이 아닌 경우에만
     // index 값을 찾아서 dropItem 전역 변수에 업데이트
     if (id !== null) {
@@ -286,8 +283,8 @@ export default function ProgressItem({
         // useRef 값 받아오기
         modifyContent = {
           content: contentRef.current.value,
-          startDate: startDateRef.current.value,
-          endDate: endDateRef.current.value,
+          startDate: startDate.toLocaleDateString();
+          endDate: endDate.toLocaleDateString();
           importance: selected,
         };
       }
@@ -380,8 +377,10 @@ export default function ProgressItem({
   };
 
   let contentSpace, dateSpace, importantSpace;
+  let contentsCnt = 0;
   if (modify === false) {
     contentSpace = <MyContent>{item.content}</MyContent>;
+    contentsCnt = item.content.length;
     dateSpace = (
       <MyCreateData>
         {item.startDate} ~ {item.endDate}
@@ -393,27 +392,50 @@ export default function ProgressItem({
   } else {
     contentSpace = (
       <MyContentMA>
-        <p>내용: </p>
+        <MyTitleMA style={{ margin: '7px 0' }}>Modify Task </MyTitleMA>
         <MyContentModify defaultValue={item.content} ref={contentRef} />
       </MyContentMA>
     );
     dateSpace = (
       <MyDateMA>
-        <div>
-          <p>시작일 : </p>
+        <>
+          <div style={{ fontSize: '.7rem' }}>기간 </div>
+          <ReactDatePicker
+            dateFormat="yyyy.MM.dd"
+            selected={startDate}
+            onChange={date => setStartDate(date)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            ref={startDateRef}
+          />
+          <span style={{ marginLeft: '5px' }}> ~ </span>
+          <ReactDatePicker
+            dateFormat="yyyy.MM.dd"
+            selected={endDate}
+            onChange={date => setEndDate(date)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            ref={endDateRef}
+          />
+        </>
+        {/* <div>
+          <MyPMA>시작일 : </MyPMA>
           <input type="date" defaultValue={item.startDate} ref={startDateRef} />
         </div>
         <br />
         <div>
-          <p>종료일 : </p>
+          <MyPMA>종료일 : </MyPMA>
           <input type="date" defaultValue={item.endDate} ref={endDateRef} />
-        </div>
+        </div> */}
       </MyDateMA>
     );
 
     importantSpace = (
       <MyImportantMA>
-        <p>중요도 : </p>
+        <MyPMA>중요도</MyPMA>
         <select onChange={selectHandler} value={selected}>
           {selectList.map(item => (
             <option value={item} key={item}>
@@ -435,7 +457,14 @@ export default function ProgressItem({
       key={id}
       onDragStart={() => findClickItem(id, progress)}
       onDrop={() => findDroppedItem(id, progress)}
-      style={modify ? { height: '230px' } : { height: '70px' }}
+      style={
+        modify
+          ? { height: '207px' }
+          : contentsCnt > 11
+          ? { height: '110px' }
+          : {}
+      }
+      border={modify ? modifyBorder : defaultBorder}
     >
       <div key={id}>
         {contentSpace}
@@ -457,9 +486,13 @@ export default function ProgressItem({
           </span>
         </div>
         {dateSpace}
-        <div>
+        <div style={{ marginBottom: '10px' }}>
           {importantSpace}
-          <img src={defaultProfile} alt="기본 프로필 이미지" />
+          {modify ? (
+            <MyProfileImgMA src={defaultProfile} alt="기본 프로필 이미지" />
+          ) : (
+            <MyProfileImg src={defaultProfile} alt="기본 프로필 이미지" />
+          )}
         </div>
       </div>
     </MyTaskContainer>

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import mymagnify from '../assets/images/search.png';
 import Workspace from './components/workspaceList/Workspace';
+import { useNavigate } from 'react-router-dom';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -13,7 +14,6 @@ const bookmarkDefault = `#ddd`;
 
 const MyContainer = styled.div`
   max-width: 1200px;
-  height: 100vh;
   margin: auto;
 `;
 
@@ -97,10 +97,13 @@ const MySpaceNewBtn = styled.button`
 `;
 
 export default function Workspacelist() {
+  const navigation = useNavigate();
   const [dataArr, setDataArr] = useState([]);
+
+  const [inputs, setInputs] = useState(''); //검색 기능을 위한 state
   const getAllWS = async () => {
     try {
-      const resGetAllWS = await fetch('http://localhost:8001/workspace', {
+      const resGetAllWS = await fetch('http://localhost:4000/workspace', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -119,6 +122,11 @@ export default function Workspacelist() {
     getAllWS();
   }, []);
 
+  const getInputs = e => {
+    e.preventDefault();
+    setInputs(e.target.value.toLowerCase());
+  };
+
   return (
     <MyContainer>
       <MySpaceList>
@@ -131,31 +139,41 @@ export default function Workspacelist() {
         </MySpaceWord>
         <MySpaceContent>
           <div style={{ position: 'relative' }}>
-            <MySpaceInput type="text" placeholder="Search by Workspace" />
+            {/* 검색기능 작업 */}
+            <MySpaceInput
+              type="text"
+              placeholder="Search by Workspace"
+              onChange={getInputs}
+              maxLength="13"
+            />
             <MySpaceMagify src={mymagnify} alt="돋보기" />
           </div>
-          <MySpaceNewBtn> New Workspace</MySpaceNewBtn>
+          <MySpaceNewBtn onClick={() => navigation('/create')}>
+            New Workspace
+          </MySpaceNewBtn>
         </MySpaceContent>
       </MySpaceList>
-      {!dataArr ? (
-        dataArr.map((el, idx) => (
-          <Workspace
-            workspace_name={el.workspace_name}
-            workspace_category={el.workspace_category}
-            workspace_type={el.workspace_type}
-            workspace_startDate={el.workspace_startDate}
-            workspace_endDate={el.workspace_endDate}
-            githubRepository={el.githubRepository}
-            member={el.member}
-            key={idx}
-            progressPercent={
-              el.workflow.doneList.length /
-              (el.workflow.todoList.length +
-                el.workflow.inprogressList.length +
-                el.workflow.doneList.length)
-            }
-          />
-        ))
+      {dataArr ? (
+        dataArr
+          .filter(e => e.workspace_name.toLowerCase().includes(inputs))
+          .map((el, idx) => (
+            <Workspace
+              workspace_name={el.workspace_name}
+              workspace_category={el.workspace_category}
+              workspace_type={el.workspace_type}
+              workspace_startDate={el.workspace_startDate}
+              workspace_endDate={el.workspace_endDate}
+              githubRepository={el.githubRepository}
+              member={el.member}
+              key={idx}
+              progressPercent={
+                el.workflow.completedList.length /
+                (el.workflow.requestList.length +
+                  el.workflow.inProgressList.length +
+                  el.workflow.completedList.length)
+              }
+            />
+          ))
       ) : (
         <Workspace />
       )}

@@ -27,6 +27,7 @@ const MyProjectDateTextWrap = styled.div`
 const StyledDatePicker = styled(ReactDatePicker)`
   margin-top: 1.5rem;
   max-width: 300px;
+  /* width: 200px; */
   height: 42px;
   box-sizing: border-box;
   padding: 8px 20px;
@@ -48,20 +49,6 @@ export default function Calendar(props) {
   const { startDateOnChange, endDateOnChange } = props;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  // const formatStart = () => {
-  //   const year = startDate.getFullYear();
-  //   const month = startDate.getMonth() + 1;
-  //   const date = startDate.getDate();
-  //   return `${year}년 ${month}월 ${date}일`;
-  // };
-  // const formatEnd = () => {
-  //   const year = endDate.getFullYear();
-  //   const month = endDate.getMonth() + 1;
-  //   const date = endDate.getDate();
-  //   return `${year}년 ${month}월 ${date}일`;
-  // };
-  // console.log(startDate, endDate);
-  // console.log(formatStart(startDate), formatEnd(endDate));
   return (
     <>
       <MyDateTitle>Period of Development</MyDateTitle>
@@ -73,11 +60,18 @@ export default function Calendar(props) {
             selected={startDate}
             onChange={(date, startDate) => {
               setStartDate(date);
-              startDateOnChange(startDate);
+              startDateOnChange(
+                date.getFullYear() +
+                  '-' +
+                  (date.getMonth() + 1 < 10
+                    ? '0' + (date.getMonth() + 1)
+                    : date.getMonth() + 1) +
+                  '-' +
+                  (date.getDate() < 10
+                    ? '0' + date.getDate()
+                    : date.getDate() + 1)
+              );
             }}
-            // onChange={startDate => {
-            //   startDateOnChange(startDate);
-            // }}
             selectsStart
             startDate={startDate}
             endDate={endDate}
@@ -92,7 +86,17 @@ export default function Calendar(props) {
             selected={endDate}
             onChange={(date, endDate) => {
               setEndDate(date);
-              endDateOnChange(endDate);
+              endDateOnChange(
+                date.getFullYear() +
+                  '-' +
+                  (date.getMonth() + 1 < 10
+                    ? '0' + (date.getMonth() + 1)
+                    : date.getMonth() + 1) +
+                  '-' +
+                  (date.getDate() < 10
+                    ? '0' + date.getDate()
+                    : date.getDate() + 1)
+              );
             }}
             selectsEnd
             startDate={startDate}
