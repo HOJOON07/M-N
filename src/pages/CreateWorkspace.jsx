@@ -276,49 +276,9 @@ export default function CreateWorkspace() {
           : new Date().getDate());
     }
     try {
-      const createWorkspace = await fetch(
-        'http://localhost:8001/workspace/addws',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(createData),
-        }
-      createData.member = searchUserList;
-      createData.githubRepository = githubRepository.current.value;
-      createData.workspace_name = workspaceName.current.value;
-      if (!createData.workspace_category) {
-        createData.workspace_category = 'FrontEnd';
-      }
-      if (!createData.workspace_startDate) {
-        createData.workspace_startDate =
-          new Date().getFullYear() +
-          '-' +
-          (new Date().getMonth() + 1 < 10
-            ? '0' + (new Date().getMonth() + 1)
-            : new Date().getMonth() + 1) +
-          '-' +
-          (new Date().getDate() < 10
-            ? '0' + new Date().getDate()
-            : new Date().getDate() + 1);
-      }
-      if (!createData.workspace_endDate) {
-        createData.workspace_endDate =
-          new Date().getFullYear() +
-          '-' +
-          (new Date().getMonth() + 1 < 10
-            ? '0' + (new Date().getMonth() + 1)
-            : new Date().getMonth() + 1) +
-          '-' +
-          (new Date().getDate() < 10
-            ? '0' + new Date().getDate()
-            : new Date().getDate() + 1);
-      }
       const isCreate = window.confirm(
         `새로운 워크스페이스 '${workspaceName.current.value}' 를 생성하시겠습니까?`
       );
-
       if (isCreate) {
         const createWorkspace = await fetch(
           'http://localhost:4000/workspace/addws',
