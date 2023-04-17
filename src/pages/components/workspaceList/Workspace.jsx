@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import mystar from '../../../assets/images/bookmark-icon.png';
@@ -27,7 +27,10 @@ const MySpaceContainer = styled.div`
 
   &:hover {
     transform: scale(1.03);
-    box-shadow: 2px 2px 3px #acacac9c;
+
+    & > div {
+      box-shadow: 2px 2px 3px #838383dc;
+    }
   }
 `;
 
@@ -39,18 +42,21 @@ const MySpaceLeft = styled.div`
   border-bottom-left-radius: 7px;
   box-shadow: 2px 2px 3px #acacac9c;
 `;
+
+const grayStar =
+  'invert(38%) sepia(6%) saturate(4%) hue-rotate(345deg) brightness(97%) contrast(82%)';
+const yellowStart =
+  'filter: invert(83%) sepia(92%) saturate(1371%) hue-rotate(360deg) brightness(107%) contrast(105%)';
 const MySpaceStar = styled.img`
   position: absolute;
+  z-index: 2;
   width: 20px;
   height: 20px;
   margin-top: 5px;
   margin-left: 5px;
+  cursor: pointer;
 
-  filter: invert(38%) sepia(6%) saturate(4%) hue-rotate(345deg) brightness(97%)
-    contrast(82%);
-  /* 즐겨찾기를 눌렀을 때 색(노랑)
-    filter: invert(83%) sepia(92%) saturate(1371%) hue-rotate(360deg) brightness(107%) contrast(105%);
-    */
+  filter: ${props => (props.isClicked ? yellowStart : grayStar)};
 `;
 
 const MyInfo = styled.div`
@@ -199,11 +205,18 @@ export default function Workspace({
   progressPercent,
 }) {
   const navigation = useNavigate();
+  const [isClicked, setIsClicked] = useState(false);
+
   return (
     <MyWorkSpace onClick={() => navigation('/workflow')}>
       <MySpaceContainer>
         <MySpaceLeft>
-          <MySpaceStar src={mystar} alt="즐겨찾기 이미지" />
+          <MySpaceStar
+            src={mystar}
+            alt="즐겨찾기 이미지"
+            onClick={e => setIsClicked(!e)}
+            isClicked={isClicked}
+          />
           <MyInfo>
             <MyWork>
               {workspace_name ? workspace_name : 'workspace_name'}

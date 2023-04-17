@@ -53,6 +53,10 @@ const MyTaskContainer = styled.div`
     right: 8px;
     top: 8px;
   }
+
+  &:hover {
+    border: 1px solid ${mainColor};
+  }
 `;
 
 const MyContent = styled.p`
@@ -340,6 +344,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
         <>
           <div style={{ fontSize: '.7rem' }}>기간 </div>
           <ReactDatePicker
+            className="modifyDate"
             dateFormat="yyyy.MM.dd"
             selected={startDate}
             onChange={date => setStartDate(date)}
@@ -350,6 +355,7 @@ export default function ProgressItem({ workflowList, item, id, progress }) {
           />
           <span style={{ marginLeft: '5px' }}> ~ </span>
           <ReactDatePicker
+            className="modifyDate"
             dateFormat="yyyy.MM.dd"
             selected={endDate}
             onChange={date => setEndDate(date)}

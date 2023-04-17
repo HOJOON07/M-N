@@ -207,6 +207,7 @@ export default function NewTask({ progress }) {
           <MyCalendarContainer>
             <>
               <ReactDatePicker
+                className="addDate"
                 dateFormat="yyyy.MM.dd"
                 selected={startDate}
                 onChange={date => setStartDate(date)}
@@ -217,6 +218,7 @@ export default function NewTask({ progress }) {
               />
               <span> ~</span>
               <ReactDatePicker
+                className="addDate"
                 dateFormat="yyyy.MM.dd"
                 selected={endDate}
                 onChange={date => setEndDate(date)}
@@ -227,11 +229,6 @@ export default function NewTask({ progress }) {
                 ref={endDateRef}
               />
             </>
-            {/* <MyCalenderSpan>시작일 : </MyCalenderSpan>
-            <MyCalendar required type="date" ref={startDateRef} />
-            <br />
-            <MyCalenderSpan>종료일 : </MyCalenderSpan>
-            <MyCalendar required type="date" ref={endDateRef} /> */}
           </MyCalendarContainer>
         </MyTop>
 
