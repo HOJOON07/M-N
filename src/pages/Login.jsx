@@ -9,6 +9,7 @@ import axios from 'axios';
 import Kakao from './components/Kakao';
 import Naver from './components/Naver';
 import GitHub from './components/GitHub';
+import KakaoLogout from './components/KakaoLogout';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -198,6 +199,8 @@ const MySocialBackSec = styled.div`
 `;
 
 export default function Login({ setModalOpen }) {
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('accessToken');
   const closeModal = () => {
     setModalOpen(false);
     document.body.style.overflow = 'unset';
@@ -218,9 +221,25 @@ export default function Login({ setModalOpen }) {
       user_password: inputs.password,
     };
     axios
-      .post('http://192.168.0.222:5500/user/login', userData)
+      .post(
+        'http://192.168.0.222:5500/user/login',
+        userData,
+        {
+          withCredentials: true,
+        },
+        {
+          header: {
+            cookie: { refreshToken, accessToken },
+          },
+        }
+      )
       .then(res => {
+        console.log(res.cookies);
         if (res.status === 200) {
+          localStorage.setItem('accessToken', res.data.accessToken);
+          localStorage.setItem('refreshToken', res.data.refreshToken);
+          setModalOpen(false);
+          console.log(res);
           gotoWorkSpaceList();
           setMsg('');
         }
