@@ -275,7 +275,6 @@ export default function ProgressItem({
 
   const updateHandler = async (id, progress) => {
     let progressUrl, completedId;
-    let payload = {};
     let modifyContent;
     const specificProgress = findProgress(progress);
     selectedItem = specificProgress.find(item => item.id === id);
@@ -292,12 +291,6 @@ export default function ProgressItem({
           importance: selected,
         };
       }
-      // 현재, 수정 버튼 클릭 시, 입력 창이 뜨지 않음 => payload를 당연히 받을 수 없음.
-      payload = {
-        selectedItem: selectedItem,
-        progress,
-        modifyContent,
-      };
       if (progress === 'Request') {
         progressUrl = 'updaterequestlist';
       } else if (progress === 'In Progress') {
@@ -310,10 +303,10 @@ export default function ProgressItem({
         progressUrl = 'updatecompletedlist';
       }
       // if (modify) dispatch(modifyItem(payload));
-      completedId = payload.selectedItem.id;
+      completedId = selectedItem.id;
       setState(e => !e);
-      await fetchData(progressUrl, payload, completedId);
-      if (modify) handleRender();
+      if (modify) await fetchData(progressUrl, modifyContent, completedId);
+      // if (modify) handleRender();
     }
   };
 
@@ -355,13 +348,13 @@ export default function ProgressItem({
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ modifyContent: payload.modifyContent }),
+            body: JSON.stringify({ modifyContent: payload }),
           }
         );
         if (resUpdatedPost.status !== 200) return 'fail';
         const data = await resUpdatedPost.json();
-        if (data && data.modifyContent) {
-          await dispatch(modifyItem(data.modifyContent));
+        if (data) {
+          // await dispatch(modifyItem(data.modifyContent));
           handleRender();
         }
       } else {
@@ -428,7 +421,6 @@ export default function ProgressItem({
             </option>
           ))}
         </select>
-        <button>수정 완료</button>
       </MyImportantMA>
     );
   }
