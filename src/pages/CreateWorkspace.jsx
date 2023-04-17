@@ -179,6 +179,7 @@ export default function CreateWorkspace() {
 
   const [userlist, setUserList] = useState([]); // 유저리스트
   const [checkedUserList, setCheckedUserList] = useState([]);
+  const [etcData, setEtcData] = useState([]);
 
   const workspaceName = useRef();
   const githubRepository = useRef();
@@ -213,17 +214,16 @@ export default function CreateWorkspace() {
   }, []);
 
   const categoryOnChange = e => {
-    createData.workspace_category = e.target.value;
+    setEtcData({ ...etcData, workspace_category: e.target.value });
   };
   const startDateOnChange = startDate => {
-    createData.workspace_startDate = startDate;
+    setEtcData({ ...etcData, workspace_startDate: startDate });
   };
   const endDateOnChange = endDate => {
-    createData.workspace_endDate = endDate;
+    setEtcData({ ...etcData, workspace_endDate: endDate });
   };
   const typeOnChange = e => {
-    createData.workspace_type = e.target.value;
-    console.log(createData.workspace_type);
+    setEtcData({ ...etcData, workspace_type: e.target.value });
   };
 
   const result = () => {
@@ -235,50 +235,53 @@ export default function CreateWorkspace() {
         }
       }
     }
-    // setCreateData({ ...createData, member: arr });
     return arr;
   };
   const searchUserList = result();
 
   async function setData() {
+    createData.workspace_startDate = etcData.workspace_startDate;
+    createData.workspace_endDate = etcData.workspace_endDate;
+    createData.workspace_category = etcData.workspace_category;
+    createData.workspace_type = etcData.workspace_type;
+
+    createData.member = searchUserList;
+    createData.githubRepository = githubRepository.current.value;
+    createData.workspace_name = workspaceName.current.value;
+    if (!createData.workspace_category) {
+      createData.workspace_category = 'FrontEnd';
+    }
+    if (!createData.workspace_startDate) {
+      createData.workspace_startDate =
+        new Date().getFullYear() +
+        '-' +
+        (new Date().getMonth() + 1 < 10
+          ? '0' + (new Date().getMonth() + 1)
+          : new Date().getMonth() + 1) +
+        '-' +
+        (new Date().getDate() < 10
+          ? '0' + new Date().getDate()
+          : new Date().getDate());
+    }
+    if (!createData.workspace_endDate) {
+      createData.workspace_endDate =
+        new Date().getFullYear() +
+        '-' +
+        (new Date().getMonth() + 1 < 10
+          ? '0' + (new Date().getMonth() + 1)
+          : new Date().getMonth() + 1) +
+        '-' +
+        (new Date().getDate() < 10
+          ? '0' + new Date().getDate()
+          : new Date().getDate());
+    }
     try {
-      createData.member = searchUserList;
-      createData.githubRepository = githubRepository.current.value;
-      createData.workspace_name = workspaceName.current.value;
-      if (!createData.workspace_category) {
-        createData.workspace_category = 'FrontEnd';
-      }
-      if (!createData.workspace_startDate) {
-        createData.workspace_startDate =
-          new Date().getFullYear() +
-          '-' +
-          (new Date().getMonth() + 1 < 10
-            ? '0' + (new Date().getMonth() + 1)
-            : new Date().getMonth() + 1) +
-          '-' +
-          (new Date().getDate() < 10
-            ? '0' + new Date().getDate()
-            : new Date().getDate() + 1);
-      }
-      if (!createData.workspace_endDate) {
-        createData.workspace_endDate =
-          new Date().getFullYear() +
-          '-' +
-          (new Date().getMonth() + 1 < 10
-            ? '0' + (new Date().getMonth() + 1)
-            : new Date().getMonth() + 1) +
-          '-' +
-          (new Date().getDate() < 10
-            ? '0' + new Date().getDate()
-            : new Date().getDate() + 1);
-      }
       const isCreate = window.confirm(
         `새로운 워크스페이스 '${workspaceName.current.value}' 를 생성하시겠습니까?`
       );
-
       if (isCreate) {
         const createWorkspace = await fetch(
-          'http://localhost:4000/workspace/addws',
+          'http://localhost:8001/workspace/addws',
           {
             method: 'POST',
             headers: {
@@ -306,6 +309,7 @@ export default function CreateWorkspace() {
           <MyResetButton>Reset</MyResetButton>
           <MySignupButton
             onClick={() => {
+              console.log(createData);
               setData();
             }}
           >
