@@ -3,7 +3,8 @@
   margin: 8px 0 0 7px;
 }
 
-input {
+input.addDate,
+input.modifyDate {
   width: 70px;
 }
 

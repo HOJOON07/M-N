@@ -1,13 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import defaultProfile from '../../../assets/images/default-profile.png';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import {
-  newTodo,
+  newRequest,
   newInProgress,
   newInReview,
   newBlocked,
-  newDone,
+  newCompleted,
 } from '../../../store/modules/workspace';
 import ReactDatePicker from 'react-datepicker';
 
@@ -119,7 +119,7 @@ const MySubmitButton = styled.button`
   }
 `;
 
-export default function NewTask({ progress }) {
+export default function NewTask({ progress, handleRender }) {
   const [state, setState] = useState(true);
   const contentRef = useRef();
   const dispatch = useDispatch();
@@ -167,11 +167,15 @@ export default function NewTask({ progress }) {
   const handleImportanceChange = e => {
     setImportance(e.target.value);
   };
-  const handelClick = () => {
+  const handelClick = async () => {
+    let progressUrl;
+    let newData = {};
+    const newId = Date.now();
     const payload = {
       workspaceId: 0, // 임시로 0번 워크스페이스 지정
+      progress: progress,
       newtask: {
-        id: Date(),
+        id: newId,
         content: contentRef.current.value,
         createDate: Date(),
         // startDate: startDateRef.current.value, // 시작날짜 추가
@@ -183,16 +187,88 @@ export default function NewTask({ progress }) {
     };
 
     if (progress === 'Request') {
-      dispatch(newTodo(payload));
+      progressUrl = 'addrequestlist';
+      newData = {
+        requestList_content: payload.newtask.content,
+        requestList_startDate: payload.newtask.startDate,
+        requestList_endDate: payload.newtask.endDate,
+        requestList_importance: payload.newtask.importance,
+      };
     } else if (progress === 'In Progress') {
-      dispatch(newInProgress(payload));
+      progressUrl = 'addinprogresslist';
+      newData = {
+        inProgressList_content: payload.newtask.content,
+        inProgressList_startDate: payload.newtask.startDate,
+        inProgressList_endDate: payload.newtask.endDate,
+        inProgressList_importance: payload.newtask.importance,
+      };
     } else if (progress === 'In Review') {
-      dispatch(newInReview(payload));
+      progressUrl = 'addinreviewlist';
+      newData = {
+        inReviewList_content: payload.newtask.content,
+        inReviewList_startDate: payload.newtask.startDate,
+        inReviewList_endDate: payload.newtask.endDate,
+        inReviewList_importance: payload.newtask.importance,
+      };
     } else if (progress === 'Blocked') {
-      dispatch(newBlocked(payload));
-    } else dispatch(newDone(payload));
-
+      progressUrl = 'addblockedlist';
+      newData = {
+        blockedList_content: payload.newtask.content,
+        blockedList_startDate: payload.newtask.startDate,
+        blockedList_endDate: payload.newtask.endDate,
+        blockedList_importance: payload.newtask.importance,
+      };
+    } else {
+      progressUrl = 'addcompletedlist';
+      newData = {
+        completedList_content: payload.newtask.content,
+        completedList_startDate: payload.newtask.startDate,
+        completedList_endDate: payload.newtask.endDate,
+        completedList_importance: payload.newtask.importance,
+      };
+    }
     setState(e => !e);
+    await fetchData(progressUrl, newData);
+    handleRender();
+  };
+
+  const selectDispatch = async (progress, data) => {
+    if (progress === 'Request') {
+      await dispatch(newRequest(data.newtask));
+    } else if (progress === 'In Progress') {
+      await dispatch(newInProgress(data.newtask));
+    } else if (progress === 'In Review') {
+      await dispatch(newInReview(data.newtask));
+    } else if (progress === 'Blocked') {
+      await dispatch(newBlocked(data.newtask));
+    } else {
+      await dispatch(newCompleted(data.newtask));
+    }
+  };
+
+  const [loading, setLoading] = useState(false);
+  const fetchData = async (progressUrl, newData) => {
+    try {
+      setLoading(true);
+      const resPost = await fetch(
+        `http://localhost:8001/workspace/643d124367f11568276fbfee/${progressUrl}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newData),
+        }
+      );
+      if (resPost.status !== 200) return 'fail';
+      const data = await resPost.json();
+      if (data && data.newtask) {
+        selectDispatch(data.progress, data.newtask);
+        handleRender();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -207,6 +283,7 @@ export default function NewTask({ progress }) {
           <MyCalendarContainer>
             <>
               <ReactDatePicker
+                className="addDate"
                 dateFormat="yyyy.MM.dd"
                 selected={startDate}
                 onChange={date => setStartDate(date)}
@@ -217,6 +294,7 @@ export default function NewTask({ progress }) {
               />
               <span> ~</span>
               <ReactDatePicker
+                className="addDate"
                 dateFormat="yyyy.MM.dd"
                 selected={endDate}
                 onChange={date => setEndDate(date)}
@@ -227,11 +305,6 @@ export default function NewTask({ progress }) {
                 ref={endDateRef}
               />
             </>
-            {/* <MyCalenderSpan>시작일 : </MyCalenderSpan>
-            <MyCalendar required type="date" ref={startDateRef} />
-            <br />
-            <MyCalenderSpan>종료일 : </MyCalenderSpan>
-            <MyCalendar required type="date" ref={endDateRef} /> */}
           </MyCalendarContainer>
         </MyTop>
 

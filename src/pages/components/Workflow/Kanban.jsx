@@ -53,17 +53,16 @@ const MyProgressArea = styled.div`
   }
 `;
 
-export default function Kanban() {
+export default function Kanban({ handleRender }) {
   /** 임시로 특정 워크스페이스(id가 0) 지정 */
   // 프론트 더미 데이터
-  const workspace = useSelector(state => state.workspace.workspaceList)[0];
+  // const workspace = useSelector(state => state.workspace.workspaceList)[0];
 
   // 백 연동 시
-  // const workspace = useSelector(state => state.workspace);
-
+  const workspace = useSelector(state => state.workspace);
   const workflowList = workspace.workflow;
-  const iconList = ['✉️', '🔨', '📌', '🔒', '🎉'];
 
+  const iconList = ['✉️', '🔨', '📌', '🔒', '🎉'];
   return (
     <div>
       <MyTitleArea>
@@ -71,33 +70,40 @@ export default function Kanban() {
           <MyTitle>Workflow</MyTitle>
           <MyBar />
         </div>
-        <MySubTitle fontSize="14px">{workspace?.name}워크스페이스명</MySubTitle>
+        <MySubTitle fontSize="16px">
+          📌 워크스페이스: {workspace?.workspace_name}
+        </MySubTitle>
       </MyTitleArea>
       <MyProgressArea>
         <KanbanProgress
           workflowList={workflowList?.requestList}
           progress="Request"
           icon={iconList[0]}
+          handleRender={handleRender}
         />
         <KanbanProgress
           workflowList={workflowList?.inProgressList}
           progress="In Progress"
           icon={iconList[1]}
+          handleRender={handleRender}
         />
         <KanbanProgress
           workflowList={workflowList?.inReviewList}
           progress="In Review"
           icon={iconList[2]}
+          handleRender={handleRender}
         />
         <KanbanProgress
           workflowList={workflowList?.blockedList}
           progress="Blocked"
           icon={iconList[3]}
+          handleRender={handleRender}
         />
         <KanbanProgress
           workflowList={workflowList?.completedList}
           progress="Completed"
           icon={iconList[4]}
+          handleRender={handleRender}
         />
       </MyProgressArea>
     </div>
