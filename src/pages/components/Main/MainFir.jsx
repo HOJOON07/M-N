@@ -7,7 +7,6 @@ import teamWork from '../../../assets/images/team-work.png';
 // Color Variables
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
-const subColor = '#d5cee8';
 const brightSubColor = '#e9e4f5';
 
 //keyframes
@@ -134,7 +133,6 @@ export default function MainFir() {
   const isOpen = useRef(false);
   useEffect(() => {
     isOpen.current = true;
-    console.log(isOpen.current);
   }, []);
   const navigation = useNavigate();
   return (
@@ -144,7 +142,6 @@ export default function MainFir() {
         <div>
           <MyBackImg />
           {isOpen ? <MyBackImgSecPlus src={teamWork} /> : null}
-          {/* <MyBackImgRotate /> */}
         </div>
 
         <MyBackImgThr />
