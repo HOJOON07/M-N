@@ -195,27 +195,6 @@ export default function ProgressItem({
       specificProgress = workspaceList.workflow.completedList;
     }
     return specificProgress;
-
-    // 백 연결 전, 프론트 initState 데이터 확인 (김은정)
-    // for (const ws of workspaceList) {
-    //   if (progress === 'Request') {
-    //     specificProgress = ws.workflow.requestList;
-    //   } else if (progress === 'In Progress') {
-    //     specificProgress = ws.workflow.inProgressList;
-    //   } else if (progress === 'In Review') {
-    //     specificProgress = ws.workflow.inReviewList;
-    //   } else if (progress === 'Blocked') {
-    //     specificProgress = ws.workflow.blockedList;
-    //   } else {
-    //     specificProgress = ws.workflow.completedList;
-    //   }
-    //   selectedItem = specificProgress.find(item => item.id === id);
-    //   if (selectedItem) {
-    //     workspace = ws;
-    //     break;
-    //   }
-    // }
-    // return workspace;
   };
 
   const findClickItem = (id, progress) => {
@@ -298,19 +277,20 @@ export default function ProgressItem({
     let progressUrl, completedId;
     let payload = {};
     let modifyContent;
-    // const workspace = findProgress(progress);
     const specificProgress = findProgress(progress);
     selectedItem = specificProgress.find(item => item.id === id);
-    // console.log('selectedItem: ', selectedItem); // ; => 받아짐.
     if (selectedItem) {
       workspace = workspaceList;
     }
-    // console.log('workspace: ', workspace); => 받아짐.
     if (workspace && selectedItem) {
-      console.log(modify);
       if (modify) {
         // useRef 값 받아오기
-        modifyContent = contentRef.current.value;
+        modifyContent = {
+          content: contentRef.current.value,
+          startDate: startDateRef.current.value,
+          endDate: endDateRef.current.value,
+          importance: selected,
+        };
       }
       // 현재, 수정 버튼 클릭 시, 입력 창이 뜨지 않음 => payload를 당연히 받을 수 없음.
       payload = {
@@ -337,28 +317,67 @@ export default function ProgressItem({
     }
   };
 
+  const deleteClickHandler = async (id, progress) => {
+    let progressUrl, completedId;
+
+    const specificProgress = findProgress(progress);
+    selectedItem = specificProgress.find(item => item.id === id);
+    if (selectedItem) {
+      workspace = workspaceList;
+    }
+    if (workspace && selectedItem) {
+      if (progress === 'Request') {
+        progressUrl = 'deleterequestlist';
+      } else if (progress === 'In Progress') {
+        progressUrl = 'deleteinprogresslist';
+      } else if (progress === 'In Review') {
+        progressUrl = 'deleteinreviewlist';
+      } else if (progress === 'Blocked') {
+        progressUrl = 'deleteblockedlist';
+      } else {
+        progressUrl = 'deletecompletedlist';
+      }
+      // if (modify) dispatch(modifyItem(payload));
+
+      completedId = selectedItem.id;
+      setState(e => !e);
+      await fetchData(progressUrl, null, completedId);
+    }
+  };
+
   const [loading, setLoading] = useState(false);
   const fetchData = async (progressUrl, payload, completedId) => {
     try {
-      setLoading(true);
-      const resUpdatedPost = await fetch(
-        `http://localhost:8001/workspace/643a2995b7f6810e3ce63447/${completedId}/${progressUrl}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ modifyContent: payload.modifyContent }),
-          // body: payload.modifyContent,
+      if (payload) {
+        setLoading(true);
+        const resUpdatedPost = await fetch(
+          `http://localhost:8001/workspace/643a2995b7f6810e3ce63447/${completedId}/${progressUrl}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ modifyContent: payload.modifyContent }),
+          }
+        );
+        if (resUpdatedPost.status !== 200) return 'fail';
+        const data = await resUpdatedPost.json();
+        if (data && data.modifyContent) {
+          await dispatch(modifyItem(data.modifyContent));
+          handleRender();
         }
-      );
-      console.log('resUpdatedPost: ', resUpdatedPost);
-      if (resUpdatedPost.status !== 200) return 'fail';
-      const data = await resUpdatedPost.json();
-      console.log('data: ', data); // 값이 날라가면서 content를 못받아오는 상태.
-      if (data && data.modifyContent) {
-        // selectDispatch(data.progress, data.newtask);
-        await dispatch(modifyItem(data.modifyContent));
-        // await dispatch(modifyItem(data));
-        handleRender();
+      } else {
+        setLoading(true);
+        const resDeletePost = await fetch(
+          `http://localhost:8001/workspace/643a2995b7f6810e3ce63447/${completedId}/${progressUrl}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+        if (resDeletePost.status !== 200) return 'fail';
+        const data = await resDeletePost.json();
+        if (data) {
+          handleRender();
+        }
       }
     } catch (err) {
       console.error(err);
@@ -368,7 +387,6 @@ export default function ProgressItem({
   };
 
   let contentSpace, dateSpace, importantSpace;
-  // console.log(item);
   if (modify === false) {
     contentSpace = <MyContent>{item.content}</MyContent>;
     dateSpace = (
@@ -440,7 +458,7 @@ export default function ProgressItem({
           </span>
           <span
             onClick={() => {
-              // createDateClickHandler(id, progress);
+              deleteClickHandler(id, progress);
             }}
           >
             ❌
