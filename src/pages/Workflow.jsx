@@ -80,30 +80,30 @@ export default function Workflow() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   // 백연동 시
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const resGetAllWS = await fetch(
-  //         'http://192.168.0.230:8001/workspace/643818de0a5dddd886bff311', // 임시 id값
-  //         {
-  //           method: 'GET',
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //         }
-  //       );
-  //       if (resGetAllWS.status !== 200) return 'fail';
-  //       const data = await resGetAllWS.json();
-  //       dispatch(initList(data));
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //     setLoading(false);
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const resGetAllWS = await fetch(
+          'http://localhost:4000/workspace/643c9356c44c62fe19d1abd2', // 임시 id값
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        if (resGetAllWS.status !== 200) return 'fail';
+        const data = await resGetAllWS.json();
+        dispatch(initList(data));
+      } catch (err) {
+        console.error(err);
+      }
+      setLoading(false);
+    };
 
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
 
   // 프론트 더미 데이터
   // const workspaceList = useSelector(
