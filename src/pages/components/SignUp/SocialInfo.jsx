@@ -3,8 +3,14 @@ import styled from 'styled-components';
 import kakaoIcon from '../../../assets/images/kakao-icon.png';
 import naverIcon from '../../../assets/images/naver-icon.png';
 import githubIcon from '../../../assets/images/github-icon.png';
+import { Link } from 'react-router-dom';
 
 // Styled Components
+const MyP = styled.p`
+  font-style: none;
+  text-decoration: none;
+`;
+
 const MyChoiceArea = styled.div`
   width: 100%;
   margin: auto;
@@ -64,20 +70,42 @@ const MyDirectArea = styled.div``;
 export default function SocialInfo(props) {
   const { changeState, nextChange } = props;
 
+  // 카카오
+  const KAKAO_CLIENT_ID = 'c37163557aa622477d21aee2d6f6dbdc';
+  const KAKAO_REDIRECT_URI = 'http://localhost:3000/oauth/kakao/callback';
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
+  const KAKAO_LOGOUT_URI = 'http://localhost:3000';
+  const KAKAO_LOGOUT_URL = `https://kauth.kakao.com/oauth/logout?client_id=${KAKAO_CLIENT_ID}&logout_redirect_uri=${KAKAO_LOGOUT_URI}`;
+
+  //깃헙
+  const GITHUB_CLIENT_ID = '052e16cc26d82c4a72dc';
+  const GITHUB_REDIRECT = `http://localhost:3000/oauth/github/callback`;
+  const GITHUB_LOGIN = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${GITHUB_REDIRECT}`;
+
   return (
     <MyChoiceArea>
       <MySocialArea>
-        <MyJoinBox backgroundColor="#fff" border="#707070">
-          <img src={githubIcon} alt="github-icon" />
-          <p>Github로 시작하기</p>
-        </MyJoinBox>
-        <MyJoinBox backgroundColor="#FFEB3B" border="#FFEB3B">
-          <img src={kakaoIcon} alt="github-icon" />
-          <p>카카오로 시작하기</p>
-        </MyJoinBox>
+        <Link
+          to={GITHUB_LOGIN}
+          style={{ textDecoration: 'none', color: 'black' }}
+        >
+          <MyJoinBox backgroundColor="#fff" border="#707070">
+            <img src={githubIcon} alt="github-icon" />
+            <MyP>Github로 시작하기</MyP>
+          </MyJoinBox>
+        </Link>
+        <Link
+          to={KAKAO_AUTH_URL}
+          style={{ textDecoration: 'none', color: 'black' }}
+        >
+          <MyJoinBox backgroundColor="#FFEB3B" border="#FFEB3B">
+            <img src={kakaoIcon} alt="github-icon" />
+            <MyP>카카오로 시작하기</MyP>
+          </MyJoinBox>
+        </Link>
         <MyJoinBox backgroundColor="#03C75A" border="#03C75A">
           <img src={naverIcon} alt="github-icon" />
-          <p>네이버로 시작하기</p>
+          <MyP>네이버로 시작하기</MyP>
         </MyJoinBox>
       </MySocialArea>
       <div>
