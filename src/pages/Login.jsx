@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import myLogo from '../assets/images/logo.png';
 import mySocialGit from '../assets/images/github-square.png';
 import mySocialNaver from '../assets/images/naver-icon.png';
@@ -10,6 +11,7 @@ import Kakao from './components/Kakao';
 import Naver from './components/Naver';
 import GitHub from './components/GitHub';
 import KakaoLogout from './components/KakaoLogout';
+import { isLogin } from '../store/modules/user';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -210,6 +212,7 @@ export default function Login({ setModalOpen }) {
     navigate('/workspace');
   };
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [msg, setMsg] = useState('');
   const [inputs, setInputs] = useState({
     id: '',
@@ -222,7 +225,7 @@ export default function Login({ setModalOpen }) {
     };
     axios
       .post(
-        'http://192.168.0.222:5500/user/login',
+        'http://192.168.30.155:5500/user/login',
         userData,
         {
           withCredentials: true,
@@ -234,12 +237,12 @@ export default function Login({ setModalOpen }) {
         }
       )
       .then(res => {
-        console.log(res.cookies);
         if (res.status === 200) {
           localStorage.setItem('accessToken', res.data.accessToken);
           localStorage.setItem('refreshToken', res.data.refreshToken);
           setModalOpen(false);
           console.log(res);
+
           gotoWorkSpaceList();
           setMsg('');
         }

@@ -7,6 +7,7 @@ import { deleteItem, modifyItem } from '../../../store/modules/workspace';
 import styled from 'styled-components';
 import './calendar.css';
 import ReactDatePicker from 'react-datepicker';
+import { useLocation } from 'react-router-dom';
 
 // Color Variables
 const contentColor = '#fff';
@@ -160,7 +161,7 @@ export default function ProgressItem({
   const endDateRef = useRef();
   const selectList = ['high', 'medium', 'low'];
   const [selected, setSelected] = useState(item.importance);
-  const [state, setState] = useState(true);
+  const [booleanState, setState] = useState(true);
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date('2023/04/21'));
@@ -342,7 +343,7 @@ export default function ProgressItem({
       if (payload) {
         setLoading(true);
         const resUpdatedPost = await fetch(
-          `http://localhost:8001/workspace/643d124367f11568276fbfee/${completedId}/${progressUrl}`,
+          `http://localhost:8001/workspace/${state}/${completedId}/${progressUrl}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -358,7 +359,7 @@ export default function ProgressItem({
       } else {
         setLoading(true);
         const resDeletePost = await fetch(
-          `http://localhost:8001/workspace/643d124367f11568276fbfee/${completedId}/${progressUrl}`,
+          `http://localhost:8001/workspace/${state}/${completedId}/${progressUrl}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

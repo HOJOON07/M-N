@@ -46,7 +46,7 @@ const Kakao = () => {
           console.log(userLoginInfo);
 
           const registerResponse = await fetch(
-            'http://192.168.0.222:5500/user/kakaologin',
+            'http://192.168.30.155:5500/user/kakaologin',
             {
               method: 'POST',
               headers: {
@@ -57,19 +57,20 @@ const Kakao = () => {
           );
 
           if (registerResponse.status === 200) {
+            console.log('wlwsthfwlsthf', registerResponse);
             dispatch(login(userLoginInfo));
-            window.location.href = '/workspace'; // Navigate to /workspace
+            // window.location.href = '/workspace'; // Navigate to /workspace
           } else {
             alert('회원 등록 이상');
-            window.location.href = '/login'; // Navigate to /login
+            window.location.href = '/'; // Navigate to /login
           }
         } else {
           alert('카카오 로그인 회원 정보 획득 실패');
-          window.location.href = '/login'; // Navigate to /login
+          window.location.href = '/'; // Navigate to /login
         }
       } else {
         alert('카카오 로그인 토큰 발행 실패');
-        window.location.href = '/login'; // Navigate to /login
+        window.location.href = '/'; // Navigate to /login
       }
     }
 
