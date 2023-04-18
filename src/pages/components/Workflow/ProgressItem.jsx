@@ -326,11 +326,9 @@ export default function ProgressItem({
       } else {
         progressUrl = 'updatecompletedlist';
       }
-      // if (modify) dispatch(modifyItem(payload));
       completedId = selectedItem.id;
       setState(e => !e);
       if (modify) await fetchData(progressUrl, modifyContent, completedId);
-      // if (modify) handleRender();
     }
   };
 
@@ -354,7 +352,6 @@ export default function ProgressItem({
       } else {
         progressUrl = 'deletecompletedlist';
       }
-      // if (modify) dispatch(modifyItem(payload));
 
       completedId = selectedItem.id;
       setState(e => !e);
@@ -378,7 +375,6 @@ export default function ProgressItem({
         if (resUpdatedPost.status !== 200) return 'fail';
         const data = await resUpdatedPost.json();
         if (data) {
-          // await dispatch(modifyItem(data.modifyContent));
           handleRender();
         }
       } else {

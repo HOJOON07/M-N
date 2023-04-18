@@ -77,44 +77,36 @@ export default function SignUp() {
   });
   const [confirmPW, setConfirmPW] = useState('');
 
-  let [checkNum, setCheckNum] = useState(0);
+  // let [checkNum, setCheckNum] = useState(0);
+  let checkNum = 0;
   const idOnChage = e => {
     setUserData({ ...userData, user_id: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
   const PWOnchange = e => {
     setUserData({ ...userData, user_password: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
   const PWCFOnchange = e => {
     setUserData({ ...userData, user_password2: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
   const nameOnchage = e => {
     setUserData({ ...userData, user_name: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
   const telOnChage = e => {
     setUserData({ ...userData, tel: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
   const onChnageEmail2 = e => {
     setUserData({ ...userData, user_email_2: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
   const onChageEmail1 = e => {
     setUserData({ ...userData, user_email_1: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
-
-  const [isDisabled, setIsDisabled] = useState(true);
-  const btnActive = () => {
-    setIsDisabled(false);
-  };
-
-  useEffect(() => {
-    if (confirmPW && confirmId && confirmEmail) btnActive();
-  }, [checkNum]);
 
   const add = () => {
     userData.user_email = `${userData.user_email_1}@${userData.user_email_2}`;
@@ -210,6 +202,23 @@ export default function SignUp() {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    if (confirmPW && confirmId && confirmEmail) {
+      checkNum += 1;
+    }
+  }, [confirmPW, confirmId, confirmEmail]);
+
+  const [isDisabled, setIsDisabled] = useState(true);
+  const btnActive = () => {
+    setIsDisabled(false);
+  };
+
+  useEffect(() => {
+    if (checkNum > 0) {
+      btnActive();
+    }
+  });
 
   return (
     <div style={{ padding: '5% 25%' }}>

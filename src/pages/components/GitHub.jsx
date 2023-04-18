@@ -15,7 +15,7 @@ export default function GitHub() {
     const gitHubLogin = async () => {
       try {
         const resGitLogin = await axios.post(
-          'http://192.168.0.222:5500/user/githublogin',
+          'http://localhost:8001/user/githublogin',
           {
             token: CODE,
           }
