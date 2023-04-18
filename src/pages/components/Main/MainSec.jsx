@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import MainListItem from './MainListItem';
+import Flip from 'react-reveal/Flip';
 
 const flowAnim = keyframes`
     0% {
@@ -89,9 +90,15 @@ export default function MainSec() {
     <MyDiv>
       <MyMainContainer>
         <MyTextContainer>
-          <MySemiText>프로젝트 관리를 위한 핵심 기능만 담았습니다</MySemiText>
+          <MySemiText>
+            <Flip left cascade>
+              프로젝트 관리를 위한 핵심 기능만 담았습니다
+            </Flip>
+          </MySemiText>
           <MyText>
-            협업을 위한 선택이 아닌, <MyStrong>필수</MyStrong>
+            <Flip right cascade>
+              협업을 위한 선택이 아닌, 필수
+            </Flip>
           </MyText>
         </MyTextContainer>
         <MyList>

@@ -11,13 +11,11 @@ import {
 } from '../../../store/modules/workspace';
 import ReactDatePicker from 'react-datepicker';
 import { useLocation } from 'react-router-dom';
+import Jump from 'react-reveal/Jump';
 
 const mainColor = '#623ad6';
-const hoverMainColor = '#7855db';
-const brightSubColor = '#e9e4f5';
 // Color Variables
 const contentColor = '#fff';
-const subColor = '#cbcbcb';
 const greyColor = '#696969';
 
 // Styled Components
@@ -179,8 +177,6 @@ export default function NewTask({ progress, handleRender }) {
         id: newId,
         content: contentRef.current.value,
         createDate: Date(),
-        // startDate: startDateRef.current.value, // 시작날짜 추가
-        // endDate: endDateRef.current.value,
         startDate: startDate.toLocaleDateString(),
         endDate: endDate.toLocaleDateString(),
         importance: importance ? importance : 'medium', // 중요도 기본값 추가
@@ -274,77 +270,79 @@ export default function NewTask({ progress, handleRender }) {
 
   return (
     booleanState && (
-      <MyNewTask>
-        <MyTop>
-          <img
-            src={defaultProfile}
-            style={{ width: '40px', height: '40px' }}
-            alt="기본 프로필 이미지"
-          />
-          <MyCalendarContainer>
-            <>
-              <ReactDatePicker
-                className="addDate"
-                dateFormat="yyyy.MM.dd"
-                selected={startDate}
-                onChange={date => setStartDate(date)}
-                selectsStart
-                startDate={startDate}
-                endDate={endDate}
-                ref={startDateRef}
-              />
-              <span> ~</span>
-              <ReactDatePicker
-                className="addDate"
-                dateFormat="yyyy.MM.dd"
-                selected={endDate}
-                onChange={date => setEndDate(date)}
-                selectsEnd
-                startDate={startDate}
-                endDate={endDate}
-                minDate={startDate}
-                ref={endDateRef}
-              />
-            </>
-          </MyCalendarContainer>
-        </MyTop>
+      <Jump>
+        <MyNewTask>
+          <MyTop>
+            <img
+              src={defaultProfile}
+              style={{ width: '40px', height: '40px' }}
+              alt="기본 프로필 이미지"
+            />
+            <MyCalendarContainer>
+              <>
+                <ReactDatePicker
+                  className="addDate"
+                  dateFormat="yyyy.MM.dd"
+                  selected={startDate}
+                  onChange={date => setStartDate(date)}
+                  selectsStart
+                  startDate={startDate}
+                  endDate={endDate}
+                  ref={startDateRef}
+                />
+                <span> ~</span>
+                <ReactDatePicker
+                  className="addDate"
+                  dateFormat="yyyy.MM.dd"
+                  selected={endDate}
+                  onChange={date => setEndDate(date)}
+                  selectsEnd
+                  startDate={startDate}
+                  endDate={endDate}
+                  minDate={startDate}
+                  ref={endDateRef}
+                />
+              </>
+            </MyCalendarContainer>
+          </MyTop>
 
-        <MyContent
-          required
-          type="textarea"
-          ref={contentRef}
-          placeholder="Contents"
-        />
+          <MyContent
+            required
+            type="textarea"
+            ref={contentRef}
+            placeholder="Contents"
+          />
 
-        <MyBottom>
-          <span style={{ fontSize: '.7rem' }}>중요도</span>
-          <MyRadio
-            type="radio"
-            value="high"
-            name="myImportance"
-            onChange={handleImportanceChange}
-          />
-          High
-          <MyRadio
-            checked
-            type="radio"
-            value="medium"
-            name="myImportance"
-            onChange={handleImportanceChange}
-          />
-          Medium
-          <MyRadio
-            type="radio"
-            value="low"
-            name="myImportance"
-            onChange={handleImportanceChange}
-          />
-          Low
-        </MyBottom>
-        <MySubmit>
-          <MySubmitButton onClick={handelClick}>Submit</MySubmitButton>
-        </MySubmit>
-      </MyNewTask>
+          <MyBottom>
+            <span style={{ fontSize: '.7rem' }}>중요도</span>
+            <MyRadio
+              type="radio"
+              value="high"
+              name="myImportance"
+              onChange={handleImportanceChange}
+            />
+            High
+            <MyRadio
+              checked
+              type="radio"
+              value="medium"
+              name="myImportance"
+              onChange={handleImportanceChange}
+            />
+            Medium
+            <MyRadio
+              type="radio"
+              value="low"
+              name="myImportance"
+              onChange={handleImportanceChange}
+            />
+            Low
+          </MyBottom>
+          <MySubmit>
+            <MySubmitButton onClick={handelClick}>Submit</MySubmitButton>
+          </MySubmit>
+        </MyNewTask>
+      </Jump>
     )
   );
 }

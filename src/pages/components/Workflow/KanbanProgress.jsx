@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { deleteItem } from '../../../store/modules/workspace';
 import ProgressItem from './ProgressItem';
+import HeadShake from 'react-reveal/HeadShake';
+import { motion } from 'framer-motion';
 
 // Color Variables
 const contentColor = '#fff';
@@ -136,7 +138,7 @@ export default function KanbanProgress({
         <MyMenuBar src={menu} alt="menu-bar" />
       </MyProgressTitle>
       <MyTask>
-        <MyTitle
+        {/* <MyTitle
           fontSize="13px"
           onClick={() => {
             setStatus(el => !el);
@@ -144,12 +146,42 @@ export default function KanbanProgress({
           name={progress}
         >
           ➕ Add New Task
-        </MyTitle>
+        </MyTitle> */}
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 10 }}
+          onClick={() => {
+            setStatus(el => !el);
+          }}
+          name={progress}
+          style={{
+            padding: '8px 0 0 25px',
+            fontSize: '13px',
+            fontFamily: 'LINESeedKR-Bd',
+          }}
+        >
+          ➕ Add New Task
+        </motion.div>
       </MyTask>
 
       {status && <NewTask progress={progress} handleRender={handleRender} />}
       {workflowList?.map((el, idx) => {
         // console.log('el: ', el);
+        if (isOver) {
+          return (
+            <HeadShake key={el.id}>
+              <ProgressItem
+                key={el.id}
+                id={el.id}
+                item={el} //각각의 아이템 정보를 객체로 전달
+                workflowList={workflowList}
+                progress={progress}
+                handleRender={handleRender}
+              />
+            </HeadShake>
+          );
+        }
         return (
           <ProgressItem
             key={el.id}

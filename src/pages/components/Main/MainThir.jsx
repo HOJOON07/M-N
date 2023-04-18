@@ -3,6 +3,7 @@ import cooporation from '../../../assets/images/main-img.jpg';
 import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 import upArrow from '../../../assets/images/up-arrow.png';
+import { Fade } from 'react-reveal';
 
 const MyMainContainer = styled.div`
   position: relative;
@@ -97,10 +98,20 @@ const MyBackImg = styled.img`
 export default function MainThir() {
   return (
     <MyMainContainer>
-      <MyImg src={cooporation} alt="협업" />
+      <Fade bottom>
+        <MyImg src={cooporation} alt="협업" />
+      </Fade>
       <MyDiv>
-        <MyTitle>협업을 위한 최상의 선택!</MyTitle>
-        <MyP>모든 팀이 밋노트로 협업해요</MyP>
+        <MyTitle>
+          <Fade top cascade>
+            협업을 위한 최상의 선택!
+          </Fade>
+        </MyTitle>
+        <MyP>
+          <Fade top cascade>
+            모든 팀이 밋노트로 협업해요
+          </Fade>
+        </MyP>
       </MyDiv>
       <MyContainer>
         <MyPLeft>업종, 인원, 팀 정보에 맞춰 1:1로 상담이 가능합니다</MyPLeft>

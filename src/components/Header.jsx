@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import Login from '../pages/Login';
+import { Fade } from 'react-reveal';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -155,8 +156,16 @@ export default function Header() {
         <MyMainLogo onClick={() => navigation('/')}>
           <MyLogoImg src="/images/logo.png" />
           <div>
-            <MyLogoTxt>Meet</MyLogoTxt>
-            <MyLogoTxtSec>Notes</MyLogoTxtSec>
+            <MyLogoTxt>
+              <Fade top cascade>
+                Meet
+              </Fade>
+            </MyLogoTxt>
+            <MyLogoTxtSec>
+              <Fade top cascade>
+                Notes
+              </Fade>
+            </MyLogoTxtSec>
           </div>
         </MyMainLogo>
 
