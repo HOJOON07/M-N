@@ -174,19 +174,6 @@ export default function InfoArea(props) {
         <MyErrArea />
         <MyInfoArea>
           <MyReqArea>
-            <p>전화번호*</p>
-          </MyReqArea>
-          <MyInputArea>
-            <MyInput
-              type="text"
-              placeholder="'-' 제외하고 입력"
-              onChange={telOnChage}
-            />
-          </MyInputArea>
-        </MyInfoArea>
-        <MyErrArea />
-        <MyInfoArea>
-          <MyReqArea>
             <p>이메일*</p>
           </MyReqArea>
           <MyInputArea>
@@ -223,6 +210,19 @@ export default function InfoArea(props) {
             >
               중복 확인
             </MyInfoBtn>
+          </MyInputArea>
+        </MyInfoArea>
+        <MyErrArea />
+        <MyInfoArea>
+          <MyReqArea>
+            <p>전화번호*</p>
+          </MyReqArea>
+          <MyInputArea>
+            <MyInput
+              type="text"
+              placeholder="'-' 제외하고 입력"
+              onChange={telOnChage}
+            />
           </MyInputArea>
         </MyInfoArea>
         <MyErrArea />

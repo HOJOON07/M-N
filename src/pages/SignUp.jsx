@@ -112,15 +112,14 @@ export default function SignUp() {
     setIsDisabled(false);
   };
 
-  // useEffect(() => {
-  //   if (checkNum === 6 && confirmPW) btnActive();
-  // }, [checkNum]);
+  useEffect(() => {
+    if (confirmPW && confirmId && confirmEmail) btnActive();
+  }, [checkNum]);
 
   const add = () => {
     userData.user_email = `${userData.user_email_1}@${userData.user_email_2}`;
   };
   add();
-  // console.log(userData);/
   const emailList = ['naver.com', 'kakao.com', 'github.com'];
 
   const [idErrMsg, setIdErrMsg] = useState(''); // id 에러 메세지
@@ -160,9 +159,8 @@ export default function SignUp() {
       alert('비밀번호가 서로 다릅니다');
     }
   };
+  const [confirmId, setConfirmId] = useState(false);
   const idCheck = async () => {
-    // console.log(userData);
-    // console.log(userData.user_id);
     axios
       .post('http://192.168.0.222:5500/user/checkid', {
         user_id: userData.user_id,
@@ -172,15 +170,15 @@ export default function SignUp() {
           alert('이미 가입된 회원입니다.');
         } else if (res.status === 201) {
           alert('사용 가능한 아이디 입니다.');
+          setConfirmId(true);
         }
       })
       .catch(res => {
-        // console.log(res);
         alert('다시 입력해주세요.');
       });
   };
+  const [confirmEmail, setConfirmEmail] = useState(false);
   const emailCheck = async => {
-    // add();
     axios
       .post('http://192.168.0.222:5500/user/checkemail', {
         user_email: userData.user_email,
@@ -190,6 +188,7 @@ export default function SignUp() {
           alert('이미 가입한 이메일 입니다.');
         } else if (res.status === 201) {
           alert('사용 가능한 이메일 입니다.');
+          setConfirmEmail(true);
         }
       })
       .catch(res => {
@@ -268,7 +267,7 @@ export default function SignUp() {
             color={btnFontColor}
             hoverColor={hoverMainColor}
             onClick={nextChange}
-            // disabled={isDisabled}
+            disabled={isDisabled}
           >
             다음 단계로
           </MyPageBtn>
