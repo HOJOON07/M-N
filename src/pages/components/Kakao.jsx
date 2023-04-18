@@ -46,7 +46,7 @@ const Kakao = () => {
           console.log(userLoginInfo);
 
           const registerResponse = await fetch(
-            'http://192.168.0.222::5500/user/kakaologin',
+            'http://192.168.0.222:5500/user/kakaologin',
             {
               method: 'POST',
               headers: {

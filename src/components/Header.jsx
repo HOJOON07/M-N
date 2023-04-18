@@ -128,6 +128,7 @@ const MyGreetingText = styled.p`
 `;
 
 export default function Header() {
+  const user_id = localStorage.getItem('user_id');
   const navigation = useNavigate();
   const [state, setState] = useState();
   const isLogin = useRef(false);
@@ -143,6 +144,7 @@ export default function Header() {
   const logout = () => {
     if (isLogin) {
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('user_id');
       isLogin.current = false;
       setState([]);
     }
@@ -179,7 +181,7 @@ export default function Header() {
             </>
           ) : (
             <MyDiv>
-              <MyGreetingText>[아이디] 님 안녕하세요!</MyGreetingText>
+              <MyGreetingText>{user_id} 님 안녕하세요!</MyGreetingText>
               <MyLoginButton onClick={logout}>로그아웃</MyLoginButton>
               <MyAlarmIcon src="/images/icon/alarm.png" />
               <MyProfileIcon src="/images/icon/user.png" />
