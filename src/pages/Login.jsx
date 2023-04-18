@@ -225,7 +225,7 @@ export default function Login({ setModalOpen }) {
     };
     axios
       .post(
-        'http://192.168.0.222::5500/user/login',
+        'http://192.168.0.222:5500/user/login',
         userData,
         {
           withCredentials: true,
@@ -239,7 +239,7 @@ export default function Login({ setModalOpen }) {
       .then(res => {
         if (res.status === 200) {
           localStorage.setItem('accessToken', res.data.accessToken);
-          localStorage.setItem('refreshToken', res.data.refreshToken);
+          localStorage.setItem('user_id', res.data.user_id);
           setModalOpen(false);
           console.log(res);
 
