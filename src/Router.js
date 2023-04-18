@@ -5,7 +5,7 @@ import { GlobalStyle } from './components/GlobalStyle';
 // Pages Components
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Login from './pages/Login';
+
 import SignUp from './pages/SignUp';
 import Main from './pages/Main';
 import WorkspaceList from './pages/WorkspaceList';
@@ -65,7 +65,6 @@ const Router = () => {
         <Route path="/oauth/kakao/callback" element={<Kakao />} />
         <Route path="/oauth/github/callback" element={<GitHub />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="" />
         <Route path="/test" element={<Test />} />
       </Routes>
       <Footer />

@@ -6,9 +6,6 @@ import mySocialNaver from '../assets/images/naver-icon.png';
 import mySocialKakao from '../assets/images/kakao-icon.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Kakao from './components/Kakao';
-import Naver from './components/Naver';
-import GitHub from './components/GitHub';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -231,7 +228,8 @@ export default function Login() {
       })
       .then(res => {
         if (res.status === 200) {
-          // gotoWorkSpaceList();
+          localStorage.setItem('refreshToken', res.data.refreshToken);
+          localStorage.setItem('accessToken', res.data.accessToken);
           setMsg('');
           console.log(res);
         }

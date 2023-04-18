@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import InfoArea from './components/SignUp/InfoArea';
 import styled from 'styled-components';
 import SocialInfo from './components/SignUp/SocialInfo';
-import DetailInfoArea from './components/SignUp/DetailInfoArea';
 import SignUpSuccess from './components/SignUp/SignUpSuccess';
 import axios from 'axios';
 
@@ -95,7 +94,7 @@ export default function SignUp() {
   };
 
   const add = () => {
-    userData.useremail = `${userData.user_email_1}@${userData.user_emaail_2}`;
+    userData.user_email = `${userData.user_email_1}@${userData.user_emaail_2}`;
   };
   add();
   console.log(userData);

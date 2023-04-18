@@ -1,9 +1,6 @@
-import axios from 'axios';
-import { id } from 'date-fns/locale';
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import SignUpSuccess from './SignUpSuccess';
 
 // Color Variables
 const mainColor = '#623ad6';
