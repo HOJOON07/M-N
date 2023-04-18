@@ -55,7 +55,7 @@ export default function Footer() {
         <MyLiContainer>
           <ul>
             <MyLiTitle>Coments</MyLiTitle>
-            <MyLi>Temporary</MyLi>
+            <MyLi>제가 리더..? JWT토큰 ㅈㄴ싫다.</MyLi>
             <MyLi>Temporary</MyLi>
             <MyLi>웹 개발자가 되기 위한 좋은 밑거름이 되었습니다.</MyLi>
             <MyLi>Temporary</MyLi>
