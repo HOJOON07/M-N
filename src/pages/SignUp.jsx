@@ -123,7 +123,7 @@ export default function SignUp() {
       setIdErrMsg('아이디는 4~10자로 작성해주세요요.');
     } else {
       setIdErrMsg('');
-      axios.post('http://localhost::8001/user/signup', userData).then(res => {
+      axios.post('http://localhost:8001/user/signup', userData).then(res => {
         const resMessge = res.data.message;
         if (resMessge === '사용 가능한 아이디입니다.') {
           setIdErrMsg('');

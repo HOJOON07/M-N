@@ -180,6 +180,7 @@ export default function CreateWorkspace() {
   const [userlist, setUserList] = useState([]); // 유저리스트
   const [checkedUserList, setCheckedUserList] = useState([]);
   const [etcData, setEtcData] = useState([]);
+  const user_id = localStorage.getItem('user_id');
 
   const workspaceName = useRef();
   const githubRepository = useRef();
@@ -187,7 +188,6 @@ export default function CreateWorkspace() {
   const checkOnChange = (checked, id) => {
     if (checked) {
       setCheckedUserList(prev => [...prev, id]);
-      console.log(checkedUserList);
     } else {
       setCheckedUserList(checkedUserList.filter(el => el !== id));
     }
@@ -240,17 +240,16 @@ export default function CreateWorkspace() {
     return arr;
   };
   const searchUserList = result();
-
   async function setData() {
     try {
       createData.workspace_startDate = etcData.workspace_startDate;
       createData.workspace_endDate = etcData.workspace_endDate;
       createData.workspace_category = etcData.workspace_category;
       createData.workspace_type = etcData.workspace_type;
-
-      createData.member = searchUserList.map(el => el.user_id);
       createData.githubRepository = githubRepository.current.value;
       createData.workspace_name = workspaceName.current.value;
+      createData.member = searchUserList.map(el => el.user_id);
+      createData.member[Object.keys(createData.member).length] = user_id;
       if (!createData.workspace_category) {
         createData.workspace_category = 'FrontEnd';
       }
