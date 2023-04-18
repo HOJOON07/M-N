@@ -153,9 +153,6 @@ export default function ProgressItem({
   handleRender,
 }) {
   const [modify, setModify] = useState(false);
-  // 프론트 더미 데이터
-  // const workspaceList = useSelector(state => state.workspace.workspaceList);
-  const { state } = useLocation();
   // 백연동시
   const workspaceList = useSelector(state => state.workspace);
   const dispatch = useDispatch();
@@ -167,7 +164,7 @@ export default function ProgressItem({
   const [booleanState, setState] = useState(true);
 
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date('2023/04/19'));
+  const [endDate, setEndDate] = useState(new Date('2023/04/21'));
 
   const selectHandler = e => {
     setSelected(e.target.value);
@@ -346,7 +343,7 @@ export default function ProgressItem({
       if (payload) {
         setLoading(true);
         const resUpdatedPost = await fetch(
-          `http://localhost:8001/workspace/${state}/${completedId}/${progressUrl}`,
+          `http://localhost:8001/workspace/${booleanState}/${completedId}/${progressUrl}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -362,7 +359,7 @@ export default function ProgressItem({
       } else {
         setLoading(true);
         const resDeletePost = await fetch(
-          `http://localhost:8001/workspace/${state}/${completedId}/${progressUrl}`,
+          `http://localhost:8001/workspace/${booleanState}/${completedId}/${progressUrl}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

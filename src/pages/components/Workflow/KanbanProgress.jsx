@@ -63,24 +63,6 @@ export default function KanbanProgress({
   const workspaceList = useSelector(state => state.workspace);
   const dispatch = useDispatch();
 
-  // 프로그레스명으로 DB 데이터를 구분하는 함수
-  // const findProgress = progress => {
-  //   let specificProgress;
-  //   if (progress === 'Request') {
-  //     specificProgress = workspaceList[0].workflow.requestList;
-  //   } else if (progress === 'In Progress') {
-  //     specificProgress = workspaceList[0].workflow.inProgressList;
-  //   } else if (progress === 'In Review') {
-  //     specificProgress = workspaceList[0].workflow.inReviewList;
-  //   } else if (progress === 'Blocked') {
-  //     specificProgress = workspaceList[0].workflow.blockedList;
-  //   } else {
-  //     specificProgress = workspaceList[0].workflow.completedList;
-  //   }
-
-  //   return specificProgress;
-  // };
-
   // react dnd
   const findProgress = progress => {
     let specificProgress;

@@ -6,6 +6,7 @@ import Kanban from './components/Workflow/Kanban';
 import workspace, { initList } from '../store/modules/workspace';
 import Loading from '../pages/Loading';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
@@ -86,7 +87,7 @@ export default function Workflow() {
 
   const [render, setRender] = useState(false);
   const [dataArr, setDataArr] = useState([]);
-
+  const navigation = useNavigate();
   const getAllWS = async () => {
     try {
       const resGetAllWS = await fetch('http://localhost:8001/workspace', {
@@ -164,7 +165,13 @@ export default function Workflow() {
             <p>List</p>
             {dataArr.map(el => {
               return (
-                <div key={el.id}>
+                <div
+                  key={el._id}
+                  onClick={() => {
+                    navigation('/workflow', { state: el._id });
+                    setRender(e => !e);
+                  }}
+                >
                   <MyNoneBookmark
                     alt="북마크 미완료 아이콘"
                     src={bookmarkIcon}
