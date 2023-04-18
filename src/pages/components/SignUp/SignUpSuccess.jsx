@@ -47,11 +47,23 @@ const MyPageBtn = styled.button`
   }
 `;
 
+const MyH3 = styled.h3`
+  font-size: 3.5rem;
+  margin-bottom: 30px;
+  line-height: 4.2rem;
+  border-bottom: 4px solid ${hoverMainColor};
+`;
+
+const MyP = styled.p`
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+`;
+
 export default function SignUpSuccess() {
   return (
     <MySignUpFinish>
-      <h2>환영합니다!</h2>
-      <p>회원가입이 완료되었습니다.</p>
+      <MyH3>환영합니다!</MyH3>
+      <MyP>회원가입이 완료되었습니다.</MyP>
       <Link to="/">
         <MyPageBtn backgroundColor={mainColor} hoverColor={hoverMainColor}>
           홈으로

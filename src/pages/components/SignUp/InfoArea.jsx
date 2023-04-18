@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { id } from 'date-fns/locale';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import SignUpSuccess from './SignUpSuccess';
@@ -17,6 +17,7 @@ const MyReqArea = styled.div`
   vertical-align: middle;
   & > p {
     word-break: keep-all;
+    font-size: 1rem;
   }
 `;
 const MyInput = styled.input`
@@ -29,13 +30,14 @@ const MyInput = styled.input`
   }
 `;
 const MyInputArea = styled.span`
-  margin: auto 30px;
+  margin: auto;
   display: flex;
   width: 80%;
   ${MyInput} {
     margin: 0 30px 0 15px;
     width: 250px;
     height: 35px;
+    font-size: 1rem;
   }
 `;
 const MyInfoBtn = styled.button`
@@ -56,12 +58,12 @@ const MyInfoBtn = styled.button`
 `;
 
 const MyConfirmBtn = styled.button`
-  position: absolute;
+  /* position: absolute; */
   padding: 10px 10px;
   width: 120px;
   box-sizing: border-box;
-  right: 240px;
-  top: 370px;
+  /* right: 240px;
+  top: 370px; */
   font-size: 1rem;
   font-weight: 700;
   border-radius: 10px;
@@ -75,7 +77,7 @@ const MyConfirmBtn = styled.button`
   }
 `;
 const MyErrArea = styled.div`
-  height: 30px;
+  height: 40px;
 `;
 export default function InfoArea(props) {
   const navigate = useNavigate();
@@ -91,6 +93,7 @@ export default function InfoArea(props) {
     emailList,
     PW2,
     handleCheck,
+    idCheck,
   } = props;
 
   const firstPassword = useRef('');
@@ -109,7 +112,7 @@ export default function InfoArea(props) {
               placeholder="아이디를 입력해주세요"
               onChange={idOnChage}
             />
-            <MyInfoBtn backgroundColor="#333333" color="#fff">
+            <MyInfoBtn backgroundColor="#333333" color="#fff" onClick={idCheck}>
               중복 확인
             </MyInfoBtn>
           </MyInputArea>
@@ -193,10 +196,12 @@ export default function InfoArea(props) {
             <MyInput
               type="text"
               style={{ width: '100px' }}
-              value={userData.user_emaail_2}
+              value={userData.user_email_2}
             />
             <select
-              onChange={onChnageEmail2}
+              onChange={e => {
+                onChnageEmail2(e);
+              }}
               // value={email}
             >
               {emailList.map(el => {

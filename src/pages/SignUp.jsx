@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InfoArea from './components/SignUp/InfoArea';
 import styled from 'styled-components';
 import SocialInfo from './components/SignUp/SocialInfo';
 import SignUpSuccess from './components/SignUp/SignUpSuccess';
 import axios from 'axios';
+import { isDisabled } from '@testing-library/user-event/dist/utils';
 // Color Variables
 const mainColor = '#623AD6';
 const hoverMainColor = '#7855DB';
 const prevColor = '#333333';
 const hoverPrevColor = '#6E6E6E';
 const btnFontColor = '#fff';
+const inActiveColor = '#977de4';
 // Styled Components
 const MyStageArea = styled.div`
   width: 100%;
@@ -30,7 +32,8 @@ const MyPageBtn = styled.button`
   font-weight: 700;
   border-radius: 10px;
   border: none;
-  background-color: ${props => props.backgroundColor};
+  background-color: ${props =>
+    !!props.disabled ? inActiveColor : props.backgroundColor};
   color: white;
   cursor: pointer;
   transition: 0.2s;
@@ -38,6 +41,15 @@ const MyPageBtn = styled.button`
     background-color: ${props => props.hoverColor};
   }
 `;
+const MyH1 = styled.h1`
+  font-size: 2.5rem;
+  font-weight: 700;
+`;
+const MyP = styled.p`
+  font-size: 1.3rem;
+  margin: 25px 0;
+`;
+
 export default function SignUp() {
   const [show, setShow] = useState(false);
   const [num, setNum] = useState(0);
@@ -60,38 +72,50 @@ export default function SignUp() {
     user_password2: '',
     user_name: '',
     user_email_1: '',
-    user_emaail_2: '',
+    user_email_2: '',
     tel: '',
   });
   const [confirmPW, setConfirmPW] = useState('');
+
+  let [checkNum, setCheckNum] = useState(0);
   const idOnChage = e => {
     setUserData({ ...userData, user_id: e.target.value });
-    // userData.user_id = e.target.value;
+    setCheckNum(checkNum + 1);
   };
   const PWOnchange = e => {
     setUserData({ ...userData, user_password1: e.target.value });
-    // userData.user_password = e.target.value;
+    setCheckNum(checkNum + 1);
   };
   const PWCFOnchange = e => {
     setUserData({ ...userData, user_password2: e.target.value });
-    // userData.user_password = e.target.value;
+    setCheckNum(checkNum + 1);
   };
   const nameOnchage = e => {
     setUserData({ ...userData, user_name: e.target.value });
-    // userData.user_name = e.target.value;
+    setCheckNum(checkNum + 1);
   };
   const telOnChage = e => {
     setUserData({ ...userData, tel: e.target.value });
-    // userData.tel = e.target.value;
+    setCheckNum(checkNum + 1);
   };
   const onChnageEmail2 = e => {
     setUserData({ ...userData, user_email_2: e.target.value });
-    // userData.useremail[1] = e.target.value;
+    setCheckNum(checkNum + 1);
   };
   const onChageEmail1 = e => {
     setUserData({ ...userData, user_email_1: e.target.value });
-    // userData.useremail[0] = e.target.value;
+    setCheckNum(checkNum + 1);
   };
+
+  const [isDisabled, setIsDisabled] = useState(true);
+  const btnActive = () => {
+    setIsDisabled(false);
+  };
+
+  useEffect(() => {
+    if (checkNum === 6 && confirmPW) btnActive();
+  }, [checkNum]);
+
   const add = () => {
     userData.useremail = `${userData.user_email_1}@${userData.user_email_2}`;
   };
@@ -122,6 +146,7 @@ export default function SignUp() {
         });
     }
   };
+
   const PW2 = e => {
     setConfirmPW(e.target.value);
   };
@@ -135,7 +160,22 @@ export default function SignUp() {
       alert('비밀번호가 서로 다릅니다');
     }
   };
-
+  const idCheck = async () => {
+    axios
+      .post('http://192.168.30.155:5500/user/checkid', {
+        user_id: userData.user_id,
+      })
+      .then(res => {
+        if (res.status === 200) {
+          alert('이미 가입된 회원입니다.');
+        } else if (res.status === 201) {
+          alert('사용 가능한 아이디 입니다.');
+        }
+      })
+      .catch(res => {
+        alert('다시 입력해주세요.');
+      });
+  };
   const signUpSign = () => {
     add();
     axios
@@ -148,9 +188,7 @@ export default function SignUp() {
         }
       })
       .catch(err => {
-        // setMsg(err));
-        alert('ID 또는 비밀번호가 일치하지 않습니다');
-        console.log(err.response.data, err);
+        console.log(err);
       });
   };
 
@@ -158,8 +196,8 @@ export default function SignUp() {
     <div style={{ padding: '5% 25%' }}>
       {num === 0 && (
         <>
-          <h1>회원가입</h1>
-          <p>소셜 로그인 및 이메일로 가입할 수 있습니다.</p>
+          <MyH1>회원가입</MyH1>
+          <MyP>소셜 로그인 및 이메일로 가입할 수 있습니다.</MyP>
           <hr />
           <SocialInfo
             show={show}
@@ -170,8 +208,8 @@ export default function SignUp() {
       )}
       {num === 1 && (
         <>
-          <h1>회원가입</h1>
-          <p>소셜 로그인 및 이메일로 가입할 수 있습니다.</p>
+          <MyH1>회원가입</MyH1>
+          <MyP>소셜 로그인 및 이메일로 가입할 수 있습니다.</MyP>
           <hr />
           <InfoArea
             userData={userData}
@@ -185,17 +223,11 @@ export default function SignUp() {
             emailList={emailList}
             PW2={PW2}
             handleCheck={handleCheck}
+            num={num}
+            idCheck={idCheck}
           />
         </>
       )}
-      {/* {num === 2 && (
-        <>
-          <h1>회원가입</h1>
-          <p>소셜 로그인 및 이메일로 가입할 수 있습니다.</p>
-          <hr />
-          <DetailInfoArea />
-        </>
-      )} */}
       {num === 2 && <SignUpSuccess />}
       {num !== 0 && num !== 2 && (
         <MyStageArea>
@@ -213,6 +245,7 @@ export default function SignUp() {
             color={btnFontColor}
             hoverColor={hoverMainColor}
             onClick={nextChange}
+            disabled={isDisabled}
           >
             다음 단계로
           </MyPageBtn>
