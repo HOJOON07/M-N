@@ -101,14 +101,18 @@ export default function Workspacelist() {
   const [dataArr, setDataArr] = useState([]);
 
   const [inputs, setInputs] = useState(''); //검색 기능을 위한 state
+  const user_id = localStorage.getItem('user_id');
   const getAllWS = async () => {
     try {
-      const resGetAllWS = await fetch('http://localhost:8001/workspace', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const resGetAllWS = await fetch(
+        `http://localhost:8001/workspace/${user_id}/workspace`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       if (resGetAllWS.status !== 200) return 'fail';
       const data = await resGetAllWS.json();
       console.log(data);
