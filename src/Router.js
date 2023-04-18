@@ -5,7 +5,6 @@ import { GlobalStyle } from './components/GlobalStyle';
 // Pages Components
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Main from './pages/Main';
 import WorkspaceList from './pages/WorkspaceList';
