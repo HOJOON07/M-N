@@ -77,44 +77,36 @@ export default function SignUp() {
   });
   const [confirmPW, setConfirmPW] = useState('');
 
-  let [checkNum, setCheckNum] = useState(0);
+  // let [checkNum, setCheckNum] = useState(0);
+  let checkNum = 0;
   const idOnChage = e => {
     setUserData({ ...userData, user_id: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
   const PWOnchange = e => {
     setUserData({ ...userData, user_password: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
   const PWCFOnchange = e => {
     setUserData({ ...userData, user_password2: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
   const nameOnchage = e => {
     setUserData({ ...userData, user_name: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
   const telOnChage = e => {
     setUserData({ ...userData, tel: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
   const onChnageEmail2 = e => {
     setUserData({ ...userData, user_email_2: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
   const onChageEmail1 = e => {
     setUserData({ ...userData, user_email_1: e.target.value });
-    setCheckNum(checkNum + 1);
+    checkNum += 1;
   };
-
-  const [isDisabled, setIsDisabled] = useState(true);
-  const btnActive = () => {
-    setIsDisabled(false);
-  };
-
-  useEffect(() => {
-    if (confirmPW && confirmId && confirmEmail) btnActive();
-  }, [checkNum]);
 
   const add = () => {
     userData.user_email = `${userData.user_email_1}@${userData.user_email_2}`;
@@ -131,18 +123,16 @@ export default function SignUp() {
       setIdErrMsg('아이디는 4~10자로 작성해주세요요.');
     } else {
       setIdErrMsg('');
-      axios
-        .post('http://192.168.0.222::5500/user/signup', userData)
-        .then(res => {
-          const resMessge = res.data.message;
-          if (resMessge === '사용 가능한 아이디입니다.') {
-            setIdErrMsg('');
-            setIdCheckMsg('사용 가능한 아이디입니다.');
-          } else if (resMessge === '이미 사용중인 아이디입니다.') {
-            setIdErrMsg('이미 사용중인 아이디입니다.');
-            setIdCheckMsg('');
-          }
-        });
+      axios.post('http://localhost::8001/user/signup', userData).then(res => {
+        const resMessge = res.data.message;
+        if (resMessge === '사용 가능한 아이디입니다.') {
+          setIdErrMsg('');
+          setIdCheckMsg('사용 가능한 아이디입니다.');
+        } else if (resMessge === '이미 사용중인 아이디입니다.') {
+          setIdErrMsg('이미 사용중인 아이디입니다.');
+          setIdCheckMsg('');
+        }
+      });
     }
   };
 
@@ -162,7 +152,7 @@ export default function SignUp() {
   const [confirmId, setConfirmId] = useState(false);
   const idCheck = async () => {
     axios
-      .post('http://192.168.0.222:5500/user/checkid', {
+      .post('http://localhost:8001/user/checkid', {
         user_id: userData.user_id,
       })
       .then(res => {
@@ -180,7 +170,7 @@ export default function SignUp() {
   const [confirmEmail, setConfirmEmail] = useState(false);
   const emailCheck = async => {
     axios
-      .post('http://192.168.0.222:5500/user/checkemail', {
+      .post('http://localhost:8001/user/checkemail', {
         user_email: userData.user_email,
       })
       .then(res => {
@@ -200,7 +190,7 @@ export default function SignUp() {
     add();
     console.log(userData);
     axios
-      .post('http://192.168.0.222:5500/user/signup', userData, {
+      .post('http://localhost:8001/user/signup', userData, {
         withCredentials: true,
       })
       .then(res => {
@@ -212,6 +202,23 @@ export default function SignUp() {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    if (confirmPW && confirmId && confirmEmail) {
+      checkNum += 1;
+    }
+  }, [confirmPW, confirmId, confirmEmail]);
+
+  const [isDisabled, setIsDisabled] = useState(true);
+  const btnActive = () => {
+    setIsDisabled(false);
+  };
+
+  useEffect(() => {
+    if (checkNum > 0) {
+      btnActive();
+    }
+  });
 
   return (
     <div style={{ padding: '5% 25%' }}>
