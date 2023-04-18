@@ -1,12 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
-
-const MyMainContainer = styled.div`
-  width: 100%;
-  height: 600px;
-  background-color: white;
-`;
+import MainSec from '../pages/components/Main/MainSec';
+import MainFir from '../pages/components/Main/MainFir';
+import MainThir from './components/Main/MainThir';
+import MainLast from './components/Main/MainLast';
 
 export default function Main() {
-  return <MyMainContainer>컨텐츠</MyMainContainer>;
+  return (
+    <>
+      <MainFir />
+      <MainSec />
+      <MainLast />
+      <MainThir />
+    </>
+  );
 }
