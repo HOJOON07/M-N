@@ -194,33 +194,6 @@ export default function CreateWorkspace() {
   };
 
   const createData = {};
-
-  //유저리스트 불러오기
-  const getUserList = async () => {
-    axios
-      .get('http://localhost:8001/user/userlist')
-      .then(res => {
-        console.log(userlist);
-        setUserList(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    // const getUser = await fetch('http://localhost:8001/workspace/users', {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
-
-    // if (!getUser) return alert('fail');
-    // return console.log(getUser.json());
-  };
-
-  useEffect(() => {
-    getUserList();
-  }, []);
-
   const categoryOnChange = e => {
     setEtcData({ ...etcData, workspace_category: e.target.value });
   };
@@ -238,7 +211,7 @@ export default function CreateWorkspace() {
     let arr = [];
     for (let i = 0; i < userlist.length; i++) {
       for (let j = 0; j < checkedUserList.length; j++) {
-        if (userlist[i].id == checkedUserList[j]) {
+        if (userlist[i].id === checkedUserList[j]) {
           arr.push(userlist[i]);
         }
       }
@@ -308,6 +281,36 @@ export default function CreateWorkspace() {
       console.error(err);
     }
   }
+  //유저리스트 불러오기
+  const getUserList = async () => {
+    // axios.get('/data/userList.json').then(res => {
+    //   console.log(userlist);
+    //   setUserList(res.data);
+    // });
+    // const getUser = await fetch('http://localhost:8001/workspace/users', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
+
+    // if (!getUser) return alert('fail');
+    // return console.log(getUser.json());
+    axios
+      .get('http://localhost:8001/user/userlist')
+      .then(res => {
+        console.log(res.data);
+        setUserList(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+  console.log('서치', searchUserList);
+  console.log('리스트', userlist);
+  useEffect(() => {
+    getUserList();
+  }, []);
   return (
     <MySectionContainer>
       <MyTitleWrap>
