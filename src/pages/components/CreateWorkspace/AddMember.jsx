@@ -150,7 +150,7 @@ export default function AddMember(props) {
               <MyMemberCheckBox
                 type="checkbox"
                 onChange={e => {
-                  checkOnChange(e.target.checked, data.id);
+                  checkOnChange(e.target.checked, data.user_id);
                 }}
               />
             </MyMemberWrap>

@@ -265,7 +265,7 @@ export default function SignUp() {
             color={btnFontColor}
             hoverColor={hoverMainColor}
             onClick={nextChange}
-            disabled={isDisabled}
+            // disabled={isDisabled}
           >
             다음 단계로
           </MyPageBtn>

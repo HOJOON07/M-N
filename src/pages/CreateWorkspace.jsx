@@ -175,6 +175,8 @@ const MyInfoLeftWrap = styled.div`
   width: 40%;
 `;
 export default function CreateWorkspace() {
+  const user_idToken = localStorage.getItem('user_id');
+
   const navigation = useNavigate();
 
   const [userlist, setUserList] = useState([]); // 유저리스트
@@ -185,11 +187,11 @@ export default function CreateWorkspace() {
   const workspaceName = useRef();
   const githubRepository = useRef();
 
-  const checkOnChange = (checked, id) => {
+  const checkOnChange = (checked, user_id) => {
     if (checked) {
-      setCheckedUserList(prev => [...prev, id]);
+      setCheckedUserList(prev => [...prev, user_id]);
     } else {
-      setCheckedUserList(checkedUserList.filter(el => el !== id));
+      setCheckedUserList(checkedUserList.filter(el => el !== user_id));
     }
   };
 
@@ -211,7 +213,7 @@ export default function CreateWorkspace() {
     let arr = [];
     for (let i = 0; i < userlist.length; i++) {
       for (let j = 0; j < checkedUserList.length; j++) {
-        if (userlist[i].id === checkedUserList[j]) {
+        if (userlist[i].user_id === checkedUserList[j]) {
           arr.push(userlist[i]);
         }
       }
@@ -296,8 +298,9 @@ export default function CreateWorkspace() {
 
     // if (!getUser) return alert('fail');
     // return console.log(getUser.json());
+    console.log(user_idToken);
     axios
-      .get('http://localhost:8001/user/userlist')
+      .post('http://localhost:8001/user/userlist', { user_id: user_idToken })
       .then(res => {
         console.log(res.data);
         setUserList(res.data);
@@ -306,8 +309,7 @@ export default function CreateWorkspace() {
         console.log(err);
       });
   };
-  console.log('서치', searchUserList);
-  console.log('리스트', userlist);
+
   useEffect(() => {
     getUserList();
   }, []);
