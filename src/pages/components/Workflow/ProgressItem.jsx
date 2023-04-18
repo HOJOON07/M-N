@@ -343,7 +343,7 @@ export default function ProgressItem({
       if (payload) {
         setLoading(true);
         const resUpdatedPost = await fetch(
-          `http://localhost:8001/workspace/${booleanState}/${completedId}/${progressUrl}`,
+          `http://localhost:8001/workspace/${state}/${completedId}/${progressUrl}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -359,7 +359,7 @@ export default function ProgressItem({
       } else {
         setLoading(true);
         const resDeletePost = await fetch(
-          `http://localhost:8001/workspace/${booleanState}/${completedId}/${progressUrl}`,
+          `http://localhost:8001/workspace/${state}/${completedId}/${progressUrl}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
