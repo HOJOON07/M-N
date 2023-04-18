@@ -164,6 +164,17 @@ export default function Workflow() {
           <MyList>
             <p>List</p>
             {dataArr.map(el => {
+              const textLengthOverCut = (txt, len, lastTxt) => {
+                if (txt.length > len) {
+                  txt = txt.substr(0, len) + lastTxt;
+                }
+                return txt;
+              };
+              el.workspace_name = textLengthOverCut(
+                el.workspace_name,
+                11,
+                '...'
+              );
               return (
                 <div
                   key={el._id}
