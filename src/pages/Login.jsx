@@ -1,17 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import myLogo from '../assets/images/logo.png';
 import mySocialGit from '../assets/images/github-square.png';
 import mySocialNaver from '../assets/images/naver-icon.png';
 import mySocialKakao from '../assets/images/kakao-icon.png';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Kakao from './components/Kakao';
-import Naver from './components/Naver';
-import GitHub from './components/GitHub';
-import KakaoLogout from './components/KakaoLogout';
-import { isLogin } from '../store/modules/user';
 
 // Color Variables
 const mainColor = '#623ad6';
