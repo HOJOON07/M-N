@@ -68,7 +68,7 @@ export default function SignUp() {
   };
   const [userData, setUserData] = useState({
     user_id: '',
-    user_password1: '',
+    user_password: '',
     user_password2: '',
     user_name: '',
     user_email_1: '',
@@ -83,7 +83,7 @@ export default function SignUp() {
     setCheckNum(checkNum + 1);
   };
   const PWOnchange = e => {
-    setUserData({ ...userData, user_password1: e.target.value });
+    setUserData({ ...userData, user_password: e.target.value });
     setCheckNum(checkNum + 1);
   };
   const PWCFOnchange = e => {
@@ -112,12 +112,12 @@ export default function SignUp() {
     setIsDisabled(false);
   };
 
-  useEffect(() => {
-    if (checkNum === 6 && confirmPW) btnActive();
-  }, [checkNum]);
+  // useEffect(() => {
+  //   if (checkNum === 6 && confirmPW) btnActive();
+  // }, [checkNum]);
 
   const add = () => {
-    userData.useremail = `${userData.user_email_1}@${userData.user_email_2}`;
+    userData.user_email = `${userData.user_email_1}@${userData.user_email_2}`;
   };
   add();
   // console.log(userData);/
@@ -150,10 +150,10 @@ export default function SignUp() {
   const PW2 = e => {
     setConfirmPW(e.target.value);
   };
-  const handleCheck = (password1, password2) => {
-    if (password1 === '' || password2 === '') {
+  const handleCheck = (password, password2) => {
+    if (password === '' || password2 === '') {
       alert('비밀 번호를 입력해 주세요.');
-    } else if (password1 === password2) {
+    } else if (password === password2) {
       alert('비밀번호가 일치합니다');
       setConfirmPW(true);
     } else {
@@ -161,8 +161,10 @@ export default function SignUp() {
     }
   };
   const idCheck = async () => {
+    console.log(userData);
+    console.log(userData.user_id);
     axios
-      .post('http://192.168.0.222::5500/user/checkid', {
+      .post('http://192.168.0.222:5500/user/checkid', {
         user_id: userData.user_id,
       })
       .then(res => {
@@ -173,13 +175,15 @@ export default function SignUp() {
         }
       })
       .catch(res => {
+        console.log(res);
         alert('다시 입력해주세요.');
       });
   };
   const signUpSign = () => {
     add();
+    console.log(userData);
     axios
-      .post('http://192.168.0.222::5500/user/signup', userData, {
+      .post('http://192.168.0.222:5500/user/signup', userData, {
         withCredentials: true,
       })
       .then(res => {
@@ -245,7 +249,7 @@ export default function SignUp() {
             color={btnFontColor}
             hoverColor={hoverMainColor}
             onClick={nextChange}
-            disabled={isDisabled}
+            // disabled={isDisabled}
           >
             다음 단계로
           </MyPageBtn>
