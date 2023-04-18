@@ -147,6 +147,7 @@ export default function Header() {
       localStorage.removeItem('user_id');
       isLogin.current = false;
       setState([]);
+      window.location.replace('/');
     }
   };
 
