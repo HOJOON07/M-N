@@ -295,12 +295,11 @@ export default function CreateWorkspace() {
           navigation('/create');
         }
         alert('생성 성공');
-      }
+        navigation('/workspace');
+      } else navigation('/create');
     } catch (err) {
       console.error(err);
     }
-
-    navigation('/workspace');
   }
   return (
     <MySectionContainer>
