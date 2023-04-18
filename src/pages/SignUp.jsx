@@ -161,8 +161,8 @@ export default function SignUp() {
     }
   };
   const idCheck = async () => {
-    console.log(userData);
-    console.log(userData.user_id);
+    // console.log(userData);
+    // console.log(userData.user_id);
     axios
       .post('http://192.168.0.222:5500/user/checkid', {
         user_id: userData.user_id,
@@ -175,10 +175,28 @@ export default function SignUp() {
         }
       })
       .catch(res => {
-        console.log(res);
+        // console.log(res);
         alert('다시 입력해주세요.');
       });
   };
+  const emailCheck = async => {
+    // add();
+    axios
+      .post('http://192.168.0.222:5500/user/checkemail', {
+        user_email: userData.user_email,
+      })
+      .then(res => {
+        if (res.status === 200) {
+          alert('이미 가입한 이메일 입니다.');
+        } else if (res.status === 201) {
+          alert('사용 가능한 이메일 입니다.');
+        }
+      })
+      .catch(res => {
+        alert('다시 입력해주세요');
+      });
+  };
+
   const signUpSign = () => {
     add();
     console.log(userData);
@@ -229,6 +247,7 @@ export default function SignUp() {
             handleCheck={handleCheck}
             num={num}
             idCheck={idCheck}
+            emailCheck={emailCheck}
           />
         </>
       )}

@@ -34,7 +34,7 @@ const MyInputArea = styled.span`
   display: flex;
   width: 80%;
   ${MyInput} {
-    margin: 0 30px 0 15px;
+    margin-right: 30px;
     width: 250px;
     height: 35px;
     font-size: 1rem;
@@ -79,7 +79,9 @@ const MyConfirmBtn = styled.button`
 const MyErrArea = styled.div`
   height: 40px;
 `;
+
 export default function InfoArea(props) {
+  // const emailRef = useRef();
   const navigate = useNavigate();
   const {
     userData,
@@ -94,6 +96,7 @@ export default function InfoArea(props) {
     PW2,
     handleCheck,
     idCheck,
+    emailCheck,
   } = props;
 
   const firstPassword = useRef('');
@@ -189,20 +192,21 @@ export default function InfoArea(props) {
           <MyInputArea>
             <MyInput
               type="text"
-              style={{ width: '100px' }}
+              style={{ width: '65px', margin: '0' }}
               onChange={onChageEmail1}
             />
-            <p style={{ textAlign: 'center', margin: 'auto 0' }}>@</p>
+            <p style={{ textAlign: 'center', margin: 'auto 10px' }}>@</p>
             <MyInput
               type="text"
-              style={{ width: '100px' }}
+              style={{ width: '65px', margin: '0' }}
               value={userData.user_email_2}
+              placeholder="선택"
             />
             <select
+              style={{ margin: '0 20px' }}
               onChange={e => {
                 onChnageEmail2(e);
               }}
-              // value={email}
             >
               {emailList.map(el => {
                 return (
@@ -212,6 +216,13 @@ export default function InfoArea(props) {
                 );
               })}
             </select>
+            <MyInfoBtn
+              backgroundColor="#333333"
+              color="#fff"
+              onClick={emailCheck}
+            >
+              중복 확인
+            </MyInfoBtn>
           </MyInputArea>
         </MyInfoArea>
         <MyErrArea />
