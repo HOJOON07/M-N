@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
@@ -129,9 +129,10 @@ const MyGreetingText = styled.p`
 export default function Header() {
   const navigation = useNavigate();
   const [state, setState] = useState();
-  let isLogin = true;
-  isLogin = localStorage.getItem('accessToken') !== undefined;
+  const isLogin = useRef(false);
+  isLogin.current = localStorage.getItem('accessToken') !== null;
   console.log(localStorage.getItem('accessToken'));
+  console.log(isLogin.current);
   const [modalOpen, setModalOpen] = useState(false);
 
   const showModal = () => {
@@ -140,8 +141,8 @@ export default function Header() {
   };
   const logout = () => {
     if (isLogin) {
-      localStorage.clear();
-      isLogin = false;
+      localStorage.removeItem('accessToken');
+      isLogin.current = false;
       setState([]);
     }
   };
@@ -158,7 +159,7 @@ export default function Header() {
         </MyMainLogo>
 
         <MyDiv>
-          {!isLogin ? (
+          {!isLogin.current ? (
             <>
               <MyGreetingText>로그인이 필요합니다</MyGreetingText>
               <MyLoginButton onClick={showModal}>로그인</MyLoginButton>
