@@ -133,8 +133,7 @@ export default function Header() {
   const [state, setState] = useState();
   const isLogin = useRef(false);
   isLogin.current = localStorage.getItem('accessToken') !== null;
-  console.log(localStorage.getItem('accessToken'));
-  console.log(isLogin.current);
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const showModal = () => {

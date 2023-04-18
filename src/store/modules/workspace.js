@@ -267,7 +267,7 @@ export default function workspace(state = initState, action) {
       };
 
     case DELETE:
-      console.log(action.payload);
+      // console.log(action.payload);
       return { ...state, ...action.payload };
 
     case MODIFY_TASK:
@@ -363,7 +363,7 @@ export default function workspace(state = initState, action) {
       };
 
     case INIT_LIST:
-      console.log('초기화', action.payload);
+      // console.log('초기화', action.payload);
       // 받아온 정보를 초기화
       return {
         ...action.payload,

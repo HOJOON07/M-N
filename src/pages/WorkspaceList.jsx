@@ -115,7 +115,7 @@ export default function Workspacelist() {
       );
       if (resGetAllWS.status !== 200) return 'fail';
       const data = await resGetAllWS.json();
-      console.log(data);
+
       setDataArr(data);
     } catch (err) {
       console.error(err);

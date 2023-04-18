@@ -197,16 +197,22 @@ export default function CreateWorkspace() {
 
   //유저리스트 불러오기
   const getUserList = async () => {
-    axios.get('/data/userList.json').then(res => {
-      setUserList(res.data);
-      // console.log(userlist);
-    });
+    axios
+      .get('http://localhost:8001/user/userlist')
+      .then(res => {
+        console.log(userlist);
+        setUserList(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
     // const getUser = await fetch('http://localhost:8001/workspace/users', {
     //   method: 'GET',
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
     // });
+
     // if (!getUser) return alert('fail');
     // return console.log(getUser.json());
   };

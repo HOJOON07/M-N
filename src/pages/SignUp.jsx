@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import SocialInfo from './components/SignUp/SocialInfo';
 import SignUpSuccess from './components/SignUp/SignUpSuccess';
 import axios from 'axios';
-import { isDisabled } from '@testing-library/user-event/dist/utils';
+
 // Color Variables
 const mainColor = '#623AD6';
 const hoverMainColor = '#7855DB';
@@ -169,6 +169,7 @@ export default function SignUp() {
         } else if (res.status === 201) {
           alert('사용 가능한 아이디 입니다.');
           setConfirmId(true);
+          setCheckNum(checkNum + 1);
         }
       })
       .catch(res => {
@@ -196,14 +197,13 @@ export default function SignUp() {
 
   const signUpSign = () => {
     add();
-    console.log(userData);
+
     axios
       .post('http://localhost:8001/user/signup', userData, {
         withCredentials: true,
       })
       .then(res => {
         if (res.status === 200) {
-          console.log(res);
         }
       })
       .catch(err => {
