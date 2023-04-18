@@ -69,6 +69,7 @@ export default function InvitedMember(props) {
         Invited <br /> Member
       </MyRightName>
       {searchUserList.map(list => {
+        // console.log(list);
         return (
           <MyAddMeberWrap key={list.user_id}>
             <MyAddMeberImgWrap>
