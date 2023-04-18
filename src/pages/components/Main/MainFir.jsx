@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { keyframes } from 'styled-components';
 import teamWork from '../../../assets/images/team-work.png';
+import { Fade } from 'react-reveal';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -147,8 +148,10 @@ export default function MainFir() {
         <MyBackImgThr />
       </MyBackImgContainer>
       <MyDivContainer>
-        <MyH3>MeetNotes로 스마트하게 프로젝트를 관리해보세요!</MyH3>
-        <MyP>개발자가 개발에만 집중할 수 있도록</MyP>
+        <Fade cascade>
+          <MyH3>MeetNotes로 스마트하게 프로젝트를 관리해보세요!</MyH3>
+          <MyP>개발자가 개발에만 집중할 수 있도록</MyP>
+        </Fade>
         <MyFreeButton onClick={() => navigation('/signup')}>
           무료로 시작
         </MyFreeButton>
