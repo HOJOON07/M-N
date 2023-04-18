@@ -237,8 +237,6 @@ export default function Login({ setModalOpen }) {
           localStorage.setItem('accessToken', res.data.accessToken);
           localStorage.setItem('user_id', res.data.user_id);
           setModalOpen(false);
-          console.log(res);
-
           gotoWorkSpaceList();
           setMsg('');
         }

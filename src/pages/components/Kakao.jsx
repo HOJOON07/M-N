@@ -26,7 +26,7 @@ const Kakao = () => {
       //해킹 문제 -> 인가코드 잘라서 백엔드로 인가코드 넘겨주라고 / jwt 까지
       if (tokenResponse.status === 200) {
         const tokenData = await tokenResponse.json();
-        console.log(tokenData);
+        // console.log(tokenData);
 
         const userResponese = await fetch(`https://kapi.kakao.com/v2/user/me`, {
           method: 'POST',
@@ -38,12 +38,12 @@ const Kakao = () => {
 
         if (userResponese.status === 200) {
           const userKaKaoInfo = await userResponese.json();
-          console.log(userKaKaoInfo);
+          // console.log(userKaKaoInfo);
           const userLoginInfo = {
             type: 'kakao',
             user_id: userKaKaoInfo.kakao_account.email, //
           };
-          console.log(userLoginInfo);
+          // console.log(userLoginInfo);
 
           const registerResponse = await fetch(
             'http://localhost:8001/user/kakaologin',
@@ -57,7 +57,7 @@ const Kakao = () => {
           );
 
           if (registerResponse.status === 200) {
-            console.log('wlwsthfwlsthf', registerResponse);
+            // console.log('wlwsthfwlsthf', registerResponse);
             dispatch(login(userLoginInfo));
             // window.location.href = '/workspace'; // Navigate to /workspace
           } else {

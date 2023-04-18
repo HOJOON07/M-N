@@ -10,7 +10,6 @@ export default function GitHub() {
   useEffect(() => {
     // 깃헙에서 제공하는 코드를 분리하여 해당 코드를 깃헙 로그인을 처리하는 백엔드로 전송
     const CODE = new URL(window.location.href).searchParams.get('code');
-    console.log(CODE);
 
     const gitHubLogin = async () => {
       try {
@@ -22,9 +21,9 @@ export default function GitHub() {
         );
 
         // 백엔드에서 받아온 깃헙 사용자 정보 출력
-        console.log('깃헙 로그인 성공', resGitLogin.data, resGitLogin.status);
+        // console.log('깃헙 로그인 성공', resGitLogin.data, resGitLogin.status);
 
-        console.log('resGitLogin.data.id', resGitLogin.data.id);
+        // console.log('resGitLogin.data.id', resGitLogin.data.id);
 
         if (resGitLogin.status === 200) {
           axios
@@ -36,7 +35,6 @@ export default function GitHub() {
             })
 
             .then(res => {
-              console.log(res);
               navigate('/workspace');
             })
             .catch(err => {
