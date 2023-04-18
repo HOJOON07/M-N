@@ -204,7 +204,8 @@ export default function Login({ setModalOpen }) {
   };
 
   const gotoWorkSpaceList = () => {
-    navigate('/workspace');
+    // navigate('/workspace');
+    window.location.replace('/workspace');
   };
   const navigate = useNavigate();
   const dispatch = useDispatch();
