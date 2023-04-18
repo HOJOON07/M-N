@@ -90,7 +90,11 @@ const MyMemberCheckBox = styled.input`
 
 export default function AddMember(props) {
   const { userlist, checkOnChange, checkedUserList } = props;
-
+  const [inputs, setInputs] = useState('');
+  const getInputs = e => {
+    e.preventDefault();
+    setInputs(e.target.value.toLowerCase());
+  };
   // const searchResult = () => {
   //   axios
   //     .post('url')
@@ -121,30 +125,37 @@ export default function AddMember(props) {
     <MyInfoRightWrap>
       <MyAddMember>Add Member</MyAddMember>
       <MyAddMemberInputWrap>
-        <MyaddMemberInput placeholder="Search by name, email" />
+        <MyaddMemberInput
+          placeholder="Search by name, email"
+          onChange={getInputs}
+        />
         <MyAddSearchIconWrap>
           <FontAwesomeIcon icon={faSearch} style={{ fontSize: '22px' }} />
         </MyAddSearchIconWrap>
       </MyAddMemberInputWrap>
-      {userlist.map(data => {
-        return (
-          <MyMemberWrap key={data.user_id}>
-            <MyProfileImgWrap>
-              <MyMemberProfileImg
-                src="/images/icon/user.png"
-                alt="멤버 이미지"
+      {userlist
+        .filter(e =>
+          e.user_name ? e.user_name.toLowerCase().includes(inputs) : ''
+        )
+        .map(data => {
+          return (
+            <MyMemberWrap key={data.user_id}>
+              <MyProfileImgWrap>
+                <MyMemberProfileImg
+                  src="/images/icon/user.png"
+                  alt="멤버 이미지"
+                />
+              </MyProfileImgWrap>
+              <MyMemberName>{data.user_name}</MyMemberName>
+              <MyMemberCheckBox
+                type="checkbox"
+                onChange={e => {
+                  checkOnChange(e.target.checked, data.user_id);
+                }}
               />
-            </MyProfileImgWrap>
-            <MyMemberName>{data.user_name}</MyMemberName>
-            <MyMemberCheckBox
-              type="checkbox"
-              onChange={e => {
-                checkOnChange(e.target.checked, data.user_id);
-              }}
-            />
-          </MyMemberWrap>
-        );
-      })}
+            </MyMemberWrap>
+          );
+        })}
       {/* <MyMemberWrap>
         <MyProfileImgWrap>
           <MyMemberProfileImg src="/images/icon/user.png" alt="멤버 이미지" />

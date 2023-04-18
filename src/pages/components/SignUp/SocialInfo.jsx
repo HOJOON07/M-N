@@ -43,7 +43,7 @@ const MyJoinBox = styled.div`
   cursor: pointer;
 
   &:nth-child(2) {
-    margin: 15px 0;
+    margin: 25px 0;
   }
 
   & > img {
@@ -55,6 +55,7 @@ const MyJoinBox = styled.div`
   & > p {
     height: 100%;
     margin: 0;
+    font-size: 1.3rem;
   }
 `;
 
@@ -88,7 +89,7 @@ export default function SocialInfo(props) {
           border="#707070"
           onClick={(changeState, nextChange)}
         >
-          ID/PW 회원가입
+          <p>ID/PW 회원가입</p>
         </MyJoinBox>
       </MyDirectArea>
     </MyChoiceArea>

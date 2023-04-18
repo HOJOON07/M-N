@@ -162,7 +162,7 @@ export default function ProgressItem({
   const selectList = ['high', 'medium', 'low'];
   const [selected, setSelected] = useState(item.importance);
   const [booleanState, setState] = useState(true);
-
+  const { state } = useLocation();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date('2023/04/21'));
 
