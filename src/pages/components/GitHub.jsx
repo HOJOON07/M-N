@@ -2,15 +2,12 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
 export default function GitHub() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   useEffect(() => {
     // 깃헙에서 제공하는 코드를 분리하여 해당 코드를 깃헙 로그인을 처리하는 백엔드로 전송
     const CODE = new URL(window.location.href).searchParams.get('code');
-
     const gitHubLogin = async () => {
       try {
         const resGitLogin = await axios.post(
@@ -19,12 +16,7 @@ export default function GitHub() {
             token: CODE,
           }
         );
-
         // 백엔드에서 받아온 깃헙 사용자 정보 출력
-        // console.log('깃헙 로그인 성공', resGitLogin.data, resGitLogin.status);
-
-        // console.log('resGitLogin.data.id', resGitLogin.data.id);
-
         if (resGitLogin.status === 200) {
           axios
             .post('http://localhost:8001/user/gitloginsuccess', {
@@ -33,9 +25,12 @@ export default function GitHub() {
               user_email: resGitLogin.data.blog,
               user_name: resGitLogin.data.name,
             })
-
             .then(res => {
-              navigate('/workspace');
+              console.log(res);
+              localStorage.setItem('accessToken', res.data.accessToken);
+              localStorage.setItem('user_id', res.data.user_id);
+
+              window.location.replace('/workspace');
             })
             .catch(err => {
               console.log(err);
@@ -43,10 +38,8 @@ export default function GitHub() {
         }
       } catch (err) {
         console.log('깃헙 로그인 에러 발생', err);
-        navigate('/');
       }
     };
-
     gitHubLogin();
   }, []);
 }
