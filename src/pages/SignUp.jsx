@@ -120,7 +120,7 @@ export default function SignUp() {
     userData.useremail = `${userData.user_email_1}@${userData.user_email_2}`;
   };
   add();
-  console.log(userData);
+  // console.log(userData);/
   const emailList = ['naver.com', 'kakao.com', 'github.com'];
 
   const [idErrMsg, setIdErrMsg] = useState(''); // id 에러 메세지
@@ -133,7 +133,7 @@ export default function SignUp() {
     } else {
       setIdErrMsg('');
       axios
-        .post('http://192.168.0.222:5500/user/signup', userData)
+        .post('http://192.168.0.222::5500/user/signup', userData)
         .then(res => {
           const resMessge = res.data.message;
           if (resMessge === '사용 가능한 아이디입니다.') {
@@ -162,7 +162,7 @@ export default function SignUp() {
   };
   const idCheck = async () => {
     axios
-      .post('http://192.168.30.155:5500/user/checkid', {
+      .post('http://192.168.0.222::5500/user/checkid', {
         user_id: userData.user_id,
       })
       .then(res => {
@@ -179,7 +179,7 @@ export default function SignUp() {
   const signUpSign = () => {
     add();
     axios
-      .post('http://localhost:5500/user/signup', userData, {
+      .post('http://192.168.0.222::5500/user/signup', userData, {
         withCredentials: true,
       })
       .then(res => {
