@@ -28,7 +28,7 @@ export default function GitHub() {
 
         if (resGitLogin.status === 200) {
           axios
-            .post('http://192.168.0.222:5500/user/gitloginsuccess', {
+            .post('http://localhost:8001/user/gitloginsuccess', {
               user_id: resGitLogin.data.login,
               bio: resGitLogin.data.bio,
               user_email: resGitLogin.data.blog,

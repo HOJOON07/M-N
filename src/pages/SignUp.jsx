@@ -131,18 +131,16 @@ export default function SignUp() {
       setIdErrMsg('아이디는 4~10자로 작성해주세요요.');
     } else {
       setIdErrMsg('');
-      axios
-        .post('http://192.168.0.222::5500/user/signup', userData)
-        .then(res => {
-          const resMessge = res.data.message;
-          if (resMessge === '사용 가능한 아이디입니다.') {
-            setIdErrMsg('');
-            setIdCheckMsg('사용 가능한 아이디입니다.');
-          } else if (resMessge === '이미 사용중인 아이디입니다.') {
-            setIdErrMsg('이미 사용중인 아이디입니다.');
-            setIdCheckMsg('');
-          }
-        });
+      axios.post('http://localhost:8001/user/signup', userData).then(res => {
+        const resMessge = res.data.message;
+        if (resMessge === '사용 가능한 아이디입니다.') {
+          setIdErrMsg('');
+          setIdCheckMsg('사용 가능한 아이디입니다.');
+        } else if (resMessge === '이미 사용중인 아이디입니다.') {
+          setIdErrMsg('이미 사용중인 아이디입니다.');
+          setIdCheckMsg('');
+        }
+      });
     }
   };
 
@@ -162,7 +160,7 @@ export default function SignUp() {
   const [confirmId, setConfirmId] = useState(false);
   const idCheck = async () => {
     axios
-      .post('http://192.168.0.222:5500/user/checkid', {
+      .post('http://localhost:8001/user/checkid', {
         user_id: userData.user_id,
       })
       .then(res => {
@@ -180,7 +178,7 @@ export default function SignUp() {
   const [confirmEmail, setConfirmEmail] = useState(false);
   const emailCheck = async => {
     axios
-      .post('http://192.168.0.222:5500/user/checkemail', {
+      .post('http://localhost:8001/user/checkemail', {
         user_email: userData.user_email,
       })
       .then(res => {
@@ -200,7 +198,7 @@ export default function SignUp() {
     add();
     console.log(userData);
     axios
-      .post('http://192.168.0.222:5500/user/signup', userData, {
+      .post('http://localhost:8001/user/signup', userData, {
         withCredentials: true,
       })
       .then(res => {

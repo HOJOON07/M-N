@@ -221,7 +221,7 @@ export default function Login({ setModalOpen }) {
     };
     axios
       .post(
-        'http://192.168.0.222:5500/user/login',
+        'http://localhost:8001/user/login',
         userData,
         {
           withCredentials: true,

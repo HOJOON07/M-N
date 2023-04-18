@@ -57,7 +57,7 @@ export default function Footer() {
             <MyLiTitle>Coments</MyLiTitle>
             <MyLi>Temporary</MyLi>
             <MyLi>Temporary</MyLi>
-            <MyLi>Temporary</MyLi>
+            <MyLi>웹 개발자가 되기 위한 좋은 밑거름이 되었습니다.</MyLi>
             <MyLi>Temporary</MyLi>
             <MyLi>도전적인 작업이었습니다.</MyLi>
           </ul>
