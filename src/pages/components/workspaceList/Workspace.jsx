@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import mystar from '../../../assets/images/bookmark-icon.png';
@@ -207,6 +207,14 @@ export default function Workspace({
 }) {
   const navigation = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
+
+  const textLengthOverCut = (txt, len, lastTxt) => {
+    if (txt.length > len) {
+      txt = txt.substr(0, len) + lastTxt;
+    }
+    return txt;
+  };
+  workspace_name = textLengthOverCut(workspace_name, 11, '...');
 
   return (
     <MyWorkSpace onClick={() => navigation('/workflow', { state: _id })}>
