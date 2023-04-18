@@ -24,8 +24,20 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/workspace" element={<WorkspaceList />} />
-        <Route path="/create" element={<CreateWorkspace />} />
+        {localStorage.getItem('accessToken') && (
+          <>
+            <Route path="/workspace" element={<WorkspaceList />} />
+            <Route path="/create" element={<CreateWorkspace />} />
+            <Route path="/workflow" element={<Workflow />} />
+          </>
+        )}
+        {/* {localStorage.getItem('accessToken') && (
+          <Route path="/create" element={<CreateWorkspace />} />
+        )}
+        {localStorage.getItem('accessToken') && (
+          <Route path="/workflow" element={<Workflow />} />
+        )} */}
+
         <Route path="/workflow" element={<Workflow />} />
         <Route path="/oauth/kakao/callback" element={<Kakao />} />
         <Route path="/oauth/github/callback" element={<GitHub />} />
