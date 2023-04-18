@@ -112,7 +112,7 @@ export default function Workflow() {
       try {
         setLoading(true);
         const resGetAllWS = await fetch(
-          `http://localhost:4000/workspace/${state}`,
+          `http://localhost:8001/workspace/${state}`,
           {
             method: 'GET',
             headers: {
@@ -137,7 +137,7 @@ export default function Workflow() {
     const updateWF = async () => {
       try {
         const resUpdateWF = await fetch(
-          'http://localhost:8001/workspace/643d124367f11568276fbfee/updatewf',
+          `http://localhost:8001/workspace/${state}/updatewf`,
           {
             method: 'POST',
             headers: {
