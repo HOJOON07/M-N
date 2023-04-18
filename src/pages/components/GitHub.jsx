@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../store/modules/user';
 
 export default function GitHub() {
   const dispatch = useDispatch();
@@ -52,14 +51,4 @@ export default function GitHub() {
 
     gitHubLogin();
   }, []);
-
-  // useEffect(() => {
-  //   async function loginFetch() {
-  //     const tokenResponse = await axios.post(
-  //       `https://github.com/login/oauth/access_token?client_id=${GITHUB_CLIENT_ID}&client_secret=${GITHUB_CLIENT_SECRET}&code=${CODE}`,
-  //     );
-  //     console.log(tokenResponse);
-  //   }
-  //   loginFetch();
-  // });
 }
