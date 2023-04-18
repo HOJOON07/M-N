@@ -184,11 +184,12 @@ export default function CreateWorkspace() {
   const workspaceName = useRef();
   const githubRepository = useRef();
 
-  const checkOnChange = (checked, user_id) => {
+  const checkOnChange = (checked, id) => {
     if (checked) {
-      setCheckedUserList(prev => [...prev, user_id]);
+      setCheckedUserList(prev => [...prev, id]);
+      console.log(checkedUserList);
     } else {
-      setCheckedUserList(checkedUserList.filter(el => el !== user_id));
+      setCheckedUserList(checkedUserList.filter(el => el !== id));
     }
   };
 
@@ -198,6 +199,7 @@ export default function CreateWorkspace() {
   const getUserList = async () => {
     axios.get('/data/userList.json').then(res => {
       setUserList(res.data);
+      // console.log(userlist);
     });
     // const getUser = await fetch('http://localhost:8001/workspace/users', {
     //   method: 'GET',
@@ -230,7 +232,7 @@ export default function CreateWorkspace() {
     let arr = [];
     for (let i = 0; i < userlist.length; i++) {
       for (let j = 0; j < checkedUserList.length; j++) {
-        if (userlist[i].user_id == checkedUserList[j]) {
+        if (userlist[i].id == checkedUserList[j]) {
           arr.push(userlist[i]);
         }
       }
@@ -246,7 +248,7 @@ export default function CreateWorkspace() {
       createData.workspace_category = etcData.workspace_category;
       createData.workspace_type = etcData.workspace_type;
 
-      createData.member = searchUserList;
+      createData.member = searchUserList.map(el => el.user_id);
       createData.githubRepository = githubRepository.current.value;
       createData.workspace_name = workspaceName.current.value;
       if (!createData.workspace_category) {
