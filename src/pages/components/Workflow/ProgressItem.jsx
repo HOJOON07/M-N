@@ -8,10 +8,12 @@ import styled from 'styled-components';
 import './calendar.css';
 import ReactDatePicker from 'react-datepicker';
 import { useLocation } from 'react-router-dom';
+import HeadShake from 'react-reveal/HeadShake';
 
 // Color Variables
 const contentColor = '#fff';
 const subColor = '#cbcbcb';
+const greyColor = '#696969';
 
 // Styled Components
 const MyProfileImg = styled.img`
@@ -56,7 +58,7 @@ const MyTaskContainer = styled.div`
   }
 
   &:hover {
-    border: 1px solid ${mainColor};
+    border: inherit solid ${mainColor};
   }
 `;
 
@@ -112,10 +114,10 @@ const MyProfileImgMA = styled.img`
 `;
 
 const MyContentMA = styled.div`
-  padding: 10px;
+  padding: 8px 15px;
 `;
 const MyContentModify = styled.input`
-  width: 80%;
+  width: 91%;
   height: 60px;
 `;
 const MyDateMA = styled.div`
@@ -140,6 +142,29 @@ const MyPMA = styled.p`
   font-size: 0.7rem;
   margin-right: 10px;
   font-weight: 700;
+`;
+
+const MySubmitButton = styled.button`
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+
+  padding: 7px 12px;
+  box-sizing: border-box;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  border: 1px solid ${greyColor};
+  background-color: white;
+  color: ${greyColor};
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: ${mainColor};
+    color: white;
+  }
 `;
 
 // 드롭 된 아이템 구분용 전역 변수
@@ -453,52 +478,72 @@ export default function ProgressItem({
 
   // console.log('MyTaskContainer id: ', id);
   return (
-    <MyTaskContainer
-      id={id}
-      ref={dragRef}
-      progress={progress}
-      draggable
-      key={id}
-      onDragStart={() => findClickItem(id, progress)}
-      onDrop={() => findDroppedItem(id, progress)}
-      style={
-        modify
-          ? { height: '207px' }
-          : contentsCnt > 11
-          ? { height: '110px' }
-          : {}
-      }
-      border={modify ? modifyBorder : defaultBorder}
-    >
-      <div key={id}>
-        {contentSpace}
-        <div>
-          <span
-            onClick={() => {
-              setModify(state => !state);
-              updateContentClickHandler(id, progress);
-            }}
-          >
-            ✏️
-          </span>
-          <span
-            onClick={() => {
-              deleteClickHandler(id, progress);
-            }}
-          >
-            ❌
-          </span>
+    <HeadShake>
+      <MyTaskContainer
+        id={id}
+        ref={dragRef}
+        progress={progress}
+        draggable
+        key={id}
+        onDragStart={() => findClickItem(id, progress)}
+        onDrop={() => findDroppedItem(id, progress)}
+        style={
+          modify
+            ? { height: '207px' }
+            : contentsCnt > 11
+            ? { height: '110px' }
+            : {}
+        }
+        border={modify ? modifyBorder : defaultBorder}
+      >
+        <div key={id}>
+          {contentSpace}
+          <div>
+            <span
+              style={{
+                fontSize: '1rem',
+                margin: '4px 10px 0 0',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                setModify(state => !state);
+                updateContentClickHandler(id, progress);
+              }}
+            >
+              ✏️
+            </span>
+            <span
+              style={{
+                fontSize: '1rem',
+                margin: '4px 3px 0 0',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                deleteClickHandler(id, progress);
+              }}
+            >
+              ❌
+            </span>
+          </div>
+          {dateSpace}
+          <div style={{ marginBottom: '10px' }}>
+            {importantSpace}
+            {modify ? (
+              // <MyProfileImgMA src={defaultProfile} alt="기본 프로필 이미지" />
+              <MySubmitButton
+                onClick={() => {
+                  setModify(state => !state);
+                  updateContentClickHandler(id, progress);
+                }}
+              >
+                Submit
+              </MySubmitButton>
+            ) : (
+              <MyProfileImg src={defaultProfile} alt="기본 프로필 이미지" />
+            )}
+          </div>
         </div>
-        {dateSpace}
-        <div style={{ marginBottom: '10px' }}>
-          {importantSpace}
-          {modify ? (
-            <MyProfileImgMA src={defaultProfile} alt="기본 프로필 이미지" />
-          ) : (
-            <MyProfileImg src={defaultProfile} alt="기본 프로필 이미지" />
-          )}
-        </div>
-      </div>
-    </MyTaskContainer>
+      </MyTaskContainer>
+    </HeadShake>
   );
 }
