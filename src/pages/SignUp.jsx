@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import SocialInfo from './components/SignUp/SocialInfo';
 import SignUpSuccess from './components/SignUp/SignUpSuccess';
 import axios from 'axios';
-
 // Color Variables
 const mainColor = '#623AD6';
 const hoverMainColor = '#7855DB';
@@ -49,11 +48,9 @@ const MyP = styled.p`
   font-size: 1.3rem;
   margin: 25px 0;
 `;
-
 export default function SignUp() {
   const [show, setShow] = useState(false);
   const [num, setNum] = useState(0);
-
   const changeState = () => {
     setShow(prev => !prev);
   };
@@ -76,36 +73,38 @@ export default function SignUp() {
     tel: '',
   });
   const [confirmPW, setConfirmPW] = useState('');
-
-  // let [checkNum, setCheckNum] = useState(0);
-  let checkNum = 0;
+  let [checkNum, setCheckNum] = useState(0);
   const idOnChage = e => {
     setUserData({ ...userData, user_id: e.target.value });
-    checkNum += 1;
+    setCheckNum(checkNum + 1);
   };
   const PWOnchange = e => {
     setUserData({ ...userData, user_password: e.target.value });
-    checkNum += 1;
+    setCheckNum(checkNum + 1);
   };
   const PWCFOnchange = e => {
     setUserData({ ...userData, user_password2: e.target.value });
-    checkNum += 1;
+    setCheckNum(checkNum + 1);
   };
   const nameOnchage = e => {
     setUserData({ ...userData, user_name: e.target.value });
-    checkNum += 1;
+    setCheckNum(checkNum + 1);
   };
   const telOnChage = e => {
     setUserData({ ...userData, tel: e.target.value });
-    checkNum += 1;
+    setCheckNum(checkNum + 1);
   };
   const onChnageEmail2 = e => {
     setUserData({ ...userData, user_email_2: e.target.value });
-    checkNum += 1;
+    setCheckNum(checkNum + 1);
   };
   const onChageEmail1 = e => {
     setUserData({ ...userData, user_email_1: e.target.value });
-    checkNum += 1;
+    setCheckNum(checkNum + 1);
+  };
+  const [isDisabled, setIsDisabled] = useState(true);
+  const btnActive = () => {
+    setIsDisabled(false);
   };
 
   const add = () => {
@@ -113,10 +112,8 @@ export default function SignUp() {
   };
   add();
   const emailList = ['naver.com', 'kakao.com', 'github.com'];
-
   const [idErrMsg, setIdErrMsg] = useState(''); // id 에러 메세지
   const [idCheckMsg, setIdCheckMsg] = useState(''); // id 사용가능 메세지
-
   const idValidation = e => {
     const regExp = `{6,104}$`;
     if (!regExp.test(e.target.value)) {
@@ -135,7 +132,6 @@ export default function SignUp() {
       });
     }
   };
-
   const PW2 = e => {
     setConfirmPW(e.target.value);
   };
@@ -168,6 +164,7 @@ export default function SignUp() {
         alert('다시 입력해주세요.');
       });
   };
+
   const [confirmEmail, setConfirmEmail] = useState(false);
   const emailCheck = async => {
     axios
@@ -186,10 +183,8 @@ export default function SignUp() {
         alert('다시 입력해주세요');
       });
   };
-
   const signUpSign = () => {
     add();
-
     axios
       .post('http://localhost:8001/user/signup', userData, {
         withCredentials: true,
@@ -202,24 +197,9 @@ export default function SignUp() {
         console.log(err);
       });
   };
-
   useEffect(() => {
-    if (confirmPW && confirmId && confirmEmail) {
-      checkNum += 1;
-    }
-  }, [confirmPW, confirmId, confirmEmail]);
-
-  const [isDisabled, setIsDisabled] = useState(true);
-  const btnActive = () => {
-    setIsDisabled(false);
-  };
-
-  useEffect(() => {
-    if (checkNum > 0) {
-      btnActive();
-    }
-  });
-
+    if (confirmPW && confirmId && confirmEmail) btnActive();
+  }, [checkNum, confirmPW, confirmId]);
   return (
     <div style={{ padding: '5% 25%' }}>
       {num === 0 && (
@@ -274,7 +254,7 @@ export default function SignUp() {
             color={btnFontColor}
             hoverColor={hoverMainColor}
             onClick={nextChange}
-            // disabled={isDisabled}
+            disabled={isDisabled}
           >
             다음 단계로
           </MyPageBtn>
