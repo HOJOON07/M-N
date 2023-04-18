@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { keyframes } from 'styled-components';
 import teamWork from '../../../assets/images/team-work.png';
 import { Fade } from 'react-reveal';
+import { motion } from 'framer-motion';
 
 // Color Variables
 const mainColor = '#623ad6';
@@ -142,7 +143,26 @@ export default function MainFir() {
         <MyBackImgSec />
         <div>
           <MyBackImg />
-          {isOpen ? <MyBackImgSecPlus src={teamWork} /> : null}
+          {isOpen ? (
+            <motion.img
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                duration: 0.8,
+                delay: 0.5,
+                ease: [0, 0.71, 0.2, 1.01],
+              }}
+              style={{
+                position: 'absolute',
+                top: '132px',
+                left: '48px',
+
+                width: '450px',
+                height: '450px',
+              }}
+              src={teamWork}
+            />
+          ) : null}
         </div>
 
         <MyBackImgThr />

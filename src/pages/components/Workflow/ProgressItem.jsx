@@ -480,6 +480,7 @@ export default function ProgressItem({
   return (
     <HeadShake>
       <MyTaskContainer
+        isDragDisabled={modify === true}
         id={id}
         ref={dragRef}
         progress={progress}
