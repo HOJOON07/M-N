@@ -29,7 +29,6 @@ export default function GitHub() {
               console.log(res);
               localStorage.setItem('accessToken', res.data.accessToken);
               localStorage.setItem('user_id', res.data.user_id);
-
               window.location.replace('/workspace');
             })
             .catch(err => {

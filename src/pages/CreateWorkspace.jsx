@@ -289,20 +289,10 @@ export default function CreateWorkspace() {
     //   console.log(userlist);
     //   setUserList(res.data);
     // });
-    // const getUser = await fetch('http://localhost:8001/workspace/users', {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
-
-    // if (!getUser) return alert('fail');
-    // return console.log(getUser.json());
     console.log(user_idToken);
     axios
       .post('http://localhost:8001/user/userlist', { user_id: user_idToken })
       .then(res => {
-        console.log(res.data);
         setUserList(res.data);
       })
       .catch(err => {

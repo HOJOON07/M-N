@@ -50,7 +50,7 @@ const Kakao = () => {
             dispatch(login(userLoginInfo));
             localStorage.setItem('user_id', userKaKaoInfo.kakao_account.email);
             localStorage.setItem('accessToken', tokenData.access_token);
-            window.location.replace('/');
+            window.location.replace('/workspace');
             // localStorage.setItem('accessToken');
           } else {
             alert('회원 등록 이상');
