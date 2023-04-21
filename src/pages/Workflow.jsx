@@ -7,6 +7,7 @@ import workspace, { initList } from '../store/modules/workspace';
 import Loading from '../pages/Loading';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
 
 const mainColor = '#623ad6';
 const hoverMainColor = '#7855db';
@@ -80,7 +81,7 @@ const MyNoneBookmark = styled.img`
 
 export default function Workflow() {
   const workspace = useSelector(state => state.workspace);
-
+  const socket = io('http://localhost:8001');
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { state } = useLocation();
@@ -89,7 +90,10 @@ export default function Workflow() {
   const [dataArr, setDataArr] = useState([]);
   const navigation = useNavigate();
   const user_id = localStorage.getItem('user_id');
-
+  socket.on('receive message', m => {
+    console.log(m);
+    // setRender(e => !e);
+  });
   const getAllWS = async () => {
     try {
       const resGetAllWS = await fetch(
@@ -112,6 +116,10 @@ export default function Workflow() {
   const handleRender = () => {
     setRender(cur => !cur);
   };
+  useEffect(() => {
+    socket.emit('send message', 'socket 연결');
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -159,6 +167,7 @@ export default function Workflow() {
       }
     };
     updateWF();
+    socket.emit('send message', 'state 변경됨');
   }, [workspace]);
 
   return (
