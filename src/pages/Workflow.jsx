@@ -81,7 +81,7 @@ const MyNoneBookmark = styled.img`
 
 export default function Workflow() {
   const workspace = useSelector(state => state.workspace);
-  const socket = io('http://localhost:8001');
+  // const socket = io('http://localhost:8001');
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { state } = useLocation();
@@ -90,10 +90,10 @@ export default function Workflow() {
   const [dataArr, setDataArr] = useState([]);
   const navigation = useNavigate();
   const user_id = localStorage.getItem('user_id');
-  socket.on('receive message', m => {
-    console.log(m);
-    // setRender(e => !e);
-  });
+  // socket.on('receive message', m => {
+  //   console.log(m);
+  //   // setRender(e => !e);
+  // });
   const getAllWS = async () => {
     try {
       const resGetAllWS = await fetch(
@@ -116,9 +116,9 @@ export default function Workflow() {
   const handleRender = () => {
     setRender(cur => !cur);
   };
-  useEffect(() => {
-    socket.emit('send message', 'socket 연결');
-  }, []);
+  // useEffect(() => {
+  //   socket.emit('send message', 'socket 연결');
+  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -167,7 +167,7 @@ export default function Workflow() {
       }
     };
     updateWF();
-    socket.emit('send message', 'state 변경됨');
+    // socket.emit('send message', 'state 변경됨');
   }, [workspace]);
 
   return (

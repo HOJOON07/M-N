@@ -38,13 +38,13 @@ const MyLogoImg = styled.img`
     brightness(90%) contrast(88%);
 `;
 
-const MyLogoTxt = styled.p`
+const MyLogoTxt = styled.div`
   margin: 3px 0 auto 7px;
   font-size: 1.3rem;
   font-family: 'LINESeedKR-Bd';
 `;
 
-const MyLogoTxtSec = styled.p`
+const MyLogoTxtSec = styled.div`
   margin: 3px 0 auto 19px;
   font-size: 1.3rem;
   font-family: 'LINESeedKR-Bd';
