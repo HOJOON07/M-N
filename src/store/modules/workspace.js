@@ -307,7 +307,7 @@ export default function workspace(state = initState, action) {
       // 백엔드
       const copyList = [...state.workspaceList.workflow[progress]];
 
-      const findIndex = copyList.findIndex(el => el.id === selectedItem.id);
+      const findIndex = copyList.findIndex(el => el.id === selectedItem.id); //첫번째 인덱스를 반환
       const newTask = {
         content,
         startDate,
