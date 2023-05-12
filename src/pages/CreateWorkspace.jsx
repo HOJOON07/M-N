@@ -176,13 +176,41 @@ const MyInfoLeftWrap = styled.div`
 `;
 export default function CreateWorkspace() {
   const user_idToken = localStorage.getItem('user_id');
+  const user_id = localStorage.getItem('user_id');
 
   const navigation = useNavigate();
 
   const [userlist, setUserList] = useState([]); // 유저리스트
   const [checkedUserList, setCheckedUserList] = useState([]);
   const [etcData, setEtcData] = useState([]);
-  const user_id = localStorage.getItem('user_id');
+
+  const getUserList = async () => {
+    axios
+      .post('http://localhost:8001/user/userlist', { user_id: user_idToken })
+      .then(res => {
+        setUserList(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getUserList();
+  }, []);
+
+  const result = () => {
+    let arr = [];
+    for (let i = 0; i < userlist.length; i++) {
+      for (let j = 0; j < checkedUserList.length; j++) {
+        if (userlist[i].user_id === checkedUserList[j]) {
+          arr.push(userlist[i]);
+        }
+      }
+    }
+    return arr;
+  };
+  const searchUserList = result();
 
   const workspaceName = useRef();
   const githubRepository = useRef();
@@ -209,18 +237,18 @@ export default function CreateWorkspace() {
     setEtcData({ ...etcData, workspace_type: e.target.value });
   };
 
-  const result = () => {
-    let arr = [];
-    for (let i = 0; i < userlist.length; i++) {
-      for (let j = 0; j < checkedUserList.length; j++) {
-        if (userlist[i].user_id === checkedUserList[j]) {
-          arr.push(userlist[i]);
-        }
-      }
-    }
-    return arr;
-  };
-  const searchUserList = result();
+  // const result = () => {
+  //   let arr = [];
+  //   for (let i = 0; i < userlist.length; i++) {
+  //     for (let j = 0; j < checkedUserList.length; j++) {
+  //       if (userlist[i].user_id === checkedUserList[j]) {
+  //         arr.push(userlist[i]);
+  //       }
+  //     }
+  //   }
+  //   return arr;
+  // };
+  // const searchUserList = result();
   async function setData() {
     try {
       createData.workspace_startDate = etcData.workspace_startDate;
@@ -284,25 +312,21 @@ export default function CreateWorkspace() {
     }
   }
   //유저리스트 불러오기
-  const getUserList = async () => {
-    // axios.get('/data/userList.json').then(res => {
-    //   console.log(userlist);
-    //   setUserList(res.data);
-    // });
-    console.log(user_idToken);
-    axios
-      .post('http://localhost:8001/user/userlist', { user_id: user_idToken })
-      .then(res => {
-        setUserList(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+  // const getUserList = async () => {
+  //   console.log(user_idToken);
+  //   axios
+  //     .post('http://localhost:8001/user/userlist', { user_id: user_idToken })
+  //     .then(res => {
+  //       setUserList(res.data);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // };
 
-  useEffect(() => {
-    getUserList();
-  }, []);
+  // useEffect(() => {
+  //   getUserList();
+  // }, []);
   return (
     <MySectionContainer>
       <MyTitleWrap>
